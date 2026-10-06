@@ -1,0 +1,21 @@
+{
+  "name": "golive-tracker",
+  "version": "0.0.1",
+  "private": true,
+  "description": "SAPUI5 freestyle app — GoLive Tracker",
+  "keywords": ["ui5", "openui5", "sapui5"],
+  "main": "webapp/index.html",
+  "devDependencies": {
+    "@sap-ux/eslint-plugin-fiori-tools": "^10.0.0",
+    "@sap/ux-ui5-tooling": "1",
+    "@ui5/cli": "^4.0.33",
+    "eslint": "^10"
+  },
+  "scripts": {
+    "start": "fiori run --config ./ui5.yaml --open \"index.html\"",
+    "build": "ui5 build --config=ui5.yaml --clean-dest --dest dist",
+    "lint": "eslint .",
+    "build:mta": "mbt build",
+    "deploy": "cf deploy mta_archives/com.amt.golivetracker_0.0.1.mtar"
+  }
+}

@@ -1,0 +1,77 @@
+<mvc:View
+    controllerName="com.amt.golivetracker.controller.Dashboard"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc">
+
+    <!-- Dashboard (docs/mockups/02-dashboard.png), US-31: one call to
+         GET /project/dashboard(), held in the view's "dashboard" model. First
+         cut: the KPIs by status and the two lists the API gives; the charts
+         of the mockup come next. -->
+    <Page id="dashboardPage" showHeader="false" class="gtPage" busy="{dashboard>/busy}" busyIndicatorDelay="0">
+        <VBox class="gtPageContent">
+            <Title text="{i18n>navDashboard}" level="H1" titleStyle="H1" class="gtPageHeader"/>
+
+            <HBox wrap="Wrap" renderType="Bare" class="gtKpiRow" items="{dashboard>/kpis}">
+                <VBox class="gtCard gtKpi">
+                    <ObjectNumber number="{dashboard>count}" class="gtKpiNumber"/>
+                    <Text text="{dashboard>label}"/>
+                </VBox>
+            </HBox>
+
+            <HBox wrap="Wrap" renderType="Bare" class="gtDashboardLists">
+                <Table
+                    id="toReviewTable"
+                    class="gtCard"
+                    noDataText="{i18n>dashboardNothingToReview}"
+                    items="{dashboard>/data/projectsToReview}">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title text="{i18n>dashboardToReview}" level="H2"/>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="9rem"><Text text="{i18n>colCode}"/></Column>
+                        <Column><Text text="{i18n>colName}"/></Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colReviewReason}"/></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{dashboard>projectCode}"/>
+                                <Text text="{dashboard>projectName}"/>
+                                <Text text="{dashboard>reviewReason}"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+
+                <Table
+                    id="overdueTable"
+                    class="gtCard"
+                    noDataText="{i18n>dashboardNothingOverdue}"
+                    items="{dashboard>/data/overdueMilestones}">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title text="{i18n>dashboardOverdue}" level="H2"/>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="9rem"><Text text="{i18n>colCode}"/></Column>
+                        <Column><Text text="{i18n>colMilestone}"/></Column>
+                        <Column width="8rem"><Text text="{i18n>colDueDate}"/></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{dashboard>projectCode}"/>
+                                <Text text="{dashboard>milestoneType}"/>
+                                <Text text="{dashboard>dueDate}"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </HBox>
+        </VBox>
+    </Page>
+
+</mvc:View>

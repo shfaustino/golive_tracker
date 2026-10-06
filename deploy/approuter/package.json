@@ -1,0 +1,15 @@
+{
+  "name": "golive-tracker-approuter",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Serves GoLive Tracker on BTP behind SAP login, and routes /project and /admin to the API",
+  "engines": {
+    "node": "^22"
+  },
+  "scripts": {
+    "start": "node node_modules/@sap/approuter/approuter.js"
+  },
+  "dependencies": {
+    "@sap/approuter": "^20.10.0"
+  }
+}

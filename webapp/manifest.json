@@ -1,0 +1,139 @@
+{
+  "_version": "1.60.0",
+  "sap.app": {
+    "id": "com.amt.golivetracker",
+    "type": "application",
+    "i18n": {
+      "bundleUrl": "i18n/i18n.properties",
+      "supportedLocales": [""],
+      "fallbackLocale": ""
+    },
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "dataSources": {
+      "projectService": {
+        "uri": "/project/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      },
+      "adminService": {
+        "uri": "/admin/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "img/logo.svg"
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.f": {},
+        "sap.tnt": {},
+        "sap.ui.layout": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.amt.golivetracker.i18n.i18n",
+          "supportedLocales": [""],
+          "fallbackLocale": ""
+        }
+      },
+      "": {
+        "dataSource": "projectService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "admin": {
+        "dataSource": "adminService",
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "viewPath": "com.amt.golivetracker.view",
+        "controlId": "app",
+        "controlAggregation": "pages",
+        "bypassed": {
+          "target": ["notFound"]
+        },
+        "async": true
+      },
+      "routes": [
+        { "pattern": "", "name": "dashboard", "target": ["dashboard"] },
+        { "pattern": "Projetos", "name": "projects", "target": ["projects"] },
+        { "pattern": "Projetos/Novo", "name": "projectCreate", "target": ["projectCreate"] },
+        { "pattern": "Projetos/{projectId}/:tab:", "name": "projectDetail", "target": ["projectDetail"] },
+        { "pattern": "OMeuTrabalho", "name": "myWork", "target": ["myWork"] },
+        { "pattern": "Auditorias", "name": "audits", "target": ["audits"] },
+        { "pattern": "Anexos", "name": "attachments", "target": ["attachments"] },
+        { "pattern": "Pessoas", "name": "people", "target": ["people"] },
+        { "pattern": "Clientes", "name": "clients", "target": ["clients"] },
+        { "pattern": "Administracao", "name": "admin", "target": ["admin"] }
+      ],
+      "targets": {
+        "dashboard": { "viewName": "Dashboard", "viewId": "dashboard", "viewLevel": 1, "title": "{i18n>navDashboard}" },
+        "projects": { "viewName": "Projects", "viewId": "projects", "viewLevel": 1, "title": "{i18n>navProjects}" },
+        "projectCreate": { "viewName": "Placeholder", "viewId": "projectCreate", "viewLevel": 2, "title": "{i18n>newProject}" },
+        "projectDetail": { "viewName": "Placeholder", "viewId": "projectDetail", "viewLevel": 2, "title": "{i18n>navProjects}" },
+        "myWork": { "viewName": "Placeholder", "viewId": "myWork", "viewLevel": 1, "title": "{i18n>navMyWork}" },
+        "audits": { "viewName": "Placeholder", "viewId": "audits", "viewLevel": 1, "title": "{i18n>navAudits}" },
+        "attachments": { "viewName": "Placeholder", "viewId": "attachments", "viewLevel": 1, "title": "{i18n>navAttachments}" },
+        "people": { "viewName": "Placeholder", "viewId": "people", "viewLevel": 1, "title": "{i18n>navPeople}" },
+        "clients": { "viewName": "Placeholder", "viewId": "clients", "viewLevel": 1, "title": "{i18n>navClients}" },
+        "admin": { "viewName": "Placeholder", "viewId": "admin", "viewLevel": 1, "title": "{i18n>navAdmin}" },
+        "notFound": { "viewName": "NotFound", "viewId": "notFound" }
+      }
+    },
+    "rootView": {
+      "viewName": "com.amt.golivetracker.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "app"
+    }
+  }
+}

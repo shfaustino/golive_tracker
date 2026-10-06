@@ -1,0 +1,119 @@
+<mvc:View
+    controllerName="com.amt.golivetracker.controller.Projects"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc">
+
+    <!-- Projetos (docs/mockups/03-projetos.png), US-05 and US-09:
+         GET /project/Projects with the client, the active PM and the
+         modules expanded, filtered by status, client and PM, and searched
+         with $search. -->
+    <Page id="projectsPage" showHeader="false" class="gtPage">
+        <VBox class="gtPageContent">
+            <HBox justifyContent="SpaceBetween" alignItems="Center" class="gtPageHeader">
+                <Title text="{i18n>navProjects}" level="H1" titleStyle="H1"/>
+                <Button
+                    id="newProjectButton"
+                    text="{i18n>newProject}"
+                    icon="sap-icon://add"
+                    type="Emphasized"
+                    visible="{user>/canCreateProject}"
+                    press=".onNewProject"/>
+            </HBox>
+
+            <HBox wrap="Wrap" alignItems="End" class="gtCard gtFilterBar">
+                <SearchField
+                    id="projectSearch"
+                    width="24rem"
+                    placeholder="{i18n>projectSearchPlaceholder}"
+                    search=".onSearch"
+                    liveChange=".onSearch"
+                    class="sapUiSmallMarginEnd"/>
+                <VBox class="sapUiSmallMarginEnd">
+                    <Label text="{i18n>colStatus}" labelFor="statusFilter"/>
+                    <Select id="statusFilter" change=".onFilterChange" width="12rem">
+                        <core:Item key="" text="{i18n>filterAll}"/>
+                        <core:Item key="NotStarted" text="{i18n>statusNotStarted}"/>
+                        <core:Item key="InProgress" text="{i18n>statusInProgress}"/>
+                        <core:Item key="OnHold" text="{i18n>statusOnHold}"/>
+                        <core:Item key="Replanning" text="{i18n>statusReplanning}"/>
+                        <core:Item key="Closing" text="{i18n>statusClosing}"/>
+                        <core:Item key="Closed" text="{i18n>statusClosed}"/>
+                        <core:Item key="Cancelled" text="{i18n>statusCancelled}"/>
+                    </Select>
+                </VBox>
+                <VBox class="sapUiSmallMarginEnd">
+                    <Label text="{i18n>colClient}" labelFor="clientFilter"/>
+                    <ComboBox
+                        id="clientFilter"
+                        width="14rem"
+                        placeholder="{i18n>filterAll}"
+                        showClearIcon="true"
+                        selectionChange=".onFilterChange"
+                        items="{path: '/Clients', parameters: {$select: 'ID,name'}, sorter: {path: 'name'}, length: 1000}">
+                        <core:Item key="{ID}" text="{name}"/>
+                    </ComboBox>
+                </VBox>
+                <VBox>
+                    <Label text="{i18n>colPm}" labelFor="pmFilter"/>
+                    <ComboBox
+                        id="pmFilter"
+                        width="14rem"
+                        placeholder="{i18n>filterAll}"
+                        showClearIcon="true"
+                        selectionChange=".onFilterChange"
+                        items="{path: '/People', parameters: {$select: 'ID,name'}, sorter: {path: 'name'}, length: 1000}">
+                        <core:Item key="{ID}" text="{name}"/>
+                    </ComboBox>
+                </VBox>
+            </HBox>
+
+            <Table
+                id="projectsTable"
+                class="gtCard"
+                growing="true"
+                growingThreshold="20"
+                growingScrollToLoad="false"
+                sticky="ColumnHeaders"
+                noDataText="{i18n>projectsNoData}"
+                items="{
+                    path: '/Projects',
+                    parameters: {
+                        $count: true,
+                        $expand: 'client($select=name),pm($expand=person($select=name))'
+                    },
+                    sorter: {path: 'code'}
+                }">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title id="projectsCount" text="{i18n>navProjects}" level="H2"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column width="9rem"><Text text="{i18n>colCode}"/></Column>
+                    <Column><Text text="{i18n>colName}"/></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colClient}"/></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colPm}"/></Column>
+                    <Column width="10rem"><Text text="{i18n>colStatus}"/></Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true" width="10rem"><Text text="{i18n>colLastUpdate}"/></Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press=".onProjectPress">
+                        <cells>
+                            <Link text="{code}" press=".onProjectPress"/>
+                            <Text text="{name}"/>
+                            <Text text="{client/name}"/>
+                            <Text text="{pm/person/name}"/>
+                            <ObjectStatus
+                                text="{path: 'status', formatter: '.formatter.projectStatusText'}"
+                                state="{path: 'status', formatter: '.formatter.projectStatusState'}"
+                                inverted="true"/>
+                            <Text text="{path: 'lastUpdateAt', type: 'sap.ui.model.odata.type.DateTimeOffset', formatOptions: {style: 'short', pattern: 'dd/MM/yyyy'}}"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+    </Page>
+
+</mvc:View>

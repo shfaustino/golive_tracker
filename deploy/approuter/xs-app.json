@@ -1,0 +1,27 @@
+{
+  "welcomeFile": "/index.html",
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
+  "routes": [
+    {
+      "source": "^/project/(.*)$",
+      "target": "/project/$1",
+      "destination": "golive-tracker-api",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/admin/(.*)$",
+      "target": "/admin/$1",
+      "destination": "golive-tracker-api",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^(.*)$",
+      "target": "$1",
+      "localDir": "webapp",
+      "authenticationType": "xsuaa"
+    }
+  ]
+}

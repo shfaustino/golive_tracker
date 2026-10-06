@@ -1,0 +1,102 @@
+<mvc:View
+    controllerName="com.amt.golivetracker.controller.App"
+    displayBlock="true"
+    height="100%"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:tnt="sap.tnt">
+
+    <!-- The shell from the mockups (docs/mockups/02-dashboard.png): the side
+         navigation on the left, the top bar with search and the signed-in
+         person, and the pages under it. The App keeps the id "app" and stays
+         the router's target (manifest.json). gtApp scopes css/style.css. -->
+    <tnt:ToolPage id="toolPage" class="gtApp" sideExpanded="{app>/sideExpanded}">
+        <tnt:header>
+            <tnt:ToolHeader id="appTopBar" class="gtTopBar">
+                <Button
+                    id="sideToggle"
+                    icon="sap-icon://menu2"
+                    type="Transparent"
+                    tooltip="{i18n>sideToggleTooltip}"
+                    press=".onSideToggle">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="NeverOverflow"/>
+                    </layoutData>
+                </Button>
+                <Image
+                    src="img/logo.svg"
+                    height="32px"
+                    alt="{i18n>appTitle}"
+                    densityAware="false"
+                    class="gtTopBarLogo">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="NeverOverflow"/>
+                    </layoutData>
+                </Image>
+                <SearchField
+                    id="globalSearch"
+                    width="28rem"
+                    placeholder="{i18n>globalSearchPlaceholder}"
+                    search=".onGlobalSearch"
+                    class="gtTopBarSearch">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="Low" shrinkable="true"/>
+                    </layoutData>
+                </SearchField>
+                <ToolbarSpacer/>
+                <HBox alignItems="Center" renderType="Bare" class="gtTopBarPerson">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="NeverOverflow"/>
+                    </layoutData>
+                    <Avatar
+                        id="personAvatar"
+                        displaySize="XS"
+                        backgroundColor="Accent6"
+                        initials="{path: 'user>/name', formatter: '.formatter.initials'}"
+                        tooltip="{user>/email}"/>
+                    <VBox renderType="Bare" class="gtTopBarPersonText">
+                        <Text text="{user>/name}" class="gtTopBarPersonName"/>
+                        <Text text="{path: 'user>/profile', formatter: '.formatter.profileText'}" class="gtTopBarPersonProfile"/>
+                    </VBox>
+                    <Button
+                        id="logoutButton"
+                        icon="sap-icon://log"
+                        type="Transparent"
+                        tooltip="{i18n>logoutTooltip}"
+                        press=".onLogout"/>
+                </HBox>
+            </tnt:ToolHeader>
+        </tnt:header>
+
+        <!-- The key of every item is the name of its route, so one handler
+             navigates for all of them and the selection follows app>/route. -->
+        <tnt:sideContent>
+            <tnt:SideNavigation
+                id="sideNavigation"
+                class="gtSideNav"
+                selectedKey="{app>/route}"
+                itemSelect=".onNavItemSelect">
+                <tnt:NavigationList>
+                    <tnt:NavigationListItem key="dashboard" text="{i18n>navDashboard}" icon="sap-icon://home"/>
+                    <tnt:NavigationListItem key="projects" text="{i18n>navProjects}" icon="sap-icon://folder-blank"/>
+                    <tnt:NavigationListItem key="myWork" text="{i18n>navMyWork}" icon="sap-icon://activity-items"/>
+                    <tnt:NavigationListItem key="audits" text="{i18n>navAudits}" icon="sap-icon://shield"/>
+                    <tnt:NavigationListItem key="attachments" text="{i18n>navAttachments}" icon="sap-icon://attachment"/>
+                    <tnt:NavigationListItem key="people" text="{i18n>navPeople}" icon="sap-icon://group"/>
+                    <tnt:NavigationListItem key="clients" text="{i18n>navClients}" icon="sap-icon://building"/>
+                    <!-- Only Administrators may use /admin. -->
+                    <tnt:NavigationListItem
+                        key="admin"
+                        text="{i18n>navAdmin}"
+                        icon="sap-icon://action-settings"
+                        visible="{user>/isAdmin}"/>
+                </tnt:NavigationList>
+            </tnt:SideNavigation>
+        </tnt:sideContent>
+
+        <tnt:mainContents>
+            <App id="app" autoFocus="false"/>
+        </tnt:mainContents>
+    </tnt:ToolPage>
+
+</mvc:View>

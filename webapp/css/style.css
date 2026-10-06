@@ -1,0 +1,126 @@
+/* GoLive Tracker look (docs/mockups). Everything is scoped under .gtApp
+   (App.view.xml) so nothing leaks onto a Launchpad page. */
+
+.gtApp {
+    --gtBlue: #1463f3;
+    --gtNavy: #0b1f45;
+    --gtNavyActive: #1463f3;
+    --gtPageBg: #f5f7fb;
+    --gtCardRadius: 0.75rem;
+}
+
+/* Side navigation: dark navy, the selected entry in blue */
+.gtApp .gtSideNav,
+.gtApp .gtSideNav .sapTntNL,
+.gtApp .gtSideNav .sapTntSideNavigationFlexible {
+    background: var(--gtNavy);
+}
+
+.gtApp .gtSideNav .sapTntNavLIItem {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.gtApp .gtSideNav .sapTntNavLIItem:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.gtApp .gtSideNav .sapTntNavLIItem .sapTntNavLIText,
+.gtApp .gtSideNav .sapTntNavLIItem .sapUiIcon {
+    color: #ffffff;
+    font-weight: 400;
+}
+
+.gtApp .gtSideNav .sapTntNavLIItem.sapTntNavLIItemSelected {
+    background: var(--gtNavyActive);
+}
+
+/* The theme's own "selected" dot: the blue fill says it already */
+.gtApp .gtSideNav .sapTntNavLIItemSelected::after {
+    display: none;
+}
+
+/* Top bar */
+.gtApp .gtTopBar {
+    background: #ffffff;
+    box-shadow: 0 1px 0 rgba(11, 31, 69, 0.08);
+}
+
+.gtApp .gtTopBarLogo {
+    margin: 0 1rem 0 0.25rem;
+}
+
+.gtApp .gtTopBarPersonText {
+    margin: 0 0.5rem;
+}
+
+.gtApp .gtTopBarPersonName {
+    font-weight: 700;
+}
+
+.gtApp .gtTopBarPersonProfile {
+    font-size: 0.75rem;
+    color: var(--sapContent_LabelColor);
+}
+
+/* Pages and cards */
+.gtApp .gtPage > section,
+.gtApp .gtPage .sapMPageEnableScrolling {
+    background: var(--gtPageBg);
+}
+
+.gtApp .gtPageContent {
+    padding: 1.5rem 2rem;
+}
+
+.gtApp .gtPageHeader {
+    margin-bottom: 1.25rem;
+}
+
+.gtApp .gtCard {
+    background: #ffffff;
+    border-radius: var(--gtCardRadius);
+    box-shadow: 0 1px 3px rgba(11, 31, 69, 0.08);
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.gtApp .gtFilterBar {
+    padding: 1rem 1.25rem;
+}
+
+.gtApp .gtKpiRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.gtApp .gtKpi {
+    min-width: 11rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0;
+}
+
+.gtApp .gtKpiNumber .sapMObjectNumberText {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.gtApp .gtDashboardLists {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.gtApp .gtDashboardLists > .gtCard {
+    flex: 1 1 28rem;
+}
+
+@media (max-width: 600px) {
+    .gtApp .gtPageContent {
+        padding: 1rem;
+    }
+}

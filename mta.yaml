@@ -1,0 +1,58 @@
+_schema-version: "3.2"
+ID: com.amt.golivetracker
+version: 0.0.1
+description: GoLive Tracker on SAP BTP Cloud Foundry (standalone approuter)
+
+parameters:
+  enable-parallel-deployments: true
+
+# The app is built by the UI5 tooling into the approuter, which serves it.
+# Needs the dev dependencies installed first (npm install).
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npx ui5 build --config=ui5.yaml --clean-dest --dest deploy/approuter/webapp
+
+modules:
+  # SAP login (XSUAA), serves the app, and sends /project and /admin to the
+  # API with the user's token (docs/backend-api-guide.md, "Arquitetura e login").
+  - name: golive-tracker-approuter
+    type: approuter.nodejs
+    path: deploy/approuter
+    parameters:
+      host: h2h-sandbox-lwsjexg2-golive-tracker
+      memory: 256M
+      disk-quota: 512M
+    build-parameters:
+      ignore: ["node_modules/"]
+    requires:
+      - name: golive-tracker-api-auth
+      - name: golive-tracker-destination
+
+resources:
+  # The API's own XSUAA instance (xsappname golive-tracker-api-Sandbox): the
+  # approuter has to be bound to it so the token it forwards is one the API
+  # accepts. The API's MTA creates it; this one only binds to it.
+  - name: golive-tracker-api-auth
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: golive-tracker-api-auth
+
+  - name: golive-tracker-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+      config:
+        HTML5Runtime_enabled: false
+        init_data:
+          instance:
+            existing_destinations_policy: update
+            destinations:
+              - Name: golive-tracker-api
+                Type: HTTP
+                URL: https://amt---consulting--s-a--h2h-sandbox-lwsjexg2-sandbox-gol62961c38.cfapps.us10.hana.ondemand.com
+                ProxyType: Internet
+                Authentication: NoAuthentication
+                forwardAuthToken: true
