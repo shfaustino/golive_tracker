@@ -295,6 +295,44 @@ sap.ui.define([
         },
 
         /**
+         * The label of an audit result.
+         * @param {string} sResult Approved, ApprovedWithReservations or Rejected
+         * @returns {string} the label
+         */
+        auditResultText: function (sResult) {
+            return sResult ? this.getResourceBundle().getText("result" + sResult) : "";
+        },
+
+        /**
+         * The chip colour of an audit result: approved green, with
+         * reservations orange, rejected red.
+         * @param {string} sResult the API's result
+         * @returns {sap.ui.core.ValueState} the state
+         */
+        auditResultState: function (sResult) {
+            return {
+                Approved: ValueState.Success,
+                ApprovedWithReservations: ValueState.Warning,
+                Rejected: ValueState.Error
+            }[sResult] || ValueState.None;
+        },
+
+        /**
+         * An audit's follow-ups: "2 de 3 abertos", or "3 fechados" when none is open.
+         * @param {number} iOpen open ones
+         * @param {number} iTotal all of them
+         * @returns {string} the text
+         */
+        followUpsText: function (iOpen, iTotal) {
+            var oBundle = this.getResourceBundle();
+
+            if (iOpen) {
+                return oBundle.getText(iTotal === 1 ? "fuOpenOfOne" : "fuOpenOf", [iOpen, iTotal]);
+            }
+            return oBundle.getText(iTotal === 1 ? "fuAllClosedOne" : "fuAllClosed", [iTotal]);
+        },
+
+        /**
          * The label of an item type (Meeting, Document, Task, FollowUp).
          * @param {string} sType the API's type
          * @returns {string} the label

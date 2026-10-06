@@ -29,6 +29,18 @@
         <EntitySet Name="Milestones" EntityType="ProjectService.Milestones">
           <NavigationPropertyBinding Path="project" Target="Projects"/>
           <NavigationPropertyBinding Path="owners" Target="MilestoneOwners"/>
+          <NavigationPropertyBinding Path="audits" Target="Audits"/>
+          <NavigationPropertyBinding Path="items" Target="MilestoneItems"/>
+        </EntitySet>
+        <EntitySet Name="Audits" EntityType="ProjectService.Audits">
+          <NavigationPropertyBinding Path="milestone" Target="Milestones"/>
+          <NavigationPropertyBinding Path="auditor" Target="People"/>
+          <NavigationPropertyBinding Path="followUps" Target="MilestoneItems"/>
+        </EntitySet>
+        <EntitySet Name="MilestoneItems" EntityType="ProjectService.MilestoneItems">
+          <NavigationPropertyBinding Path="milestone" Target="Milestones"/>
+          <NavigationPropertyBinding Path="owner" Target="People"/>
+          <NavigationPropertyBinding Path="audit" Target="Audits"/>
         </EntitySet>
         <EntitySet Name="MilestoneOwners" EntityType="ProjectService.MilestoneOwners">
           <NavigationPropertyBinding Path="person" Target="People"/>
@@ -118,6 +130,7 @@
         <Property Name="milestoneType" Type="Edm.String" MaxLength="40"/>
         <Property Name="sortOrder" Type="Edm.Int32"/>
         <Property Name="mandatory" Type="Edm.Boolean"/>
+        <Property Name="requiresAudit" Type="Edm.Boolean"/>
         <Property Name="status" Type="Edm.String" MaxLength="20"/>
         <Property Name="forecastStart" Type="Edm.Date"/>
         <Property Name="forecastEnd" Type="Edm.Date"/>
@@ -133,6 +146,53 @@
           <ReferentialConstraint Property="project_ID" ReferencedProperty="ID"/>
         </NavigationProperty>
         <NavigationProperty Name="owners" Type="Collection(ProjectService.MilestoneOwners)" Partner="milestone"/>
+        <NavigationProperty Name="audits" Type="Collection(ProjectService.Audits)" Partner="milestone"/>
+        <NavigationProperty Name="items" Type="Collection(ProjectService.MilestoneItems)" Partner="milestone"/>
+      </EntityType>
+
+      <!-- Audits (US-24 to US-26, BR-10): only on the milestones that require
+           one; an empty code is filled in by the API. -->
+      <EntityType Name="Audits">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="milestone_ID" Type="Edm.Guid"/>
+        <Property Name="code" Type="Edm.String" MaxLength="60"/>
+        <Property Name="date" Type="Edm.Date"/>
+        <Property Name="auditor_ID" Type="Edm.Guid"/>
+        <Property Name="result" Type="Edm.String" MaxLength="30"/>
+        <Property Name="notes" Type="Edm.String" MaxLength="2000"/>
+        <NavigationProperty Name="milestone" Type="ProjectService.Milestones" Partner="audits">
+          <ReferentialConstraint Property="milestone_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="auditor" Type="ProjectService.People">
+          <ReferentialConstraint Property="auditor_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="followUps" Type="Collection(ProjectService.MilestoneItems)" Partner="audit"/>
+      </EntityType>
+
+      <!-- A milestone's items (US-21 to US-23); follow-ups are items of type
+           FollowUp that point at the audit they came from. -->
+      <EntityType Name="MilestoneItems">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="milestone_ID" Type="Edm.Guid"/>
+        <Property Name="type" Type="Edm.String" MaxLength="20"/>
+        <Property Name="name" Type="Edm.String" MaxLength="200"/>
+        <Property Name="description" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="date" Type="Edm.Date"/>
+        <Property Name="owner_ID" Type="Edm.Guid"/>
+        <Property Name="status" Type="Edm.String" MaxLength="20"/>
+        <Property Name="audit_ID" Type="Edm.Guid"/>
+        <Property Name="isOverdue" Type="Edm.Boolean"/>
+        <NavigationProperty Name="milestone" Type="ProjectService.Milestones" Partner="items">
+          <ReferentialConstraint Property="milestone_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="owner" Type="ProjectService.People">
+          <ReferentialConstraint Property="owner_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="audit" Type="ProjectService.Audits" Partner="followUps">
+          <ReferentialConstraint Property="audit_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
       </EntityType>
 
       <EntityType Name="MilestoneOwners">
@@ -287,6 +347,13 @@
       <Action Name="setBaseline" IsBound="true">
         <Parameter Name="in" Type="ProjectService.Projects"/>
         <Parameter Name="reason" Type="Edm.String"/>
+      </Action>
+      <Action Name="addFollowUp" IsBound="true">
+        <Parameter Name="in" Type="ProjectService.Audits"/>
+        <Parameter Name="name" Type="Edm.String"/>
+        <Parameter Name="owner_ID" Type="Edm.Guid"/>
+        <Parameter Name="date" Type="Edm.Date"/>
+        <Parameter Name="description" Type="Edm.String"/>
       </Action>
       <Function Name="me" IsBound="false">
         <ReturnType Type="ProjectService.Me"/>

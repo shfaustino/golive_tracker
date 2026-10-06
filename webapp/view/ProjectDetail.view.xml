@@ -422,8 +422,60 @@
                             <Text text="{i18n>modNoData}" visible="{= ${overview>/modules}.length === 0 }" class="gtSubtle"/>
                         </VBox>
                     </IconTabFilter>
-                    <IconTabFilter key="auditorias" text="{i18n>navAudits}">
-                        <IllustratedMessage illustrationType="sapIllus-SimpleConstruction" title="{i18n>placeholderTitle}" description="{i18n>placeholderDescription}"/>
+                    <!-- Auditorias: this project's audits (GET /project/Audits
+                         filtered on the milestone's project); the dialogs are
+                         the Auditorias page's (controller/auditDialogs.js). -->
+                    <IconTabFilter key="auditorias" text="{i18n>navAudits}" count="{= ${projAudits>/rows}.length || '' }">
+                        <VBox class="gtCard gtTableCard" renderType="Bare">
+                            <HBox class="gtCardHeader" renderType="Bare">
+                                <Title text="{i18n>auditProjectTitle}" level="H2" class="gtSectionTitle"/>
+                                <Button
+                                    id="newProjectAuditButton"
+                                    text="{i18n>auditNew}"
+                                    icon="sap-icon://add"
+                                    type="Emphasized"
+                                    press=".onNewProjectAudit"
+                                    class="gtPrimaryButton gtPrimaryButtonSmall"/>
+                            </HBox>
+                            <Table
+                                id="projectAuditsTable"
+                                class="gtTable gtTableInset"
+                                fixedLayout="false"
+                                busy="{projAudits>/busy}"
+                                busyIndicatorDelay="0"
+                                noDataText="{i18n>auditProjectNoData}"
+                                items="{projAudits>/rows}">
+                                <columns>
+                                    <Column><Text text="{i18n>colMilestone}"/></Column>
+                                    <Column><Text text="{i18n>auditCode}"/></Column>
+                                    <Column><Text text="{i18n>auditResult}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>auditAuditor}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>auditDate}"/></Column>
+                                    <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>auditFollowUps}"/></Column>
+                                    <Column width="4rem" hAlign="Center"/>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{path: 'projAudits>milestoneType', formatter: '.formatter.milestoneTypeText'}"/>
+                                            <Text text="{projAudits>code}" wrapping="false"/>
+                                            <ObjectStatus
+                                                text="{path: 'projAudits>result', formatter: '.formatter.auditResultText'}"
+                                                state="{path: 'projAudits>result', formatter: '.formatter.auditResultState'}"
+                                                inverted="true"/>
+                                            <Text text="{projAudits>auditorName}"/>
+                                            <Text text="{path: 'projAudits>date', formatter: '.formatter.dateOrDash'}" wrapping="false"/>
+                                            <ObjectStatus
+                                                text="{parts: ['projAudits>fuOpen', 'projAudits>fuTotal'], formatter: '.formatter.followUpsText'}"
+                                                state="{= ${projAudits>fuOpen} > 0 ? 'Warning' : 'None' }"
+                                                inverted="true"
+                                                visible="{= ${projAudits>fuTotal} > 0 }"/>
+                                            <Button icon="sap-icon://overflow" type="Transparent" tooltip="{i18n>auditActions}" press=".onAuditActions" class="gtRowAction"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
                     </IconTabFilter>
                     <IconTabFilter key="anexos" text="{i18n>navAttachments}">
                         <IllustratedMessage illustrationType="sapIllus-SimpleConstruction" title="{i18n>placeholderTitle}" description="{i18n>placeholderDescription}"/>

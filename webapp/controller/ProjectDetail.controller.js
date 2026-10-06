@@ -1,13 +1,13 @@
 sap.ui.define([
     "./BaseController",
-    "sap/ui/core/Fragment",
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageToast",
     "../model/milestoneSummary",
     "../formatter/formatter",
     "./projectTeam",
-    "./projectHeader"
-], function (BaseController, Fragment, JSONModel, MessageToast, milestoneSummary, formatter, projectTeam, projectHeader) {
+    "./projectHeader",
+    "./projectAudits"
+], function (BaseController, JSONModel, MessageToast, milestoneSummary, formatter, projectTeam, projectHeader, projectAudits) {
     "use strict";
 
     /** The tab a project opens on when the route names none. */
@@ -16,10 +16,11 @@ sap.ui.define([
     /** The batch group a milestone edit is sent in, as one PATCH. */
     var EDIT_GROUP = "milestoneEdit";
 
-    // The Equipa tab's handlers live in ./projectTeam, and the header's
-    // actions, Visão geral, Módulos and Updates in ./projectHeader; both are
-    // mixed in here.
-    return BaseController.extend("com.amt.golivetracker.controller.ProjectDetail", Object.assign({}, projectTeam, projectHeader, {
+    // The Equipa tab's handlers live in ./projectTeam, the header's actions,
+    // Visão geral, Módulos and Updates in ./projectHeader, and the
+    // Auditorias tab in ./projectAudits; all three are mixed in here.
+    return BaseController.extend("com.amt.golivetracker.controller.ProjectDetail",
+        Object.assign({}, projectTeam, projectHeader, projectAudits, {
 
         formatter: formatter,
 
@@ -33,6 +34,7 @@ sap.ui.define([
             this.setModel(new JSONModel({ busy: false, values: {}, errors: {}, people: [], roles: [] }), "member");
             this.setModel(new JSONModel({ busy: false, values: {}, errors: {}, statuses: [] }), "action");
             this.setModel(new JSONModel(this._emptyOverview()), "overview");
+            this._initProjectAudits();
             this.getRouter().getRoute("projectDetail").attachPatternMatched(this._onRouteMatched, this);
         },
 
@@ -257,6 +259,8 @@ sap.ui.define([
             this._sProjectId = oArgs.projectId;
             this.getModel("overview").setData(this._emptyOverview());
             this._loadOverview();
+            this.getModel("projAudits").setProperty("/rows", []);
+            this._loadProjectAudits();
             oDetailModel.setProperty("/summary", milestoneSummary.summarise([]));
             oDetailModel.setProperty("/busy", true);
             this.getView().bindElement(sPath);
@@ -272,20 +276,14 @@ sap.ui.define([
         },
 
         /**
-         * The edit dialog, loaded the first time it is needed.
+         * The edit dialog, loaded the first time it is needed
+         * (Controller#loadFragment makes it a dependent of the view).
          * @returns {Promise<sap.m.Dialog>} the dialog
          * @private
          */
         _getEditDialog: function () {
             if (!this._pEditDialog) {
-                this._pEditDialog = Fragment.load({
-                    id: this.getView().getId(),
-                    name: "com.amt.golivetracker.fragment.MilestoneEditDialog",
-                    controller: this
-                }).then(function (oDialog) {
-                    this.getView().addDependent(oDialog);
-                    return oDialog;
-                }.bind(this));
+                this._pEditDialog = this.loadFragment({ name: "com.amt.golivetracker.fragment.MilestoneEditDialog" });
             }
             return this._pEditDialog;
         }

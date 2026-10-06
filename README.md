@@ -79,7 +79,8 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
   milestones the type generates; one deep insert
 - [x] 07 O meu trabalho — my items (KPIs, search, state filter, pages, late,
   upcoming), my milestones, projects where I am a member
-- [ ] 08 Auditorias
+- [x] 08 Auditorias — paged list with search, project and result filters;
+  new, edit, follow-up and delete; also as the project's Auditorias tab
 - [ ] 09 Administração — pessoas e clientes
 
 "Evolução dos projetos" and "Últimas atualizações" on the dashboard mockup

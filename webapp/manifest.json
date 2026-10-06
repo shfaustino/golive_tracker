@@ -121,7 +121,7 @@
         "projectCreate": { "viewName": "ProjectCreate", "viewId": "projectCreate", "viewLevel": 2, "title": "{i18n>newProject}" },
         "projectDetail": { "viewName": "ProjectDetail", "viewId": "projectDetail", "viewLevel": 2, "title": "{i18n>navProjects}" },
         "myWork": { "viewName": "MyWork", "viewId": "myWork", "viewLevel": 1, "title": "{i18n>navMyWork}" },
-        "audits": { "viewName": "Placeholder", "viewId": "audits", "viewLevel": 1, "title": "{i18n>navAudits}" },
+        "audits": { "viewName": "Audits", "viewId": "audits", "viewLevel": 1, "title": "{i18n>navAudits}" },
         "attachments": { "viewName": "Placeholder", "viewId": "attachments", "viewLevel": 1, "title": "{i18n>navAttachments}" },
         "people": { "viewName": "Placeholder", "viewId": "people", "viewLevel": 1, "title": "{i18n>navPeople}" },
         "clients": { "viewName": "Placeholder", "viewId": "clients", "viewLevel": 1, "title": "{i18n>navClients}" },

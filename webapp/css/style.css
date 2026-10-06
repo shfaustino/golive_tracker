@@ -432,6 +432,11 @@
     box-shadow: none;
 }
 
+/* Filters on top of a table in the same card (Auditorias), as in the mockup */
+.gtFilterBarInCard {
+    padding: 1.5rem 1.5rem 1.25rem;
+}
+
 .gtFilterField {
     display: flex;
     flex-direction: column;
@@ -445,9 +450,15 @@
     margin-bottom: 0.375rem;
 }
 
-.gtApp .gtFilterField .sapMSlt {
+.gtApp .gtFilterField .sapMSlt,
+.gtApp .gtFilterField .sapMInputBaseContentWrapper {
     height: 2.75rem;
     border-radius: 0.5rem;
+}
+
+.gtApp .gtFilterField .sapMComboBox,
+.gtApp .gtFilterField .sapMInputBase {
+    height: 2.75rem;
 }
 
 /* Tables inside a card: the card draws the frame */

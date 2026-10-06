@@ -252,7 +252,60 @@ const recentUpdates = updates.map(function (u) {
     };
 });
 
+// Which milestones need an audit (★ in the guide's table, BR-10). Set from
+// the type alone, so no random draw and no id moves.
+const AUDITED = {
+    "Implementation": ["GOP", "Testing", "Go-live"],
+    "Rollout": ["Testing", "Go-live"]
+};
+milestones.forEach(function (milestone) {
+    const project = projects.find((p) => p.ID === milestone.project_ID);
+
+    milestone.requiresAudit = (AUDITED[project.projectType] || []).includes(milestone.milestoneType);
+});
+
+// Audits on the audited milestones already reached, and their follow-ups
+// (items of type FollowUp under the audited milestone).
+const RESULTS = ["Approved", "Approved", "ApprovedWithReservations", "Rejected"];
+const FOLLOW_UPS = [
+    "Corrigir observações da auditoria", "Validar unidades organizacionais", "Rever plano de testes",
+    "Completar documentação de go-live", "Repetir testes de integração"
+];
+const audits = [];
+const items = [];
+milestones.filter((m) => m.requiresAudit && ["Completed", "InProgress"].includes(m.status)).forEach(function (milestone) {
+    const project = projects.find((p) => p.ID === milestone.project_ID);
+    const team = members.filter((m) => m.project_ID === project.ID && !m.endDate);
+    const date = milestone.actualDate || milestone.forecastEnd;
+    const auditID = uuid("6");
+    const result = pick(RESULTS);
+    const number = project.code.replace(/\D/g, "").replace(/^0+/, "");
+
+    audits.push({
+        ID: auditID, milestone_ID: milestone.ID,
+        code: number + "_" + milestone.milestoneType.replace(/[^A-Za-z]/g, "") + "_" + date.slice(8, 10) + date.slice(5, 7) + date.slice(0, 4),
+        date, auditor_ID: pick(PEOPLE.slice(0, 3)).ID, result,
+        notes: result === "Approved" ? "Sem observações." : "Observações registadas; ver follow-ups."
+    });
+    const n = result === "Approved" ? Math.floor(random() * 2) : 1 + Math.floor(random() * 3);
+    for (let k = 0; k < n; k += 1) {
+        const due = isoDate(addDays(new Date(date + "T00:00:00Z"), 7 + k * 7));
+
+        items.push({
+            ID: uuid("5"), milestone_ID: milestone.ID, type: "FollowUp", name: pick(FOLLOW_UPS), description: null,
+            date: due, owner_ID: pick(team.length ? team : [{ person_ID: PEOPLE[3].ID }]).person_ID,
+            status: due < isoDate(TODAY) ? pick(["Done", "Done", "InProgress"]) : pick(["ToDo", "InProgress"]),
+            audit_ID: auditID, isOverdue: false
+        });
+    }
+});
+items.forEach(function (item) {
+    item.isOverdue = item.date < isoDate(TODAY) && (item.status === "ToDo" || item.status === "InProgress");
+});
+
 const files = {
+    Audits: audits,
+    MilestoneItems: items,
     RecentUpdates: recentUpdates,
     MyItems: myItems,
     MyMilestones: myMilestones,
