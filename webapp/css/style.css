@@ -487,6 +487,7 @@
 .gtApp .gtTable .sapMListTblHeaderCell .sapMText {
     font-weight: 600;
     color: var(--gtInk);
+    white-space: nowrap;
 }
 
 .gtApp .gtTable .sapMListTblCell {

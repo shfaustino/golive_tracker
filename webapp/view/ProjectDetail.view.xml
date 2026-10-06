@@ -116,7 +116,9 @@
                                                 <core:CustomData key="step" value="{overview>step}" writeToDom="true"/>
                                             </customData>
                                             <HBox class="gtStepDot" renderType="Bare">
-                                                <core:Icon src="{= ${overview>step} === 'done' ? 'sap-icon://accept' : (${overview>step} === 'late' ? 'sap-icon://alert' : '') }"/>
+                                                <core:Icon
+                                                    src="{= ${overview>step} === 'late' ? 'sap-icon://alert' : 'sap-icon://accept' }"
+                                                    visible="{= ${overview>step} === 'done' || ${overview>step} === 'late' }"/>
                                             </HBox>
                                             <Text text="{path: 'overview>milestoneType', formatter: '.formatter.milestoneTypeText'}" class="gtStepLabel"/>
                                             <Text text="{path: 'overview>date', formatter: '.formatter.dateOrDash'}" class="gtStepDate"/>
@@ -478,7 +480,7 @@
                         </VBox>
                     </IconTabFilter>
                     <IconTabFilter key="anexos" text="{i18n>navAttachments}">
-                        <IllustratedMessage illustrationType="sapIllus-SimpleConstruction" title="{i18n>placeholderTitle}" description="{i18n>placeholderDescription}"/>
+                        <IllustratedMessage illustrationType="sapIllus-NoData" title="{i18n>placeholderTitle}" description="{i18n>placeholderDescription}"/>
                     </IconTabFilter>
 
                     <!-- Updates (US-27): what happened on the project, newest
