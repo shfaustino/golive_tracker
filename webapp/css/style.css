@@ -1765,6 +1765,18 @@
     color: var(--gtInk);
 }
 
+/* A milestone's type with its module beside it */
+.gtInlineChips {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.gtApp .gtMiniChip .sapMObjStatusText {
+    font-size: 0.75rem;
+    padding: 0 0.375rem;
+}
+
 /* Ativo: a row with what it means, and the switch at its end */
 .gtToggleRow {
     display: flex;

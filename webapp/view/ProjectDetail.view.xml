@@ -308,7 +308,10 @@
                                     <ColumnListItem>
                                         <cells>
                                             <VBox renderType="Bare">
-                                                <Text text="{path: 'milestoneType', formatter: '.formatter.milestoneTypeText'}"/>
+                                                <HBox alignItems="Center" renderType="Bare" class="gtInlineChips">
+                                                    <Text text="{path: 'milestoneType', formatter: '.formatter.milestoneTypeText'}"/>
+                                                    <ObjectStatus text="{module}" visible="{= !!%{module} }" state="Information" inverted="true" class="gtMiniChip"/>
+                                                </HBox>
                                                 <Text text="{i18n>msEstimated}" visible="{= !!${isEstimated} }" class="gtSubtle"/>
                                             </VBox>
                                             <Text text="{path: 'forecastEnd', targetType: 'any', formatter: '.formatter.dateOrDash'}"/>

@@ -63,3 +63,19 @@ test("editChanges refuses an end before the start", () => {
 
     assert.equal(milestoneSummary.editChanges(BEFORE, oAfter).errors.forecastEnd, "msErrorEndBeforeStart");
 });
+
+test("editChanges sends the owners whole, and only when the list differs", () => {
+    const oBefore = Object.assign({}, BEFORE, { owners: [{ person_ID: "a" }, { person_ID: "b" }] });
+
+    assert.deepEqual(milestoneSummary.editChanges(oBefore, Object.assign({}, BEFORE, { owners: ["b", "a"] })).changes, {});
+    assert.deepEqual(milestoneSummary.editChanges(oBefore, Object.assign({}, BEFORE, { owners: ["c"] })).changes,
+        { owners: [{ person_ID: "c" }] });
+    assert.deepEqual(milestoneSummary.editChanges(oBefore, Object.assign({}, BEFORE, { owners: [] })).changes, { owners: [] });
+});
+
+test("editChanges sends a new module, and none for the whole project", () => {
+    const oBefore = Object.assign({}, BEFORE, { module: "EC" });
+
+    assert.deepEqual(milestoneSummary.editChanges(oBefore, Object.assign({}, oBefore, { module: "LMS" })).changes, { module: "LMS" });
+    assert.deepEqual(milestoneSummary.editChanges(oBefore, Object.assign({}, oBefore, { module: "" })).changes, { module: null });
+});

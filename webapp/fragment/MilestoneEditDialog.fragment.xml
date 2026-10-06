@@ -29,6 +29,29 @@
                 <core:Item key="Closure" text="{i18n>msTypeClosure}"/>
             </gt:SearchSelect>
 
+            <!-- empty: the milestone is the whole project's -->
+            <Label text="{i18n>msModule}" labelFor="msModule"/>
+            <gt:SearchSelect
+                id="msModule"
+                selectedKey="{msEdit>/values/module}"
+                placeholder="{i18n>msWholeProject}"
+                showClearIcon="true"
+                items="{path: 'msEdit>/modules', templateShareable: false}">
+                <core:ListItem key="{msEdit>key}" text="{msEdit>key}" additionalText="{msEdit>name}"/>
+            </gt:SearchSelect>
+
+            <!-- one or more, from the active team (BR-12) -->
+            <Label text="{i18n>msColOwners}" labelFor="msOwners"/>
+            <MultiComboBox
+                id="msOwners"
+                width="100%"
+                selectedKeys="{msEdit>/values/owners}"
+                placeholder="{i18n>msOwnersPlaceholder}"
+                showClearIcon="true"
+                items="{path: 'msEdit>/people', templateShareable: false}">
+                <core:Item key="{msEdit>ID}" text="{msEdit>name}"/>
+            </MultiComboBox>
+
             <Label text="{i18n>msForecastStart}" labelFor="msForecastStart"/>
             <DatePicker
                 id="msForecastStart"

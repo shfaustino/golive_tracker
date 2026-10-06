@@ -72,25 +72,43 @@ sap.ui.define([], function () {
          * - Completed needs an actualDate;
          * - NotApplicable needs a justification.
          *
-         * @param {object} oBefore the milestone as read
-         * @param {object} oAfter the dialog's values
+         * Fields the dialog does not carry are left alone. The owners, when
+         * given (person IDs), go as the whole new list when it differs.
+         *
+         * @param {object} oBefore the milestone as read (owners: {person_ID}[])
+         * @param {object} oAfter the dialog's values (owners: person IDs)
          * @returns {{changes: object, errors: Object<string, string>}} the
          *   fields to send, and per field the i18n key of what is missing
          */
         editChanges: function (oBefore, oAfter) {
-            var aFields = ["forecastStart", "forecastEnd", "status", "actualDate", "justification"],
+            var aFields = ["module", "forecastStart", "forecastEnd", "status", "actualDate", "justification"],
                 oChanges = {},
                 oErrors = {},
+                aOwnersBefore,
+                aOwnersAfter,
                 bDatesChanged;
 
             aFields.forEach(function (sField) {
                 var vBefore = oBefore[sField] || null,
                     vAfter = oAfter[sField] || null;
 
-                if (vBefore !== vAfter) {
+                if (sField in oAfter && vBefore !== vAfter) {
                     oChanges[sField] = vAfter;
                 }
             });
+
+            // The owners go whole when they change: the API replaces the list (a deep update).
+            if (Array.isArray(oAfter.owners)) {
+                aOwnersBefore = (oBefore.owners || []).map(function (oOwner) {
+                    return oOwner.person_ID;
+                }).sort();
+                aOwnersAfter = oAfter.owners.slice().sort();
+                if (aOwnersBefore.join() !== aOwnersAfter.join()) {
+                    oChanges.owners = aOwnersAfter.map(function (sPerson) {
+                        return { person_ID: sPerson };
+                    });
+                }
+            }
 
             bDatesChanged = "forecastStart" in oChanges || "forecastEnd" in oChanges;
             if (bDatesChanged) {
