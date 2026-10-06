@@ -16,7 +16,10 @@ build-parameters:
 
 modules:
   # SAP login (XSUAA), serves the app, and sends /project and /admin to the
-  # API with the user's token (docs/backend-api-guide.md, "Arquitetura e login").
+  # API (docs/backend-api-guide.md, "Arquitetura e login"). Deployed in the
+  # DevOps space, while the API lives in Sandbox: the app cannot bind the
+  # API's XSUAA from here, so it has its own, and the destination swaps the
+  # user's token for one of the API's XSUAA (OAuth2UserTokenExchange).
   - name: golive-tracker-approuter
     type: approuter.nodejs
     path: deploy/approuter
@@ -27,18 +30,34 @@ modules:
     build-parameters:
       ignore: ["node_modules/"]
     requires:
-      - name: golive-tracker-api-auth
+      - name: golive-tracker-uaa
       - name: golive-tracker-destination
 
 resources:
-  # The API's own XSUAA instance (xsappname golive-tracker-api-Sandbox): the
-  # approuter has to be bound to it so the token it forwards is one the API
-  # accepts. The API's MTA creates it; this one only binds to it.
-  - name: golive-tracker-api-auth
-    type: org.cloudfoundry.existing-service
+  - name: golive-tracker-uaa
+    type: org.cloudfoundry.managed-service
     parameters:
-      service-name: golive-tracker-api-auth
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: golive-tracker-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          redirect-uris:
+            - https://*.${default-domain}/**
 
+  # >>> THE API'S CREDENTIALS <<<
+  # The destination is created here with no credentials, and the policy
+  # "ignore" keeps whatever is set on it later. To let the app call the API,
+  # set it, once, to (BTP cockpit > DevOps > Instances > golive-tracker-destination
+  # > Destinations > golive-tracker-api):
+  #   Authentication: OAuth2UserTokenExchange
+  #   Client ID / Client Secret: clientid / clientsecret of a service key
+  #     of golive-tracker-api-auth (Sandbox space)
+  #   Token Service URL: <url of that key>/oauth/token
+  # and drop forwardAuthToken (the exchanged token goes in its place).
+  # Secrets stay out of git.
   - name: golive-tracker-destination
     type: org.cloudfoundry.managed-service
     parameters:
@@ -48,7 +67,7 @@ resources:
         HTML5Runtime_enabled: false
         init_data:
           instance:
-            existing_destinations_policy: update
+            existing_destinations_policy: ignore
             destinations:
               - Name: golive-tracker-api
                 Type: HTTP
