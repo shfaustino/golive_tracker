@@ -1307,6 +1307,129 @@
     }
 }
 
+/* Novo projeto (docs/mockups/06-novo-projeto.png) */
+.gtHeaderButtons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.gtApp .gtSecondaryButton.sapMBtn,
+.gtApp .gtSecondaryButton .sapMBtnInner {
+    height: 3rem;
+}
+
+.gtApp .gtSecondaryButton .sapMBtnInner {
+    display: flex;
+    align-items: center;
+    padding: 0 1.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d9dfe8;
+    background: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gtInk);
+}
+
+.gtApp .gtOutlineButton .sapMBtnInner {
+    border: 1px solid var(--gtBlue);
+    border-radius: 0.5rem;
+    background: #ffffff;
+    color: var(--gtBlue);
+    font-weight: 600;
+}
+
+.gtApp .gtOutlineButton .sapMBtnInner .sapMBtnIcon {
+    color: var(--gtBlue);
+}
+
+.gtCreateGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.gtCreateMain {
+    display: flex;
+    flex-direction: column;
+}
+
+.gtCreateSide {
+    position: sticky;
+    top: 0;
+}
+
+.gtApp .gtFormTitle {
+    margin-bottom: 1.25rem;
+}
+
+.gtApp .gtFormSubtitle {
+    display: block;
+    margin: 0.25rem 0 1rem;
+}
+
+.gtFormGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem 1.5rem;
+}
+
+.gtField {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.gtFieldWide {
+    grid-column: span 2;
+}
+
+.gtApp .gtField .sapMLabel {
+    font-weight: 600;
+    color: var(--gtInk);
+}
+
+.gtApp .gtHint {
+    font-size: 0.8125rem;
+    color: var(--gtMuted);
+}
+
+.gtApp .gtTableNote {
+    display: block;
+    padding: 0 1.5rem 1.25rem;
+}
+
+.gtStepDotSmall {
+    width: 0.875rem;
+    height: 0.875rem;
+    margin-bottom: 0;
+    border-color: var(--gtBlue);
+}
+
+.gtApp .gtPushRight {
+    margin-left: auto;
+}
+
+@media (max-width: 1200px) {
+    .gtCreateGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .gtCreateSide {
+        position: static;
+    }
+}
+
+@media (max-width: 800px) {
+    .gtFormGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .gtFieldWide {
+        grid-column: auto;
+    }
+}
+
 .gtKpiRowFive {
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
 }

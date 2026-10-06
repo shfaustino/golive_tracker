@@ -72,7 +72,8 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
   (KPIs, table, new and edit dialog); Módulos; Updates (feed and posting).
   Auditorias and Anexos tabs to do.
 - [x] 05 Projeto — equipa (add, edit, end today, remove, PM hand-over)
-- [ ] 06 Novo projeto
+- [x] 06 Novo projeto — general data, modules, initial team, preview of the
+  milestones the type generates; one deep insert
 - [ ] 07 O meu trabalho
 - [ ] 08 Auditorias
 - [ ] 09 Administração — pessoas e clientes

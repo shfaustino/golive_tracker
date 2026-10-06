@@ -86,7 +86,73 @@ const actions = {
     }
 };
 
+// The milestones each project type brings (docs/backend-api-guide.md,
+// "Criar e editar"); the same table as webapp/model/projectForm.js.
+const TEMPLATES = {
+    "Implementation": ["KO", "PTO", "GOP", "Training", "Testing", "Go-live", "Closure"],
+    "Rollout": ["KO", "GOP", "Testing", "Go-live", "Closure"],
+    "Integration": ["KO", "PTO", "Testing", "Go-live", "Closure"],
+    "Enhancements/CR": ["KO", "Testing", "Go-live", "Closure"],
+    "Assessment": ["KO", "Report delivery", "Closure"],
+    "Change management": ["KO", "Training", "Closure"]
+};
+
 module.exports = {
+    /**
+     * POST /Projects as the API does it: the code is unique (409), the
+     * modules and the team go to their own sets, the creator joins (as PM
+     * when none is named, as PMO otherwise), the milestones come from the
+     * type, and the project starts NotStarted.
+     */
+    addEntry: async function (mockEntry, odataRequest) {
+        const all = await this.base.fetchEntries({});
+        const me = (await people(this.base))[0];
+        const members = (mockEntry.members || []).map((m) => Object.assign({ ID: randomUUID(), endDate: null }, m));
+        const modules = mockEntry.modules || [];
+
+        if (all.some((p) => p.code === mockEntry.code)) {
+            return this.throwError(`A project with code '${mockEntry.code}' already exists.`, 409, {
+                error: { code: "409", message: `A project with code '${mockEntry.code}' already exists.`, target: "code" }
+            });
+        }
+        if (mockEntry.endDate < mockEntry.startDate) {
+            return this.throwError("endDate must be on or after startDate.", 400);
+        }
+        if (!members.some((m) => m.person_ID === me.ID)) {
+            members.push({
+                ID: randomUUID(), person_ID: me.ID, endDate: null, startDate: mockEntry.startDate,
+                role: members.some((m) => m.role === "PM") ? "PMO" : "PM"
+            });
+        }
+        delete mockEntry.members;
+        delete mockEntry.modules;
+        const pm = members.find((m) => m.role === "PM");
+        Object.assign(mockEntry, {
+            status: "NotStarted", needsReview: false, reviewReason: null, pm_ID: pm ? pm.ID : null,
+            externalCode: mockEntry.externalCode || null, lastUpdateAt: new Date().toISOString()
+        });
+        await this.base.addEntry(mockEntry, odataRequest);
+
+        const memberSet = await this.base.getEntityInterface("Members");
+        for (const m of members) {
+            await memberSet.addEntry(Object.assign({ project_ID: mockEntry.ID }, m));
+        }
+        const moduleSet = await this.base.getEntityInterface("ProjectModules");
+        for (const m of modules) {
+            await moduleSet.addEntry({ ID: randomUUID(), project_ID: mockEntry.ID, module: m.module });
+        }
+        const milestoneSet = await this.base.getEntityInterface("Milestones");
+        const types = TEMPLATES[mockEntry.projectType] || [];
+        for (let i = 0; i < types.length; i += 1) {
+            await milestoneSet.addEntry({
+                ID: randomUUID(), project_ID: mockEntry.ID, milestoneType: types[i], sortOrder: i + 1, mandatory: true,
+                status: "Planned", forecastStart: null, forecastEnd: null, baselineStart: null, baselineEnd: null,
+                actualDate: null, isEstimated: true, isOverdue: false, itemsCompletion: 0, justification: null, changeReason: null
+            });
+        }
+        return undefined;
+    },
+
     executeAction: async function (actionDefinition, actionData, keys) {
         const action = actions[actionDefinition.name];
 
