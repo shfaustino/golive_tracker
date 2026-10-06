@@ -336,7 +336,8 @@
     display: flex;
     flex-direction: column;
     padding: 1.75rem 2rem 2.5rem;
-    max-width: 90rem;
+    /* no max-width: pages use the whole window, however wide */
+    width: 100%;
     box-sizing: border-box;
 }
 
@@ -695,6 +696,9 @@
 }
 
 .gtDonutCard {
+    /* fills the card's height when the card beside it is taller, so the
+       chart sits in the middle rather than at the top */
+    flex: 1 1 auto;
     display: flex;
     align-items: center;
     gap: 2rem;
