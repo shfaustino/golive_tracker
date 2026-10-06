@@ -15,7 +15,10 @@ export default [
         // The Fiori tools preset declares ES5-era globals only; UI5 1.120 hands
         // promises back from its own APIs (OData V4 model, Fragment.load).
         files: ['webapp/**/*.js'],
-        languageOptions: { globals: { Promise: 'readonly' } }
+        languageOptions: { globals: { Promise: 'readonly' } },
+        // The API's property names are CAP's (person_ID, client_ID, owner_ID):
+        // they are the wire format, not names the app chose.
+        rules: { camelcase: ['warn', { properties: 'never' }] }
     },
     {
         // Unit tests and tools run in Node, not in the browser.

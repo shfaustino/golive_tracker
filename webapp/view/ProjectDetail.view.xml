@@ -210,8 +210,72 @@
                         </VBox>
                     </IconTabFilter>
 
+                    <!-- Equipa (docs/mockups/05-projeto-equipa.png), US-10, US-11,
+                         BR-03: .../members with the person's name and profile.
+                         The PM changes only through the hand-over. -->
                     <IconTabFilter key="equipa" text="{i18n>tabTeam}">
-                        <IllustratedMessage illustrationType="sapIllus-SimpleConstruction" title="{i18n>placeholderTitle}" description="{i18n>placeholderDescription}"/>
+                        <VBox class="gtCard gtTableCard" renderType="Bare">
+                            <HBox class="gtCardHeader" renderType="Bare">
+                                <Title text="{i18n>teamTitle}" level="H2" class="gtSectionTitle"/>
+                                <Button
+                                    id="addMemberButton"
+                                    text="{i18n>teamAdd}"
+                                    icon="sap-icon://add"
+                                    type="Emphasized"
+                                    press=".onAddMember"
+                                    class="gtPrimaryButton gtPrimaryButtonSmall"/>
+                            </HBox>
+                            <Table
+                                id="membersTable"
+                                class="gtTable gtTableInset"
+                                fixedLayout="false"
+                                noDataText="{i18n>teamNoData}"
+                                items="{
+                                    path: 'members',
+                                    parameters: {
+                                        $expand: 'person($select=name,profile)',
+                                        $orderby: 'startDate',
+                                        $$updateGroupId: 'memberEdit'
+                                    }
+                                }">
+                                <columns>
+                                    <Column><Text text="{i18n>teamColPerson}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>teamColProfile}"/></Column>
+                                    <Column><Text text="{i18n>teamColRole}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>teamColFrom}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>teamColTo}"/></Column>
+                                    <Column><Text text="{i18n>colStatus}"/></Column>
+                                    <Column width="4rem" hAlign="Center"/>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <HBox alignItems="Center" renderType="Bare" class="gtPersonCell">
+                                                <Avatar
+                                                    displaySize="XS"
+                                                    initials="{path: 'person/name', formatter: '.formatter.initials'}"
+                                                    class="gtPersonAvatar"/>
+                                                <Text text="{person/name}"/>
+                                            </HBox>
+                                            <Text text="{path: 'person/profile', formatter: '.formatter.profileText'}"/>
+                                            <Text text="{path: 'role', formatter: '.formatter.roleText'}"/>
+                                            <Text text="{path: 'startDate', targetType: 'any', formatter: '.formatter.dateOrDash'}"/>
+                                            <Text text="{path: 'endDate', targetType: 'any', formatter: '.formatter.dateOrDash'}"/>
+                                            <ObjectStatus
+                                                text="{path: 'endDate', targetType: 'any', formatter: '.formatter.memberStateText'}"
+                                                state="{path: 'endDate', targetType: 'any', formatter: '.formatter.memberState'}"
+                                                inverted="true"/>
+                                            <Button
+                                                icon="sap-icon://overflow"
+                                                type="Transparent"
+                                                tooltip="{i18n>teamActions}"
+                                                press=".onMemberActions"
+                                                class="gtRowAction"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
                     </IconTabFilter>
                     <IconTabFilter key="modulos" text="{i18n>tabModules}">
                         <IllustratedMessage illustrationType="sapIllus-SimpleConstruction" title="{i18n>placeholderTitle}" description="{i18n>placeholderDescription}"/>

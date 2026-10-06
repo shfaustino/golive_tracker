@@ -68,7 +68,7 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
 - [x] 02 Dashboard — KPIs, projects by status, overdue milestones, to review, stale projects
 - [x] 03 Projetos — paged list, sorting, search, filters
 - [x] 04 Projeto — header, tabs, marcos (KPIs, table, new and edit dialog)
-- [ ] 05 Projeto — equipa
+- [x] 05 Projeto — equipa (add, edit, end today, remove, PM hand-over)
 - [ ] 06 Novo projeto
 - [ ] 07 O meu trabalho
 - [ ] 08 Auditorias

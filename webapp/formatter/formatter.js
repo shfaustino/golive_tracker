@@ -1,6 +1,7 @@
 sap.ui.define([
-    "sap/ui/core/library"
-], function (coreLibrary) {
+    "sap/ui/core/library",
+    "../model/memberRules"
+], function (coreLibrary, memberRules) {
     "use strict";
 
     var ValueState = coreLibrary.ValueState;
@@ -45,6 +46,20 @@ sap.ui.define([
         "Go-live": "msTypeGoLive",
         "Report delivery": "msTypeReportDelivery",
         "Closure": "msTypeClosure"
+    };
+
+    /**
+     * The i18n key of each member role's label. The API's values carry
+     * spaces ("Functional lead"), so they cannot be i18n keys themselves.
+     */
+    var ROLE = {
+        "PM": "rolePM",
+        "Functional lead": "roleFunctionalLead",
+        "Technical lead": "roleTechnicalLead",
+        "Testing owner": "roleTestingOwner",
+        "Requirements owner": "roleRequirementsOwner",
+        "Architect": "roleArchitect",
+        "PMO": "rolePMO"
     };
 
     return {
@@ -153,6 +168,33 @@ sap.ui.define([
          */
         percent: function (fPct) {
             return typeof fPct === "number" ? String(fPct).replace(".", ",") + "%" : "";
+        },
+
+        /**
+         * The label of a member role ("Functional lead" -> "Líder funcional").
+         * @param {string} sRole the API's role
+         * @returns {string} the label, or the raw value when unknown
+         */
+        roleText: function (sRole) {
+            return ROLE[sRole] ? this.getResourceBundle().getText(ROLE[sRole]) : (sRole || "");
+        },
+
+        /**
+         * "Ativo" or "Inativo", from the membership's end date.
+         * @param {string|null} sEndDate the member's endDate
+         * @returns {string} the label
+         */
+        memberStateText: function (sEndDate) {
+            return this.getResourceBundle().getText(memberRules.isActive(sEndDate) ? "teamActive" : "teamInactive");
+        },
+
+        /**
+         * The chip colour of a membership: green while it runs, red once ended.
+         * @param {string|null} sEndDate the member's endDate
+         * @returns {sap.ui.core.ValueState} the state
+         */
+        memberState: function (sEndDate) {
+            return memberRules.isActive(sEndDate) ? ValueState.Success : ValueState.Error;
         },
 
         /**

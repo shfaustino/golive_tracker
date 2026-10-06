@@ -4,8 +4,9 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageToast",
     "../model/milestoneSummary",
-    "../formatter/formatter"
-], function (BaseController, Fragment, JSONModel, MessageToast, milestoneSummary, formatter) {
+    "../formatter/formatter",
+    "./projectTeam"
+], function (BaseController, Fragment, JSONModel, MessageToast, milestoneSummary, formatter, projectTeam) {
     "use strict";
 
     /** The tab a project opens on when the route names none. */
@@ -14,7 +15,8 @@ sap.ui.define([
     /** The batch group a milestone edit is sent in, as one PATCH. */
     var EDIT_GROUP = "milestoneEdit";
 
-    return BaseController.extend("com.amt.golivetracker.controller.ProjectDetail", {
+    // The Equipa tab's handlers live in ./projectTeam and are mixed in here.
+    return BaseController.extend("com.amt.golivetracker.controller.ProjectDetail", Object.assign({}, projectTeam, {
 
         formatter: formatter,
 
@@ -25,6 +27,7 @@ sap.ui.define([
                 summary: milestoneSummary.summarise([])
             }), "detail");
             this.setModel(new JSONModel({ busy: false, values: {}, errors: {} }), "msEdit");
+            this.setModel(new JSONModel({ busy: false, values: {}, errors: {}, people: [], roles: [] }), "member");
             this.getRouter().getRoute("projectDetail").attachPatternMatched(this._onRouteMatched, this);
         },
 
@@ -258,5 +261,5 @@ sap.ui.define([
             }
             return this._pEditDialog;
         }
-    });
+    }));
 });

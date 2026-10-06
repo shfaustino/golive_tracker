@@ -189,6 +189,11 @@
         <Property Name="projectsToReview" Type="Collection(ProjectService.ProjectRef)"/>
       </ComplexType>
 
+      <Action Name="handOverPM" IsBound="true">
+        <Parameter Name="in" Type="ProjectService.Projects"/>
+        <Parameter Name="person_ID" Type="Edm.Guid"/>
+        <Parameter Name="startDate" Type="Edm.Date"/>
+      </Action>
       <Function Name="me" IsBound="false">
         <ReturnType Type="ProjectService.Me"/>
       </Function>
