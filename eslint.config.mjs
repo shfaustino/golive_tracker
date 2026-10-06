@@ -5,7 +5,7 @@ export default [
         // deploy/approuter/webapp is what mbt build copies in (see mta.yaml),
         // not sources.
         ignores: [
-            'dist/**', 'node_modules/**',
+            'dist/**', 'node_modules/**', 'webapp/localService/**',
             'deploy/approuter/webapp/**', 'deploy/approuter/node_modules/**',
             'mta_archives/**', '.*_mta_build_tmp/**'
         ]
@@ -18,12 +18,12 @@ export default [
         languageOptions: { globals: { Promise: 'readonly' } }
     },
     {
-        // Unit tests run in Node, not in the browser.
-        files: ['test/**/*.js'],
+        // Unit tests and tools run in Node, not in the browser.
+        files: ['test/**/*.js', 'tools/**/*.js'],
         languageOptions: {
             ecmaVersion: 2022,
             sourceType: 'commonjs',
-            globals: { module: 'writable', require: 'readonly', __dirname: 'readonly' }
+            globals: { module: 'writable', require: 'readonly', __dirname: 'readonly', console: 'readonly', process: 'readonly' }
         }
     }
 ];

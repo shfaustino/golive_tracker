@@ -11,6 +11,21 @@ approuter that signs the user in through XSUAA and forwards the token.
 
 ## Run locally
 
+### Without the API (mock data)
+
+```sh
+npm install
+npm run start-mock
+```
+
+`ui5-mock.yaml` serves a mock of `/project` from `webapp/localService/project`:
+24 projects with clients, people, team, modules and milestones, signed in as an
+Administrator. Data lives in memory (a restart resets it);
+`npm run mock:generate` rewrites the data files. The mock metadata is written
+from the API guide, so the real `/project/$metadata` wins where they differ.
+
+### With the API
+
 1. Start the API (Node.js 22+), in a clone of `golive-tracker-api`:
 
    ```sh
@@ -36,9 +51,13 @@ approuter that signs the user in through XSUAA and forwards the token.
 | `webapp/manifest.json` | OData V4 models (`""` → `/project/`, `admin` → `/admin/`) and routes |
 | `webapp/Component.js` | Reads `GET /project/me()` into the `user` model |
 | `webapp/model/profiles.js` | What each profile (Administrator, Architect, User) is offered in the UI |
-| `webapp/view/App.view.xml` | Shell: side navigation, top bar, pages |
-| `webapp/view/Projects.view.xml` | Projetos list (search, status/client/PM filters) |
+| `webapp/view/App.view.xml` | Shell: navy sidebar, top bar, pages |
+| `webapp/css/style.css` | The mockups' look: theme variables remapped, then the sidebar, cards, chips |
+| `webapp/view/Projects.view.xml` | Projetos: paged list, sortable columns, search, filters |
 | `webapp/view/Dashboard.view.xml` | Dashboard from `GET /project/dashboard()` |
+| `webapp/view/ProjectDetail.view.xml` | Projeto: header, tabs, milestones (create, edit) |
+| `webapp/model/*.js` | Logic without UI (paging, milestone rules, chart), tested with `npm test` |
+| `webapp/localService/project` | Mock `/project` service for `npm run start-mock` |
 | `webapp/view/Placeholder.view.xml` | Stand-in for the screens not built yet |
 | `deploy/approuter` | Approuter: XSUAA login, `/project` and `/admin` to the API destination |
 | `mta.yaml` | BTP deployment |
@@ -46,14 +65,18 @@ approuter that signs the user in through XSUAA and forwards the token.
 ## Screens
 
 - [x] Shell (side navigation, top bar, signed-in person)
-- [x] 03 Projetos — list, search, filters
-- [ ] 02 Dashboard — KPIs and lists done; charts to do
-- [x] 04 Projeto — header, tabs, marcos (KPIs, table, edit dialog); "Novo marco" to do
+- [x] 02 Dashboard — KPIs, projects by status, overdue milestones, to review, stale projects
+- [x] 03 Projetos — paged list, sorting, search, filters
+- [x] 04 Projeto — header, tabs, marcos (KPIs, table, new and edit dialog)
 - [ ] 05 Projeto — equipa
 - [ ] 06 Novo projeto
 - [ ] 07 O meu trabalho
 - [ ] 08 Auditorias
 - [ ] 09 Administração — pessoas e clientes
+
+"Evolução dos projetos" and "Últimas atualizações" on the dashboard mockup
+have no source in the API yet; their places show overdue milestones and
+projects with no recent update.
 
 The login screen (01) is the XSUAA login page the approuter redirects to; the
 app has no login form of its own.

@@ -72,6 +72,7 @@ sap.ui.define([
             this._oEditContext = oContext;
             oEditModel.setData({
                 busy: false,
+                mode: "edit",
                 title: this.getResourceBundle().getText("msEditTitle",
                     [formatter.milestoneTypeText.call(this, oMilestone.milestoneType)]),
                 values: {
@@ -82,6 +83,26 @@ sap.ui.define([
                     actualDate: oMilestone.actualDate || null,
                     justification: oMilestone.justification || ""
                 },
+                errors: {}
+            });
+            this._getEditDialog().then(function (oDialog) {
+                oDialog.open();
+            });
+        },
+
+        /**
+         * "+ Novo marco": the same dialog, asking only for the type and the
+         * forecast dates. The milestones a project type brings are generated
+         * by the API; this adds extra ones, a GOP per module for instance.
+         * @public
+         */
+        onNewMilestone: function () {
+            this._oEditContext = null;
+            this.getModel("msEdit").setData({
+                busy: false,
+                mode: "create",
+                title: this.getResourceBundle().getText("msNew"),
+                values: { milestoneType: "GOP", forecastStart: null, forecastEnd: null },
                 errors: {}
             });
             this._getEditDialog().then(function (oDialog) {
@@ -102,6 +123,11 @@ sap.ui.define([
          * @public
          */
         onSaveMilestone: function () {
+            if (this.getModel("msEdit").getProperty("/mode") === "create") {
+                this._createMilestone();
+                return;
+            }
+
             var oEditModel = this.getModel("msEdit"),
                 oResult = milestoneSummary.editChanges(this._oEditContext.getObject(), oEditModel.getProperty("/values")),
                 oBundle = this.getResourceBundle(),
@@ -138,6 +164,47 @@ sap.ui.define([
                 this.onCancelMilestone();
                 // isOverdue, itemsCompletion and the history are the API's to
                 // work out again.
+                this.byId("milestonesTable").getBinding("items").refresh();
+            }.bind(this));
+        },
+
+        /**
+         * POSTs a new milestone under the project, in the edit group, so a
+         * refusal can be taken back whole (resetChanges drops the new row).
+         * @private
+         */
+        _createMilestone: function () {
+            var oEditModel = this.getModel("msEdit"),
+                oValues = oEditModel.getProperty("/values"),
+                oBundle = this.getResourceBundle(),
+                oModel = this.getOwnerComponent().getModel(),
+                oErrors = {};
+
+            if (!oValues.forecastEnd) {
+                oErrors.forecastEnd = oBundle.getText("msErrorForecastEnd");
+            } else if (oValues.forecastStart && oValues.forecastEnd < oValues.forecastStart) {
+                oErrors.forecastEnd = oBundle.getText("msErrorEndBeforeStart");
+            }
+            oEditModel.setProperty("/errors", oErrors);
+            if (Object.keys(oErrors).length) {
+                return;
+            }
+
+            oEditModel.setProperty("/busy", true);
+            this.byId("milestonesTable").getBinding("items").create({
+                milestoneType: oValues.milestoneType,
+                forecastStart: oValues.forecastStart || null,
+                forecastEnd: oValues.forecastEnd
+            }, true);
+            oModel.submitBatch(EDIT_GROUP).then(function () {
+                oEditModel.setProperty("/busy", false);
+                if (oModel.hasPendingChanges(EDIT_GROUP)) {
+                    oModel.resetChanges(EDIT_GROUP);
+                    return;
+                }
+                MessageToast.show(oBundle.getText("msCreated"));
+                this.onCancelMilestone();
+                // sortOrder, status and the rest are the API's to fill in.
                 this.byId("milestonesTable").getBinding("items").refresh();
             }.bind(this));
         },

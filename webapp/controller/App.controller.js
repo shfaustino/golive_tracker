@@ -1,8 +1,10 @@
 sap.ui.define([
     "./BaseController",
     "sap/m/library",
+    "sap/m/ActionSheet",
+    "sap/m/Button",
     "../formatter/formatter"
-], function (BaseController, mobileLibrary, formatter) {
+], function (BaseController, mobileLibrary, ActionSheet, Button, formatter) {
     "use strict";
 
     /**
@@ -42,6 +44,41 @@ sap.ui.define([
             if (sRoute) {
                 this.getRouter().navTo(sRoute);
             }
+            // On a narrow window the sidebar covers the page: picking a place
+            // closes it. On a wide one the flag changes nothing.
+            this.getOwnerComponent().getModel("app").setProperty("/sideExpanded", false);
+        },
+
+        /**
+         * The bell: there is no notification service yet, so it leads to O
+         * meu trabalho, where the overdue milestones and items are.
+         * @public
+         */
+        onBellPress: function () {
+            this.getRouter().navTo("myWork");
+        },
+
+        /**
+         * The person in the top bar: a small menu under them, for now only
+         * with Terminar sessão.
+         * @param {sap.ui.base.Event} oEvent press of the avatar or the chevron
+         * @public
+         */
+        onPersonPress: function (oEvent) {
+            var oOpener = oEvent.getSource();
+
+            if (!this._oPersonMenu) {
+                this._oPersonMenu = new ActionSheet({
+                    placement: "Bottom",
+                    buttons: [new Button({
+                        text: this.getResourceBundle().getText("logoutTooltip"),
+                        icon: "sap-icon://log",
+                        press: this.onLogout.bind(this)
+                    })]
+                });
+                this.getView().addDependent(this._oPersonMenu);
+            }
+            this._oPersonMenu.openBy(oOpener);
         },
 
         /**

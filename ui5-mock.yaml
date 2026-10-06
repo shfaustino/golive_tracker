@@ -1,5 +1,9 @@
 # yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
 
+# `npm run start-mock`: the app against a mock of the API's /project
+# service (webapp/localService/project), no backend needed. Signed in as the
+# first person in People.json, an Administrator. Data lives in memory: a
+# restart brings it back to the generated files (npm run mock:generate).
 specVersion: "4.0"
 metadata:
   name: com.amt.golivetracker
@@ -16,21 +20,22 @@ server:
             - /test-resources
           url: https://ui5.sap.com
           version: 1.120.49
-        backend:
-          # The GoLive Tracker API (CAP) running locally: `npm run watch` in
-          # golive-tracker-api. It answers 401 with Basic Auth, so the browser
-          # asks for a test user (admin/admin, pm/pm, user/user, ...).
-          # On BTP the approuter (deploy/approuter) does this job instead.
-          - path: /project
-            url: http://localhost:4004
-          - path: /admin
-            url: http://localhost:4004
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
         port: 35729
         path: webapp
         delay: 300
+    - name: sap-fe-mockserver
+      beforeMiddleware: csp
+      configuration:
+        mountPath: /
+        services:
+          - urlPath: /project
+            metadataPath: ./webapp/localService/project/metadata.xml
+            mockdataPath: ./webapp/localService/project/data
+            generateMockData: false
+        annotations: []
 builder:
   resources:
     excludes:

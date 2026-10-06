@@ -2,7 +2,7 @@
     controllerName="com.amt.golivetracker.controller.ProjectDetail"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
-    xmlns:f="sap.ui.layout.form"
+    xmlns:form="sap.ui.layout.form"
     xmlns:mvc="sap.ui.core.mvc">
 
     <!-- Projeto (docs/mockups/04-projeto-marcos.png): the project's header
@@ -10,44 +10,61 @@
          controller; the tab is part of the route (Projetos/<id>/<tab>), so a
          link or the back button lands on the same tab. -->
     <Page id="projectDetailPage" showHeader="false" class="gtPage" busy="{detail>/busy}" busyIndicatorDelay="0">
-        <VBox class="gtPageContent">
-            <Breadcrumbs currentLocationText="{code}" class="sapUiSmallMarginBottom">
+        <VBox class="gtPageContent" renderType="Bare">
+            <Breadcrumbs currentLocationText="{code}" separatorStyle="GreaterThan" class="gtBreadcrumbs">
                 <Link text="{i18n>navProjects}" press=".onNavToProjects"/>
             </Breadcrumbs>
 
-            <HBox justifyContent="SpaceBetween" alignItems="Start" class="gtPageHeader">
-                <VBox>
-                    <Title text="{code}" level="H1" titleStyle="H1"/>
+            <HBox class="gtPageHeader" alignItems="Start" renderType="Bare">
+                <VBox renderType="Bare">
+                    <Title text="{code}" level="H1" class="gtProjectCode"/>
                     <Text text="{name}" class="gtProjectName"/>
                 </VBox>
-                <ObjectStatus
-                    text="{path: 'status', formatter: '.formatter.projectStatusText'}"
-                    state="{path: 'status', formatter: '.formatter.projectStatusState'}"
-                    inverted="true"
-                    class="gtProjectStatus"/>
+                <HBox class="gtProjectHeadEnd" renderType="Bare">
+                    <ObjectStatus
+                        text="{path: 'status', formatter: '.formatter.projectStatusText'}"
+                        state="{path: 'status', formatter: '.formatter.projectStatusState'}"
+                        inverted="true"
+                        class="gtProjectStatus"/>
+                </HBox>
             </HBox>
 
-            <HBox wrap="Wrap" renderType="Bare" class="gtProjectFacts">
-                <VBox class="gtProjectFact">
-                    <Label text="{i18n>colClient}"/>
-                    <Text text="{client/name}"/>
-                </VBox>
-                <VBox class="gtProjectFact">
-                    <Label text="{i18n>projectCurrency}"/>
-                    <Text text="{currency_code}"/>
-                </VBox>
-                <VBox class="gtProjectFact">
-                    <Label text="{i18n>projectStartDate}"/>
-                    <Text text="{path: 'startDate', type: 'sap.ui.model.odata.type.Date', formatOptions: {pattern: 'dd/MM/yyyy'}}"/>
-                </VBox>
-                <VBox class="gtProjectFact">
-                    <Label text="{i18n>projectEndDate}"/>
-                    <Text text="{path: 'endDate', type: 'sap.ui.model.odata.type.Date', formatOptions: {pattern: 'dd/MM/yyyy'}}"/>
-                </VBox>
-                <VBox class="gtProjectFact">
-                    <Label text="{i18n>projectPm}"/>
-                    <Text text="{pm/person/name}"/>
-                </VBox>
+            <HBox class="gtProjectFacts" renderType="Bare">
+                <HBox class="gtProjectFact" renderType="Bare">
+                    <core:Icon src="sap-icon://customer"/>
+                    <VBox renderType="Bare">
+                        <Label text="{i18n>colClient}"/>
+                        <Text text="{client/name}"/>
+                    </VBox>
+                </HBox>
+                <HBox class="gtProjectFact" renderType="Bare">
+                    <core:Icon src="sap-icon://lead"/>
+                    <VBox renderType="Bare">
+                        <Label text="{i18n>projectCurrency}"/>
+                        <Text text="{currency_code}"/>
+                    </VBox>
+                </HBox>
+                <HBox class="gtProjectFact" renderType="Bare">
+                    <core:Icon src="sap-icon://calendar"/>
+                    <VBox renderType="Bare">
+                        <Label text="{i18n>projectStartDate}"/>
+                        <Text text="{path: 'startDate', targetType: 'any', formatter: '.formatter.dateOrDash'}"/>
+                    </VBox>
+                </HBox>
+                <HBox class="gtProjectFact" renderType="Bare">
+                    <core:Icon src="sap-icon://calendar"/>
+                    <VBox renderType="Bare">
+                        <Label text="{i18n>projectEndDate}"/>
+                        <Text text="{path: 'endDate', targetType: 'any', formatter: '.formatter.dateOrDash'}"/>
+                    </VBox>
+                </HBox>
+                <HBox class="gtProjectFact" renderType="Bare">
+                    <core:Icon src="sap-icon://group"/>
+                    <VBox renderType="Bare">
+                        <Label text="{i18n>projectPm}"/>
+                        <Text text="{pm/person/name}"/>
+                    </VBox>
+                </HBox>
             </HBox>
 
             <IconTabBar
@@ -55,113 +72,142 @@
                 selectedKey="{detail>/tab}"
                 select=".onTabSelect"
                 expandable="false"
+                headerMode="Inline"
                 headerBackgroundDesign="Transparent"
                 backgroundDesign="Transparent"
                 applyContentPadding="false"
                 class="gtProjectTabs">
                 <items>
                     <IconTabFilter key="visao-geral" text="{i18n>tabOverview}">
-                        <f:SimpleForm
-                            editable="false"
-                            layout="ColumnLayout"
-                            columnsM="2"
-                            columnsL="2"
-                            columnsXL="2"
-                            class="gtCard">
-                            <Label text="{i18n>projectType}"/>
-                            <Text text="{projectType}"/>
-                            <Label text="{i18n>projectExternalCode}"/>
-                            <Text text="{externalCode}"/>
-                            <Label text="{i18n>projectValue}"/>
-                            <Text text="{value} {currency_code}"/>
-                            <Label text="{i18n>projectLastUpdate}"/>
-                            <Text text="{path: 'lastUpdateAt', type: 'sap.ui.model.odata.type.DateTimeOffset', formatOptions: {pattern: 'dd/MM/yyyy HH:mm'}}"/>
-                            <Label text="{i18n>projectReviewReason}" visible="{= !!${needsReview} }"/>
-                            <ObjectStatus text="{reviewReason}" state="Warning" visible="{= !!${needsReview} }"/>
-                        </f:SimpleForm>
+                        <VBox class="gtCard" renderType="Bare">
+                            <form:SimpleForm
+                                editable="false"
+                                layout="ColumnLayout"
+                                columnsM="2"
+                                columnsL="2"
+                                columnsXL="2"
+                                class="gtOverviewForm">
+                                <Label text="{i18n>projectType}"/>
+                                <Text text="{projectType}"/>
+                                <Label text="{i18n>projectExternalCode}"/>
+                                <Text text="{externalCode}"/>
+                                <Label text="{i18n>projectValue}"/>
+                                <Text text="{value} {currency_code}"/>
+                                <Label text="{i18n>projectLastUpdate}"/>
+                                <Text text="{path: 'lastUpdateAt', targetType: 'any', formatter: '.formatter.timestampDate'}"/>
+                                <Label text="{i18n>projectReviewReason}" visible="{= !!${needsReview} }"/>
+                                <ObjectStatus text="{reviewReason}" state="Warning" inverted="true" visible="{= !!${needsReview} }"/>
+                            </form:SimpleForm>
+                        </VBox>
                     </IconTabFilter>
 
                     <IconTabFilter key="marcos" text="{i18n>tabMilestones}">
-                        <HBox wrap="Wrap" renderType="Bare" class="gtKpiRow">
-                            <VBox class="gtCard gtKpi">
-                                <ObjectNumber number="{detail>/summary/total}" class="gtKpiNumber"/>
-                                <Text text="{i18n>msKpiTotal}"/>
+                        <HBox class="gtKpiRow gtKpiRowFive" renderType="Bare">
+                            <VBox class="gtCard gtKpi" renderType="Bare">
+                                <HBox class="gtKpiIcon gtTintGreen" renderType="Bare"><core:Icon src="sap-icon://media-play"/></HBox>
+                                <Text text="{detail>/summary/total}" class="gtKpiNumber"/>
+                                <Text text="{i18n>msKpiTotal}" class="gtKpiLabel"/>
                             </VBox>
-                            <VBox class="gtCard gtKpi">
-                                <ObjectNumber number="{detail>/summary/completed}" unit="{= ${detail>/summary/completedPct} + '%' }" class="gtKpiNumber"/>
-                                <Text text="{i18n>msKpiCompleted}"/>
+                            <VBox class="gtCard gtKpi" renderType="Bare">
+                                <HBox class="gtKpiIcon gtTintGreen" renderType="Bare"><core:Icon src="sap-icon://accept"/></HBox>
+                                <Text text="{detail>/summary/completed}" class="gtKpiNumber"/>
+                                <HBox class="gtKpiHead" renderType="Bare">
+                                    <Text text="{i18n>msKpiCompleted}" class="gtKpiLabel"/>
+                                    <Text text="{detail>/summary/completedPct}%" class="gtKpiPct"/>
+                                </HBox>
                             </VBox>
-                            <VBox class="gtCard gtKpi">
-                                <ObjectNumber number="{detail>/summary/inProgress}" unit="{= ${detail>/summary/inProgressPct} + '%' }" class="gtKpiNumber"/>
-                                <Text text="{i18n>msKpiInProgress}"/>
+                            <VBox class="gtCard gtKpi" renderType="Bare">
+                                <HBox class="gtKpiIcon gtTintBlue" renderType="Bare"><core:Icon src="sap-icon://synchronize"/></HBox>
+                                <Text text="{detail>/summary/inProgress}" class="gtKpiNumber"/>
+                                <HBox class="gtKpiHead" renderType="Bare">
+                                    <Text text="{i18n>msKpiInProgress}" class="gtKpiLabel"/>
+                                    <Text text="{detail>/summary/inProgressPct}%" class="gtKpiPct"/>
+                                </HBox>
                             </VBox>
-                            <VBox class="gtCard gtKpi">
-                                <ObjectNumber
-                                    number="{detail>/summary/overdue}"
-                                    unit="{= ${detail>/summary/overduePct} + '%' }"
-                                    state="{= ${detail>/summary/overdue} > 0 ? 'Error' : 'None' }"
-                                    class="gtKpiNumber"/>
-                                <Text text="{i18n>msKpiOverdue}"/>
+                            <VBox class="gtCard gtKpi" renderType="Bare">
+                                <HBox class="gtKpiIcon gtTintOrange" renderType="Bare"><core:Icon src="sap-icon://media-pause"/></HBox>
+                                <Text text="{detail>/summary/overdue}" class="gtKpiNumber"/>
+                                <HBox class="gtKpiHead" renderType="Bare">
+                                    <Text text="{i18n>msKpiOverdue}" class="gtKpiLabel"/>
+                                    <Text text="{detail>/summary/overduePct}%" class="gtKpiPct"/>
+                                </HBox>
                             </VBox>
-                            <VBox class="gtCard gtKpi">
-                                <ObjectNumber number="{detail>/summary/notStarted}" unit="{= ${detail>/summary/notStartedPct} + '%' }" class="gtKpiNumber"/>
-                                <Text text="{i18n>msKpiNotStarted}"/>
+                            <VBox class="gtCard gtKpi" renderType="Bare">
+                                <HBox class="gtKpiIcon gtTintGrey" renderType="Bare"><core:Icon src="sap-icon://decline"/></HBox>
+                                <Text text="{detail>/summary/notStarted}" class="gtKpiNumber"/>
+                                <HBox class="gtKpiHead" renderType="Bare">
+                                    <Text text="{i18n>msKpiNotStarted}" class="gtKpiLabel"/>
+                                    <Text text="{detail>/summary/notStartedPct}%" class="gtKpiPct"/>
+                                </HBox>
                             </VBox>
                         </HBox>
 
-                        <Table
-                            id="milestonesTable"
-                            class="gtCard"
-                            noDataText="{i18n>msNoData}"
-                            updateFinished=".onMilestonesUpdated"
-                            items="{
-                                path: 'milestones',
-                                parameters: {
-                                    $expand: 'owners($expand=person($select=name))',
-                                    $orderby: 'sortOrder'
-                                }
-                            }">
-                            <headerToolbar>
-                                <OverflowToolbar>
-                                    <Title text="{i18n>msTitle}" level="H2"/>
-                                </OverflowToolbar>
-                            </headerToolbar>
-                            <columns>
-                                <Column><Text text="{i18n>colMilestone}"/></Column>
-                                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>msColForecast}"/></Column>
-                                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>msColActual}"/></Column>
-                                <Column width="10rem"><Text text="{i18n>colStatus}"/></Column>
-                                <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>msColOwners}"/></Column>
-                                <Column width="4rem" hAlign="End"><Text text="{i18n>colActions}"/></Column>
-                            </columns>
-                            <items>
-                                <ColumnListItem>
-                                    <cells>
-                                        <VBox>
-                                            <Text text="{path: 'milestoneType', formatter: '.formatter.milestoneTypeText'}"/>
-                                            <Text text="{i18n>msEstimated}" visible="{= !!${isEstimated} }" class="gtSubtle"/>
-                                        </VBox>
-                                        <Text text="{path: 'forecastEnd', type: 'sap.ui.model.odata.type.Date', formatOptions: {pattern: 'dd/MM/yyyy'}}"/>
-                                        <Text text="{path: 'actualDate', formatter: '.formatter.dateOrDash'}"/>
-                                        <ObjectStatus
-                                            text="{= ${isOverdue} ? ${i18n>msOverdue} : ${path: 'status', formatter: '.formatter.milestoneStatusText'} }"
-                                            state="{parts: ['status', 'isOverdue'], formatter: '.formatter.milestoneStatusState'}"
-                                            inverted="true"/>
-                                        <HBox items="{path: 'owners', templateShareable: false}" renderType="Bare" class="gtOwners">
-                                            <Avatar
-                                                displaySize="XS"
-                                                initials="{path: 'person/name', formatter: '.formatter.initials'}"
-                                                tooltip="{person/name}"/>
-                                        </HBox>
-                                        <Button
-                                            icon="sap-icon://edit"
-                                            type="Transparent"
-                                            tooltip="{i18n>msEdit}"
-                                            press=".onEditMilestone"/>
-                                    </cells>
-                                </ColumnListItem>
-                            </items>
-                        </Table>
+                        <VBox class="gtCard gtTableCard" renderType="Bare">
+                            <HBox class="gtCardHeader" renderType="Bare">
+                                <Title text="{i18n>msTitle}" level="H2" class="gtSectionTitle"/>
+                                <Button
+                                    id="newMilestoneButton"
+                                    text="{i18n>msNew}"
+                                    icon="sap-icon://add"
+                                    type="Emphasized"
+                                    press=".onNewMilestone"
+                                    class="gtPrimaryButton gtPrimaryButtonSmall"/>
+                            </HBox>
+                            <Table
+                                id="milestonesTable"
+                                class="gtTable gtTableInset"
+                                fixedLayout="false"
+                                noDataText="{i18n>msNoData}"
+                                updateFinished=".onMilestonesUpdated"
+                                items="{
+                                    path: 'milestones',
+                                    parameters: {
+                                        $expand: 'owners($expand=person($select=name))',
+                                        $orderby: 'sortOrder',
+                                        $$updateGroupId: 'milestoneEdit'
+                                    }
+                                }">
+                                <columns>
+                                    <Column><Text text="{i18n>colMilestone}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>msColForecast}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>msColActual}"/></Column>
+                                    <Column><Text text="{i18n>colStatus}"/></Column>
+                                    <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>msColOwners}"/></Column>
+                                    <Column width="5rem" hAlign="Center"><Text text="{i18n>colActions}"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <VBox renderType="Bare">
+                                                <Text text="{path: 'milestoneType', formatter: '.formatter.milestoneTypeText'}"/>
+                                                <Text text="{i18n>msEstimated}" visible="{= !!${isEstimated} }" class="gtSubtle"/>
+                                            </VBox>
+                                            <Text text="{path: 'forecastEnd', targetType: 'any', formatter: '.formatter.dateOrDash'}"/>
+                                            <Text text="{path: 'actualDate', targetType: 'any', formatter: '.formatter.dateOrDash'}"/>
+                                            <ObjectStatus
+                                                text="{parts: [{path: 'status', targetType: 'any'}, {path: 'isOverdue', targetType: 'any'}], formatter: '.formatter.milestoneStatusLabel'}"
+                                                state="{parts: [{path: 'status', targetType: 'any'}, {path: 'isOverdue', targetType: 'any'}], formatter: '.formatter.milestoneStatusState'}"
+                                                inverted="true"/>
+                                            <!-- Plain avatars rather than sap.f.AvatarGroup, which measures its
+                                                 width to decide how many fit and, in an auto-width
+                                                 table, re-renders without end. At most four. -->
+                                            <HBox items="{path: 'owners', length: 4, templateShareable: false}" renderType="Bare" class="gtOwners">
+                                                <Avatar
+                                                    displaySize="XS"
+                                                    initials="{path: 'person/name', formatter: '.formatter.initials'}"
+                                                    tooltip="{person/name}"/>
+                                            </HBox>
+                                            <Button
+                                                icon="sap-icon://overflow"
+                                                type="Transparent"
+                                                tooltip="{i18n>msEdit}"
+                                                press=".onEditMilestone"
+                                                class="gtRowAction"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
                     </IconTabFilter>
 
                     <IconTabFilter key="equipa" text="{i18n>tabTeam}">

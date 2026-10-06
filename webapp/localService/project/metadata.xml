@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A stand-in for the API's /project/$metadata, for `npm run start-mock`
+     only. It is written from docs/backend-api-guide.md and holds just what
+     the app reads; the real metadata (golive-tracker-api, /project/$metadata)
+     is the reference whenever the two differ. -->
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="ProjectService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="Projects" EntityType="ProjectService.Projects">
+          <NavigationPropertyBinding Path="client" Target="Clients"/>
+          <NavigationPropertyBinding Path="pm" Target="Members"/>
+          <NavigationPropertyBinding Path="members" Target="Members"/>
+          <NavigationPropertyBinding Path="milestones" Target="Milestones"/>
+          <NavigationPropertyBinding Path="modules" Target="ProjectModules"/>
+        </EntitySet>
+        <EntitySet Name="Members" EntityType="ProjectService.Members">
+          <NavigationPropertyBinding Path="person" Target="People"/>
+          <NavigationPropertyBinding Path="project" Target="Projects"/>
+        </EntitySet>
+        <EntitySet Name="Milestones" EntityType="ProjectService.Milestones">
+          <NavigationPropertyBinding Path="project" Target="Projects"/>
+          <NavigationPropertyBinding Path="owners" Target="MilestoneOwners"/>
+        </EntitySet>
+        <EntitySet Name="MilestoneOwners" EntityType="ProjectService.MilestoneOwners">
+          <NavigationPropertyBinding Path="person" Target="People"/>
+          <NavigationPropertyBinding Path="milestone" Target="Milestones"/>
+        </EntitySet>
+        <EntitySet Name="ProjectModules" EntityType="ProjectService.ProjectModules">
+          <NavigationPropertyBinding Path="project" Target="Projects"/>
+        </EntitySet>
+        <EntitySet Name="Clients" EntityType="ProjectService.Clients"/>
+        <EntitySet Name="People" EntityType="ProjectService.People"/>
+        <EntitySet Name="Currencies" EntityType="ProjectService.Currencies"/>
+        <FunctionImport Name="me" Function="ProjectService.me"/>
+        <FunctionImport Name="dashboard" Function="ProjectService.dashboard"/>
+      </EntityContainer>
+
+      <EntityType Name="Projects">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="code" Type="Edm.String" MaxLength="20"/>
+        <Property Name="externalCode" Type="Edm.String" MaxLength="40"/>
+        <Property Name="name" Type="Edm.String" MaxLength="200"/>
+        <Property Name="projectType" Type="Edm.String" MaxLength="40"/>
+        <Property Name="status" Type="Edm.String" MaxLength="20"/>
+        <Property Name="startDate" Type="Edm.Date"/>
+        <Property Name="endDate" Type="Edm.Date"/>
+        <Property Name="value" Type="Edm.Decimal" Precision="15" Scale="2"/>
+        <Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+        <Property Name="client_ID" Type="Edm.Guid"/>
+        <Property Name="pm_ID" Type="Edm.Guid"/>
+        <Property Name="needsReview" Type="Edm.Boolean"/>
+        <Property Name="reviewReason" Type="Edm.String" MaxLength="500"/>
+        <Property Name="lastUpdateAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <NavigationProperty Name="client" Type="ProjectService.Clients">
+          <ReferentialConstraint Property="client_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="pm" Type="ProjectService.Members">
+          <ReferentialConstraint Property="pm_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="members" Type="Collection(ProjectService.Members)" Partner="project"/>
+        <NavigationProperty Name="milestones" Type="Collection(ProjectService.Milestones)" Partner="project"/>
+        <NavigationProperty Name="modules" Type="Collection(ProjectService.ProjectModules)" Partner="project"/>
+      </EntityType>
+
+      <EntityType Name="Members">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="project_ID" Type="Edm.Guid"/>
+        <Property Name="person_ID" Type="Edm.Guid"/>
+        <Property Name="role" Type="Edm.String" MaxLength="40"/>
+        <Property Name="startDate" Type="Edm.Date"/>
+        <Property Name="endDate" Type="Edm.Date"/>
+        <NavigationProperty Name="project" Type="ProjectService.Projects" Partner="members">
+          <ReferentialConstraint Property="project_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="person" Type="ProjectService.People">
+          <ReferentialConstraint Property="person_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+      </EntityType>
+
+      <EntityType Name="Milestones">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="project_ID" Type="Edm.Guid"/>
+        <Property Name="milestoneType" Type="Edm.String" MaxLength="40"/>
+        <Property Name="sortOrder" Type="Edm.Int32"/>
+        <Property Name="mandatory" Type="Edm.Boolean"/>
+        <Property Name="status" Type="Edm.String" MaxLength="20"/>
+        <Property Name="forecastStart" Type="Edm.Date"/>
+        <Property Name="forecastEnd" Type="Edm.Date"/>
+        <Property Name="baselineStart" Type="Edm.Date"/>
+        <Property Name="baselineEnd" Type="Edm.Date"/>
+        <Property Name="actualDate" Type="Edm.Date"/>
+        <Property Name="isEstimated" Type="Edm.Boolean"/>
+        <Property Name="isOverdue" Type="Edm.Boolean"/>
+        <Property Name="itemsCompletion" Type="Edm.Int32"/>
+        <Property Name="justification" Type="Edm.String" MaxLength="500"/>
+        <Property Name="changeReason" Type="Edm.String" MaxLength="500"/>
+        <NavigationProperty Name="project" Type="ProjectService.Projects" Partner="milestones">
+          <ReferentialConstraint Property="project_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="owners" Type="Collection(ProjectService.MilestoneOwners)" Partner="milestone"/>
+      </EntityType>
+
+      <EntityType Name="MilestoneOwners">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="milestone_ID" Type="Edm.Guid"/>
+        <Property Name="person_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="milestone" Type="ProjectService.Milestones" Partner="owners">
+          <ReferentialConstraint Property="milestone_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="person" Type="ProjectService.People">
+          <ReferentialConstraint Property="person_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+      </EntityType>
+
+      <EntityType Name="ProjectModules">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="project_ID" Type="Edm.Guid"/>
+        <Property Name="module" Type="Edm.String" MaxLength="20"/>
+        <NavigationProperty Name="project" Type="ProjectService.Projects" Partner="modules">
+          <ReferentialConstraint Property="project_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+      </EntityType>
+
+      <EntityType Name="Clients">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="200"/>
+        <Property Name="taxId" Type="Edm.String" MaxLength="20"/>
+        <Property Name="active" Type="Edm.Boolean"/>
+      </EntityType>
+
+      <EntityType Name="People">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="200"/>
+        <Property Name="email" Type="Edm.String" MaxLength="200"/>
+        <Property Name="profile" Type="Edm.String" MaxLength="20"/>
+        <Property Name="active" Type="Edm.Boolean"/>
+      </EntityType>
+
+      <EntityType Name="Currencies">
+        <Key><PropertyRef Name="code"/></Key>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="60"/>
+      </EntityType>
+
+      <ComplexType Name="Me">
+        <Property Name="ID" Type="Edm.Guid"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="email" Type="Edm.String"/>
+        <Property Name="profile" Type="Edm.String"/>
+      </ComplexType>
+
+      <ComplexType Name="StatusCount">
+        <Property Name="status" Type="Edm.String"/>
+        <Property Name="count" Type="Edm.Int32"/>
+      </ComplexType>
+
+      <ComplexType Name="OverdueMilestone">
+        <Property Name="projectID" Type="Edm.Guid"/>
+        <Property Name="projectCode" Type="Edm.String"/>
+        <Property Name="projectName" Type="Edm.String"/>
+        <Property Name="milestoneType" Type="Edm.String"/>
+        <Property Name="dueDate" Type="Edm.Date"/>
+        <Property Name="status" Type="Edm.String"/>
+      </ComplexType>
+
+      <ComplexType Name="ProjectRef">
+        <Property Name="projectID" Type="Edm.Guid"/>
+        <Property Name="projectCode" Type="Edm.String"/>
+        <Property Name="projectName" Type="Edm.String"/>
+        <Property Name="clientName" Type="Edm.String"/>
+        <Property Name="status" Type="Edm.String"/>
+        <Property Name="reviewReason" Type="Edm.String"/>
+        <Property Name="lastUpdateAt" Type="Edm.DateTimeOffset"/>
+      </ComplexType>
+
+      <ComplexType Name="Dashboard">
+        <Property Name="staleDays" Type="Edm.Int32"/>
+        <Property Name="projectsByStatus" Type="Collection(ProjectService.StatusCount)"/>
+        <Property Name="overdueMilestones" Type="Collection(ProjectService.OverdueMilestone)"/>
+        <Property Name="staleProjects" Type="Collection(ProjectService.ProjectRef)"/>
+        <Property Name="projectsToReview" Type="Collection(ProjectService.ProjectRef)"/>
+      </ComplexType>
+
+      <Function Name="me" IsBound="false">
+        <ReturnType Type="ProjectService.Me"/>
+      </Function>
+      <Function Name="dashboard" IsBound="false">
+        <Parameter Name="staleDays" Type="Edm.Int32"/>
+        <ReturnType Type="ProjectService.Dashboard"/>
+      </Function>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

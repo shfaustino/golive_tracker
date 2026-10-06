@@ -1,17 +1,43 @@
 sap.ui.define([
     "./BaseController",
     "sap/ui/model/json/JSONModel",
+    "sap/base/security/encodeXML",
+    "../model/statusChart",
     "../formatter/formatter"
-], function (BaseController, JSONModel, formatter) {
+], function (BaseController, JSONModel, encodeXML, statusChart, formatter) {
     "use strict";
+
+    var DAY_MS = 86400000;
 
     return BaseController.extend("com.amt.golivetracker.controller.Dashboard", {
 
         formatter: formatter,
 
         onInit: function () {
-            this.setModel(new JSONModel({ busy: false, data: {}, kpis: [] }), "dashboard");
+            this.setModel(new JSONModel({ busy: false, data: {}, kpi: {}, chart: { rows: [] }, overdue: [], stale: [] }), "dashboard");
             this.getRouter().getRoute("dashboard").attachPatternMatched(this._load, this);
+        },
+
+        /**
+         * Opens the project a row is about. dashboard() rows carry the
+         * project's code; when they also carry its ID the project opens
+         * directly, otherwise Projetos opens searched by the code.
+         * @param {sap.ui.base.Event} oEvent press of a row or of its code
+         * @public
+         */
+        onOpenProject: function (oEvent) {
+            var oRow = oEvent.getSource().getBindingContext("dashboard").getObject();
+
+            if (oRow.projectID) {
+                this.getRouter().navTo("projectDetail", { projectId: oRow.projectID });
+            } else {
+                this.getOwnerComponent().getModel("app").setProperty("/globalSearch", oRow.projectCode);
+                this.getRouter().navTo("projects");
+            }
+        },
+
+        onSeeAllProjects: function () {
+            this.getRouter().navTo("projects");
         },
 
         /**
@@ -26,33 +52,65 @@ sap.ui.define([
 
             oViewModel.setProperty("/busy", true);
             oOperation.execute().then(function () {
-                var oData = oOperation.getBoundContext().getObject();
-
-                oViewModel.setProperty("/data", oData);
-                oViewModel.setProperty("/kpis", this._kpis(oData.projectsByStatus || []));
+                this._show(oOperation.getBoundContext().getObject());
             }.bind(this)).catch(function () {
-                oViewModel.setProperty("/data", {});
-                oViewModel.setProperty("/kpis", []);
-            }).finally(function () {
+                this._show({});
+            }.bind(this)).finally(function () {
                 oViewModel.setProperty("/busy", false);
             });
         },
 
         /**
-         * One tile for the total and one per status that has projects.
-         * @param {{status: string, count: number}[]} aByStatus projectsByStatus
-         * @returns {{label: string, count: number}[]} the tiles
+         * Spreads one dashboard() answer over the page's model.
+         * @param {object} oData the answer
          * @private
          */
-        _kpis: function (aByStatus) {
-            var iTotal = aByStatus.reduce(function (iSum, oRow) {
-                return iSum + oRow.count;
-            }, 0);
+        _show: function (oData) {
+            var oViewModel = this.getModel("dashboard"),
+                oBundle = this.getResourceBundle(),
+                aByStatus = oData.projectsByStatus || [],
+                oChart = statusChart.describe(aByStatus),
+                count = function (sStatus) {
+                    return aByStatus.filter(function (oRow) {
+                        return oRow.status === sStatus;
+                    }).reduce(function (iSum, oRow) {
+                        return iSum + oRow.count;
+                    }, 0);
+                },
+                iNow = Date.now();
 
-            return [{ label: this.getResourceBundle().getText("navProjects"), count: iTotal }].concat(
-                aByStatus.map(function (oRow) {
-                    return { label: formatter.projectStatusText.call(this, oRow.status), count: oRow.count };
-                }, this));
+            oViewModel.setProperty("/data", oData);
+            oViewModel.setProperty("/kpi", {
+                total: oChart.total,
+                inProgress: count("InProgress"),
+                toReview: (oData.projectsToReview || []).length,
+                closed: count("Closed")
+            });
+            oViewModel.setProperty("/chart", oChart);
+            // The gradient and the total are the app's own numbers and colours;
+            // the label goes through encodeXML all the same.
+            oViewModel.setProperty("/donutHtml",
+                "<div class=\"gtDonut\" style=\"background:" + oChart.gradient + "\">" +
+                "<div class=\"gtDonutCenter\"><strong>" + oChart.total + "</strong><span>" +
+                encodeXML(oBundle.getText("dashboardProjectsWord")) + "</span></div></div>");
+
+            oViewModel.setProperty("/overdueCount", (oData.overdueMilestones || []).length);
+            oViewModel.setProperty("/overdue", (oData.overdueMilestones || []).map(function (oRow) {
+                var iDays = Math.max(1, Math.floor((iNow - Date.parse(oRow.dueDate)) / DAY_MS));
+
+                return Object.assign({}, oRow, {
+                    milestoneLabel: formatter.milestoneTypeText.call(this, oRow.milestoneType) + " · " +
+                        formatter.dateOrDash(oRow.dueDate),
+                    lateText: oBundle.getText(iDays === 1 ? "daysLateOne" : "daysLate", [iDays])
+                });
+            }, this));
+            oViewModel.setProperty("/stale", (oData.staleProjects || []).map(function (oRow) {
+                var iDays = oRow.lastUpdateAt ? Math.floor((iNow - Date.parse(oRow.lastUpdateAt)) / DAY_MS) : null;
+
+                return Object.assign({}, oRow, {
+                    agoText: iDays === null ? "" : oBundle.getText("daysAgo", [iDays])
+                });
+            }));
         }
     });
 });

@@ -4,34 +4,36 @@
     xmlns:core="sap.ui.core"
     xmlns:mvc="sap.ui.core.mvc">
 
-    <!-- Projetos (docs/mockups/03-projetos.png), US-05 and US-09:
-         GET /project/Projects with the client, the active PM and the
-         modules expanded, filtered by status, client and PM, and searched
-         with $search. -->
+    <!-- Projetos (docs/mockups/03-projetos.png), US-05 and US-09: one page
+         of GET /project/Projects at a time ($top/$skip, $count), sorted by
+         the column clicked, filtered by status, client and PM and searched
+         with $search. The page is held in the "list" model
+         (Projects.controller.js#_load). -->
     <Page id="projectsPage" showHeader="false" class="gtPage">
-        <VBox class="gtPageContent">
-            <HBox justifyContent="SpaceBetween" alignItems="Center" class="gtPageHeader">
-                <Title text="{i18n>navProjects}" level="H1" titleStyle="H1"/>
+        <VBox class="gtPageContent" renderType="Bare">
+            <HBox justifyContent="SpaceBetween" alignItems="Center" class="gtPageHeader" renderType="Bare">
+                <Title text="{i18n>navProjects}" level="H1" class="gtPageTitle"/>
                 <Button
                     id="newProjectButton"
                     text="{i18n>newProject}"
                     icon="sap-icon://add"
                     type="Emphasized"
                     visible="{user>/canCreateProject}"
-                    press=".onNewProject"/>
+                    press=".onNewProject"
+                    class="gtPrimaryButton"/>
             </HBox>
 
-            <HBox wrap="Wrap" alignItems="End" class="gtCard gtFilterBar">
+            <HBox class="gtCard gtFilterBar" alignItems="End" renderType="Bare">
                 <SearchField
                     id="projectSearch"
-                    width="24rem"
                     placeholder="{i18n>projectSearchPlaceholder}"
                     search=".onSearch"
                     liveChange=".onSearch"
-                    class="sapUiSmallMarginEnd"/>
-                <VBox class="sapUiSmallMarginEnd">
-                    <Label text="{i18n>colStatus}" labelFor="statusFilter"/>
-                    <Select id="statusFilter" change=".onFilterChange" width="12rem">
+                    showSearchButton="false"
+                    class="gtFilterSearch"/>
+                <VBox class="gtFilterField" renderType="Bare">
+                    <Label text="{i18n>colStatus}" labelFor="statusFilter" class="gtFilterLabel"/>
+                    <Select id="statusFilter" change=".onFilterChange" width="100%">
                         <core:Item key="" text="{i18n>filterAll}"/>
                         <core:Item key="NotStarted" text="{i18n>statusNotStarted}"/>
                         <core:Item key="InProgress" text="{i18n>statusInProgress}"/>
@@ -42,77 +44,120 @@
                         <core:Item key="Cancelled" text="{i18n>statusCancelled}"/>
                     </Select>
                 </VBox>
-                <VBox class="sapUiSmallMarginEnd">
-                    <Label text="{i18n>colClient}" labelFor="clientFilter"/>
-                    <ComboBox
-                        id="clientFilter"
-                        width="14rem"
-                        placeholder="{i18n>filterAll}"
-                        showClearIcon="true"
-                        selectionChange=".onFilterChange"
-                        items="{path: '/Clients', parameters: {$select: 'ID,name'}, sorter: {path: 'name'}, length: 1000}">
-                        <core:Item key="{ID}" text="{name}"/>
-                    </ComboBox>
+                <VBox class="gtFilterField" renderType="Bare">
+                    <Label text="{i18n>colClient}" labelFor="clientFilter" class="gtFilterLabel"/>
+                    <Select id="clientFilter" change=".onFilterChange" width="100%" items="{options>/clients}">
+                        <core:Item key="{options>key}" text="{options>text}"/>
+                    </Select>
                 </VBox>
-                <VBox>
-                    <Label text="{i18n>colPm}" labelFor="pmFilter"/>
-                    <ComboBox
-                        id="pmFilter"
-                        width="14rem"
-                        placeholder="{i18n>filterAll}"
-                        showClearIcon="true"
-                        selectionChange=".onFilterChange"
-                        items="{path: '/People', parameters: {$select: 'ID,name'}, sorter: {path: 'name'}, length: 1000}">
-                        <core:Item key="{ID}" text="{name}"/>
-                    </ComboBox>
+                <VBox class="gtFilterField" renderType="Bare">
+                    <Label text="{i18n>colPm}" labelFor="pmFilter" class="gtFilterLabel"/>
+                    <Select id="pmFilter" change=".onFilterChange" width="100%" items="{options>/people}">
+                        <core:Item key="{options>key}" text="{options>text}"/>
+                    </Select>
                 </VBox>
             </HBox>
 
-            <Table
-                id="projectsTable"
-                class="gtCard"
-                growing="true"
-                growingThreshold="20"
-                growingScrollToLoad="false"
-                sticky="ColumnHeaders"
-                noDataText="{i18n>projectsNoData}"
-                items="{
-                    path: '/Projects',
-                    parameters: {
-                        $count: true,
-                        $expand: 'client($select=name),pm($expand=person($select=name))'
-                    },
-                    sorter: {path: 'code'}
-                }">
-                <headerToolbar>
-                    <OverflowToolbar>
-                        <Title id="projectsCount" text="{i18n>navProjects}" level="H2"/>
-                    </OverflowToolbar>
-                </headerToolbar>
-                <columns>
-                    <Column width="9rem"><Text text="{i18n>colCode}"/></Column>
-                    <Column><Text text="{i18n>colName}"/></Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colClient}"/></Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colPm}"/></Column>
-                    <Column width="10rem"><Text text="{i18n>colStatus}"/></Column>
-                    <Column minScreenWidth="Desktop" demandPopin="true" width="10rem"><Text text="{i18n>colLastUpdate}"/></Column>
-                </columns>
-                <items>
-                    <ColumnListItem type="Navigation" press=".onProjectPress">
-                        <cells>
-                            <Link text="{code}" press=".onProjectPress"/>
-                            <Text text="{name}"/>
-                            <Text text="{client/name}"/>
-                            <Text text="{pm/person/name}"/>
-                            <ObjectStatus
-                                text="{path: 'status', formatter: '.formatter.projectStatusText'}"
-                                state="{path: 'status', formatter: '.formatter.projectStatusState'}"
-                                inverted="true"/>
-                            <Text text="{path: 'lastUpdateAt', type: 'sap.ui.model.odata.type.DateTimeOffset', formatOptions: {style: 'short', pattern: 'dd/MM/yyyy'}}"/>
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
+            <VBox class="gtCard gtTableCard" renderType="Bare">
+                <Table
+                    id="projectsTable"
+                    class="gtTable"
+                    fixedLayout="false"
+                    busy="{list>/busy}"
+                    busyIndicatorDelay="0"
+                    noDataText="{i18n>projectsNoData}"
+                    items="{list>/rows}">
+                    <columns>
+                        <Column>
+                            <Button text="{i18n>colCode}" icon="{= ${list>/sort/path} === 'code' ? (${list>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="code"/></customData>
+                            </Button>
+                        </Column>
+                        <Column>
+                            <Button text="{i18n>colName}" icon="{= ${list>/sort/path} === 'name' ? (${list>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="name"/></customData>
+                            </Button>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true">
+                            <Button text="{i18n>colClient}" icon="{= ${list>/sort/path} === 'client/name' ? (${list>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="client/name"/></customData>
+                            </Button>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true">
+                            <Button text="{i18n>colPm}" icon="{= ${list>/sort/path} === 'pm/person/name' ? (${list>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="pm/person/name"/></customData>
+                            </Button>
+                        </Column>
+                        <Column>
+                            <Button text="{i18n>colStatus}" icon="{= ${list>/sort/path} === 'status' ? (${list>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="status"/></customData>
+                            </Button>
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true">
+                            <Button text="{i18n>colLastUpdate}" icon="{= ${list>/sort/path} === 'lastUpdateAt' ? (${list>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="lastUpdateAt"/></customData>
+                            </Button>
+                        </Column>
+                        <Column width="4rem" hAlign="End"/>
+                    </columns>
+                    <items>
+                        <ColumnListItem type="Active" press=".onProjectPress">
+                            <cells>
+                                <Link text="{list>code}" press=".onProjectPress" class="gtCodeLink"/>
+                                <Text text="{list>name}"/>
+                                <Text text="{list>client/name}"/>
+                                <Text text="{list>pm/person/name}"/>
+                                <HBox renderType="Bare" class="gtChips">
+                                    <ObjectStatus
+                                        text="{path: 'list>status', formatter: '.formatter.projectStatusText'}"
+                                        state="{path: 'list>status', formatter: '.formatter.projectStatusState'}"
+                                        inverted="true"
+                                        class="gtChip"/>
+                                    <ObjectStatus
+                                        text="{i18n>chipToReview}"
+                                        state="Warning"
+                                        inverted="true"
+                                        visible="{= !!${list>needsReview} }"
+                                        tooltip="{list>reviewReason}"
+                                        class="gtChip"/>
+                                </HBox>
+                                <Text text="{path: 'list>lastUpdateAt', formatter: '.formatter.timestampDate'}"/>
+                                <Button
+                                    icon="sap-icon://overflow"
+                                    type="Transparent"
+                                    tooltip="{i18n>openProject}"
+                                    press=".onProjectPress"
+                                    class="gtRowAction"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+
+                <HBox class="gtTableFooter" justifyContent="SpaceBetween" alignItems="Center" renderType="Bare">
+                    <Text text="{list>/rangeText}" class="gtSubtle"/>
+                    <HBox class="gtPager" alignItems="Center" renderType="Bare" visible="{= ${list>/pageCount} > 1 }">
+                        <Button
+                            icon="sap-icon://slim-arrow-left"
+                            tooltip="{i18n>pagePrevious}"
+                            enabled="{= ${list>/page} > 1 }"
+                            press=".onPagePrevious"
+                            class="gtPagerButton"/>
+                        <HBox items="{list>/pages}" renderType="Bare" class="gtPagerPages">
+                            <Button
+                                text="{list>n}"
+                                type="{= ${list>current} ? 'Emphasized' : 'Default' }"
+                                press=".onPagePress"
+                                class="gtPagerButton"/>
+                        </HBox>
+                        <Button
+                            icon="sap-icon://slim-arrow-right"
+                            tooltip="{i18n>pageNext}"
+                            enabled="{= ${list>/page} &lt; ${list>/pageCount} }"
+                            press=".onPageNext"
+                            class="gtPagerButton"/>
+                    </HBox>
+                </HBox>
+            </VBox>
         </VBox>
     </Page>
 

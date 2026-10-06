@@ -36,13 +36,15 @@ sap.ui.define([
 
         /**
          * App-wide state: the route the side navigation highlights, and
-         * whether the side navigation is collapsed.
+         * whether the sidebar is slid open. That only matters on a narrow
+         * window, where the sidebar covers the page (css/style.css); on a wide
+         * one it is always there. So it starts closed.
          * @returns {sap.ui.model.json.JSONModel} the "app" model
          */
         createAppModel: function () {
             return new JSONModel({
                 route: "dashboard",
-                sideExpanded: !Device.system.phone
+                sideExpanded: false
             });
         }
     };

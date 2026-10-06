@@ -10,10 +10,10 @@ sap.ui.define([
      * the i18n key of its label and the colour of its chip.
      */
     var PROJECT_STATUS = {
-        NotStarted: { text: "statusNotStarted", state: ValueState.None },
+        NotStarted: { text: "statusNotStarted", state: ValueState.Information },
         InProgress: { text: "statusInProgress", state: ValueState.Success },
         OnHold: { text: "statusOnHold", state: ValueState.Warning },
-        Replanning: { text: "statusReplanning", state: ValueState.Information },
+        Replanning: { text: "statusReplanning", state: ValueState.Warning },
         Closing: { text: "statusClosing", state: ValueState.Information },
         Closed: { text: "statusClosed", state: ValueState.Success },
         Cancelled: { text: "statusCancelled", state: ValueState.Error }
@@ -82,6 +82,20 @@ sap.ui.define([
         },
 
         /**
+         * The chip text of a milestone: "Em atraso" when the API says it is
+         * overdue (isOverdue, BR-07), its status otherwise.
+         * @param {string} sStatus the API's value
+         * @param {boolean} [bOverdue] the milestone's isOverdue
+         * @returns {string} the label
+         */
+        milestoneStatusLabel: function (sStatus, bOverdue) {
+            if (bOverdue) {
+                return this.getResourceBundle().getText("msOverdue");
+            }
+            return MILESTONE_STATUS[sStatus] ? this.getResourceBundle().getText(MILESTONE_STATUS[sStatus].text) : (sStatus || "");
+        },
+
+        /**
          * The chip colour of a milestone status; an overdue milestone is red
          * whatever its status (isOverdue, BR-07).
          * @param {string} sStatus the API's value
@@ -114,6 +128,31 @@ sap.ui.define([
             var aParts = /^(\d{4})-(\d{2})-(\d{2})$/.exec(sDate || "");
 
             return aParts ? aParts[3] + "/" + aParts[2] + "/" + aParts[1] : "—";
+        },
+
+        /**
+         * The day of an ISO 8601 timestamp, as the app shows dates, in the
+         * browser's time zone ("Última atualização").
+         * @param {string} sTimestamp e.g. 2026-10-02T09:15:00Z
+         * @returns {string} DD/MM/YYYY, or "—"
+         */
+        timestampDate: function (sTimestamp) {
+            var oDate = sTimestamp ? new Date(sTimestamp) : null;
+
+            if (!oDate || isNaN(oDate.getTime())) {
+                return "—";
+            }
+            return String(oDate.getDate()).padStart(2, "0") + "/" + String(oDate.getMonth() + 1).padStart(2, "0") +
+                "/" + oDate.getFullYear();
+        },
+
+        /**
+         * A share as the legend shows it, with a decimal comma ("31,8%").
+         * @param {number} fPct the percentage
+         * @returns {string} the text
+         */
+        percent: function (fPct) {
+            return typeof fPct === "number" ? String(fPct).replace(".", ",") + "%" : "";
         },
 
         /**

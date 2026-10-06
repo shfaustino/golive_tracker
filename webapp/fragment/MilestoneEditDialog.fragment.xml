@@ -3,7 +3,8 @@
     xmlns:core="sap.ui.core"
     xmlns:f="sap.ui.layout.form">
 
-    <!-- Editing one milestone (US-14 to US-20). The dialog works on a copy
+    <!-- Editing one milestone (US-14 to US-20), or adding one (msEdit>/mode
+         "create": only the type and the forecast dates). The dialog works on a copy
          in the "msEdit" model; Guardar sends only what changed, in one
          PATCH (ProjectDetail.controller.js#onSaveMilestone). The rules the
          API enforces are checked first and shown next to their field:
@@ -15,6 +16,18 @@
         contentWidth="32rem"
         class="sapUiContentPadding">
         <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
+            <Label text="{i18n>colMilestone}" labelFor="msType" visible="{= ${msEdit>/mode} === 'create' }"/>
+            <Select id="msType" selectedKey="{msEdit>/values/milestoneType}" visible="{= ${msEdit>/mode} === 'create' }">
+                <core:Item key="KO" text="{i18n>msTypeKO}"/>
+                <core:Item key="PTO" text="{i18n>msTypePTO}"/>
+                <core:Item key="GOP" text="{i18n>msTypeGOP}"/>
+                <core:Item key="Training" text="{i18n>msTypeTraining}"/>
+                <core:Item key="Testing" text="{i18n>msTypeTesting}"/>
+                <core:Item key="Go-live" text="{i18n>msTypeGoLive}"/>
+                <core:Item key="Report delivery" text="{i18n>msTypeReportDelivery}"/>
+                <core:Item key="Closure" text="{i18n>msTypeClosure}"/>
+            </Select>
+
             <Label text="{i18n>msForecastStart}" labelFor="msForecastStart"/>
             <DatePicker
                 id="msForecastStart"
@@ -33,9 +46,10 @@
                 valueState="{= ${msEdit>/errors/forecastEnd} ? 'Error' : 'None' }"
                 valueStateText="{msEdit>/errors/forecastEnd}"/>
 
-            <Label text="{i18n>msChangeReason}" labelFor="msChangeReason"/>
+            <Label text="{i18n>msChangeReason}" labelFor="msChangeReason" visible="{= ${msEdit>/mode} === 'edit' }"/>
             <TextArea
                 id="msChangeReason"
+                visible="{= ${msEdit>/mode} === 'edit' }"
                 value="{msEdit>/values/changeReason}"
                 rows="2"
                 growing="true"
@@ -43,8 +57,8 @@
                 valueState="{= ${msEdit>/errors/changeReason} ? 'Error' : 'None' }"
                 valueStateText="{msEdit>/errors/changeReason}"/>
 
-            <Label text="{i18n>colStatus}" labelFor="msStatus"/>
-            <Select id="msStatus" selectedKey="{msEdit>/values/status}">
+            <Label text="{i18n>colStatus}" labelFor="msStatus" visible="{= ${msEdit>/mode} === 'edit' }"/>
+            <Select id="msStatus" selectedKey="{msEdit>/values/status}" visible="{= ${msEdit>/mode} === 'edit' }">
                 <core:Item key="Planned" text="{i18n>msStatusPlanned}"/>
                 <core:Item key="InProgress" text="{i18n>msStatusInProgress}"/>
                 <core:Item key="Completed" text="{i18n>msStatusCompleted}"/>
@@ -53,20 +67,20 @@
                 <core:Item key="Cancelled" text="{i18n>msStatusCancelled}"/>
             </Select>
 
-            <Label text="{i18n>msColActual}" labelFor="msActualDate" visible="{= ${msEdit>/values/status} === 'Completed' }"/>
+            <Label text="{i18n>msColActual}" labelFor="msActualDate" visible="{= ${msEdit>/mode} === 'edit' &amp;&amp; ${msEdit>/values/status} === 'Completed' }"/>
             <DatePicker
                 id="msActualDate"
-                visible="{= ${msEdit>/values/status} === 'Completed' }"
+                visible="{= ${msEdit>/mode} === 'edit' &amp;&amp; ${msEdit>/values/status} === 'Completed' }"
                 value="{msEdit>/values/actualDate}"
                 valueFormat="yyyy-MM-dd"
                 displayFormat="dd/MM/yyyy"
                 valueState="{= ${msEdit>/errors/actualDate} ? 'Error' : 'None' }"
                 valueStateText="{msEdit>/errors/actualDate}"/>
 
-            <Label text="{i18n>msJustification}" labelFor="msJustification" visible="{= ${msEdit>/values/status} === 'NotApplicable' }"/>
+            <Label text="{i18n>msJustification}" labelFor="msJustification" visible="{= ${msEdit>/mode} === 'edit' &amp;&amp; ${msEdit>/values/status} === 'NotApplicable' }"/>
             <TextArea
                 id="msJustification"
-                visible="{= ${msEdit>/values/status} === 'NotApplicable' }"
+                visible="{= ${msEdit>/mode} === 'edit' &amp;&amp; ${msEdit>/values/status} === 'NotApplicable' }"
                 value="{msEdit>/values/justification}"
                 rows="2"
                 growing="true"

@@ -11,16 +11,19 @@
   "main": "webapp/index.html",
   "devDependencies": {
     "@sap-ux/eslint-plugin-fiori-tools": "^10.0.0",
+    "@sap-ux/ui5-middleware-fe-mockserver": "^2.4.17",
     "@sap/ux-ui5-tooling": "1",
     "@ui5/cli": "^4.0.33",
     "eslint": "^10"
   },
   "scripts": {
     "start": "fiori run --config ./ui5.yaml --open \"index.html\"",
+    "start-mock": "fiori run --config ./ui5-mock.yaml --open \"index.html\"",
     "build": "ui5 build --config=ui5.yaml --clean-dest --dest dist",
     "lint": "eslint .",
     "build:mta": "mbt build",
     "deploy": "cf deploy mta_archives/com.amt.golivetracker_0.0.1.mtar",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "mock:generate": "node tools/generate-mock-data.js"
   }
 }
