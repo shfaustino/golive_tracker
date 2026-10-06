@@ -14,8 +14,9 @@ sap.ui.define([
      * DELETE to an entity's canonical path, and the API's $metadata gives
      * those entities sets of their own: /Milestones(<id>). So these few
      * writes go out here, as plain requests to the parent's path, and the
-     * caller reads its list again afterwards. Creating needs none of this:
-     * a POST goes to the collection under the parent already.
+     * caller reads its list again afterwards. Creating needs none of this
+     * (a POST goes to the collection under the parent already), but a POST
+     * may come here too where no list binding is at hand (a module).
      *
      * The CSRF token is fetched once (the approuter's, on BTP; none locally)
      * and fetched again when it has expired.

@@ -222,10 +222,9 @@
       </EntityType>
 
       <EntityType Name="ProjectModules">
-        <Key><PropertyRef Name="ID"/></Key>
-        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
-        <Property Name="project_ID" Type="Edm.Guid"/>
-        <Property Name="module" Type="Edm.String" MaxLength="20"/>
+        <Key><PropertyRef Name="project_ID"/><PropertyRef Name="module"/></Key>
+        <Property Name="project_ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="module" Type="Edm.String" MaxLength="20" Nullable="false"/>
         <NavigationProperty Name="project" Type="ProjectService.Projects" Partner="modules">
           <ReferentialConstraint Property="project_ID" ReferencedProperty="ID"/>
         </NavigationProperty>

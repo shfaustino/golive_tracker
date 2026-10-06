@@ -2,6 +2,7 @@
     controllerName="com.amt.golivetracker.controller.ProjectDetail"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
     xmlns:form="sap.ui.layout.form"
     xmlns:mvc="sap.ui.core.mvc">
 
@@ -408,19 +409,33 @@
                         </VBox>
                     </IconTabFilter>
                     <!-- Módulos: the SAP modules the project covers, set when
-                         the project is created (deep insert). Read only here. -->
+                         the project is created (deep insert), and added or
+                         taken off here (controller/projectModules.js). -->
                     <IconTabFilter key="modulos" text="{i18n>tabModules}">
                         <VBox class="gtCard gtCardBody" renderType="Bare">
-                            <HBox class="gtCardHeaderPlain" renderType="Bare">
+                            <HBox class="gtCardHeader" renderType="Bare">
                                 <Title text="{i18n>modTitle}" level="H2" class="gtSectionTitle"/>
+                                <Button
+                                    id="addModuleButton"
+                                    text="{i18n>modAddTitle}"
+                                    icon="sap-icon://add"
+                                    type="Emphasized"
+                                    press=".onAddModule"
+                                    class="gtPrimaryButton gtPrimaryButtonSmall"/>
                             </HBox>
                             <HBox items="{overview>/modules}" class="gtModuleGrid" renderType="Bare">
                                 <HBox class="gtModule" alignItems="Center" renderType="Bare">
                                     <HBox class="gtKpiIcon gtTintBlue" renderType="Bare"><core:Icon src="sap-icon://puzzle"/></HBox>
-                                    <VBox renderType="Bare">
+                                    <VBox renderType="Bare" class="gtModuleText">
                                         <Text text="{overview>module}" class="gtModuleCode"/>
                                         <Text text="{path: 'overview>module', formatter: '.formatter.moduleName'}" class="gtSubtle"/>
                                     </VBox>
+                                    <Button
+                                        icon="sap-icon://decline"
+                                        type="Transparent"
+                                        tooltip="{i18n>modRemove}"
+                                        press=".onRemoveModule"
+                                        class="gtModuleRemove"/>
                                 </HBox>
                             </HBox>
                             <Text text="{i18n>modNoData}" visible="{= ${overview>/modules}.length === 0 }" class="gtSubtle"/>

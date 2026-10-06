@@ -25,9 +25,9 @@ sap.ui.define([
             this.setModel(new JSONModel({
                 busy: false, rows: [], page: 1, pageCount: 0, pages: [], rangeText: "", search: "",
                 showProject: true, noDataText: oBundle.getText("attNoData"),
-                typeFilter: [{ key: "", text: oBundle.getText("filterAll") }].concat(attachmentRules.DOCUMENT_TYPES.map(function (sType) {
+                typeFilter: attachmentRules.DOCUMENT_TYPES.map(function (sType) {
                     return { key: sType, text: formatter.documentTypeText.call(this, sType) };
-                }, this))
+                }, this)
             }), "atts");
             this.getRouter().getRoute("attachments").attachPatternMatched(this._onRouteMatched, this);
         },

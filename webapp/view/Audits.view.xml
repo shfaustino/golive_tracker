@@ -2,6 +2,7 @@
     controllerName="com.amt.golivetracker.controller.Audits"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
     xmlns:mvc="sap.ui.core.mvc">
 
     <!-- Auditorias (docs/mockups/08-auditorias.png), US-24 to US-26: one page
@@ -36,7 +37,7 @@
                         class="gtFilterSearch"/>
                     <VBox class="gtFilterField" renderType="Bare">
                         <Label text="{i18n>mwColProject}" labelFor="auditProjectFilter" class="gtFilterLabel"/>
-                        <ComboBox
+                        <gt:SearchSelect
                             id="auditProjectFilter"
                             width="100%"
                             placeholder="{i18n>filterAll}"
@@ -44,16 +45,16 @@
                             selectionChange=".onFilterChange"
                             items="{path: 'audit>/projects', length: 1000}">
                             <core:ListItem key="{audit>ID}" text="{audit>code}" additionalText="{audit>name}"/>
-                        </ComboBox>
+                        </gt:SearchSelect>
                     </VBox>
                     <VBox class="gtFilterField" renderType="Bare">
                         <Label text="{i18n>auditResult}" labelFor="auditResultFilter" class="gtFilterLabel"/>
-                        <Select id="auditResultFilter" width="100%" change=".onFilterChange">
-                            <core:Item key="" text="{i18n>filterAll}"/>
+                        <gt:SearchSelect id="auditResultFilter" width="100%" selectionChange=".onFilterChange"
+                            placeholder="{i18n>filterAll}" showClearIcon="true">
                             <core:Item key="Approved" text="{i18n>resultApproved}"/>
                             <core:Item key="ApprovedWithReservations" text="{i18n>resultApprovedWithReservations}"/>
                             <core:Item key="Rejected" text="{i18n>resultRejected}"/>
-                        </Select>
+                        </gt:SearchSelect>
                     </VBox>
                 </HBox>
 

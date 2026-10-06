@@ -1,6 +1,7 @@
 <core:FragmentDefinition
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
     xmlns:f="sap.ui.layout.form">
 
     <!-- Adicionar follow-up (US-26): ProjectService.addFollowUp on the audit,
@@ -21,7 +22,7 @@
                 valueStateText="{followUp>/errors/name}"/>
 
             <Label text="{i18n>fuOwner}" labelFor="fuOwner" required="true"/>
-            <ComboBox
+            <gt:SearchSelect
                 id="fuOwner"
                 width="100%"
                 selectedKey="{followUp>/values/owner_ID}"
@@ -29,7 +30,7 @@
                 valueState="{= ${followUp>/errors/owner_ID} ? 'Error' : 'None' }"
                 valueStateText="{followUp>/errors/owner_ID}">
                 <core:ListItem key="{followUp>ID}" text="{followUp>name}" additionalText="{followUp>roles}"/>
-            </ComboBox>
+            </gt:SearchSelect>
 
             <Label text="{i18n>mwColDate}" labelFor="fuDate" required="true"/>
             <DatePicker

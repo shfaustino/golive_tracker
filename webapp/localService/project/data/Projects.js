@@ -139,7 +139,7 @@ module.exports = {
         }
         const moduleSet = await this.base.getEntityInterface("ProjectModules");
         for (const m of modules) {
-            await moduleSet.addEntry({ ID: randomUUID(), project_ID: mockEntry.ID, module: m.module });
+            await moduleSet.addEntry({ project_ID: mockEntry.ID, module: m.module });
         }
         const milestoneSet = await this.base.getEntityInterface("Milestones");
         const types = TEMPLATES[mockEntry.projectType] || [];

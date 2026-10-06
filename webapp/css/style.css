@@ -1419,6 +1419,16 @@
     font-size: 1.0625rem;
 }
 
+/* the module's name takes the room; the "×" stays at the card's end */
+.gtModuleText {
+    flex: 1;
+    min-width: 0;
+}
+
+.gtApp .gtModuleRemove .sapMBtnInner {
+    color: var(--gtMuted);
+}
+
 /* Updates */
 .gtComposer {
     display: flex;

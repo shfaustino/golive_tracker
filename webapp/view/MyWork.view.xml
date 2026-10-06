@@ -2,6 +2,7 @@
     controllerName="com.amt.golivetracker.controller.MyWork"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
     xmlns:mvc="sap.ui.core.mvc">
 
     <!-- O meu trabalho (docs/mockups/07-o-meu-trabalho.png), US-13: the
@@ -71,14 +72,14 @@
                                             search=".onSearch"
                                             showSearchButton="false"
                                             class="gtFilterSearch gtToolSearch"/>
-                                        <Select id="itemState" change=".onStateChange" selectedKey="{work>/state}">
-                                            <core:Item key="" text="{i18n>mwAllStates}"/>
+                                        <gt:SearchSelect id="itemState" selectionChange=".onStateChange" selectedKey="{work>/state}"
+                                            placeholder="{i18n>mwAllStates}" showClearIcon="true">
                                             <core:Item key="Late" text="{i18n>msOverdue}"/>
                                             <core:Item key="ToDo" text="{i18n>itemToDo}"/>
                                             <core:Item key="InProgress" text="{i18n>statusInProgress}"/>
                                             <core:Item key="Done" text="{i18n>itemDone}"/>
                                             <core:Item key="Cancelled" text="{i18n>statusCancelled}"/>
-                                        </Select>
+                                        </gt:SearchSelect>
                                     </HBox>
                                 </HBox>
                                 <Table

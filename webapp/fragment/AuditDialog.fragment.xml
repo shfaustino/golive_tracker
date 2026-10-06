@@ -1,6 +1,7 @@
 <core:FragmentDefinition
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
     xmlns:f="sap.ui.layout.form">
 
     <!-- Nova auditoria / Editar auditoria (US-24, BR-10), in the "audit"
@@ -14,7 +15,7 @@
         class="sapUiContentPadding">
         <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
             <Label text="{i18n>mwColProject}" labelFor="auditProject" required="true"/>
-            <ComboBox
+            <gt:SearchSelect
                 id="auditProject"
                 width="100%"
                 enabled="{= ${audit>/mode} === 'create' &amp;&amp; !${audit>/projectFixed} }"
@@ -22,20 +23,19 @@
                 selectionChange=".onAuditProjectChange"
                 items="{path: 'audit>/projects', templateShareable: false, length: 1000}">
                 <core:ListItem key="{audit>ID}" text="{audit>code}" additionalText="{audit>name}"/>
-            </ComboBox>
+            </gt:SearchSelect>
 
             <Label text="{i18n>colMilestone}" labelFor="auditMilestone" required="true"/>
-            <Select
+            <gt:SearchSelect
                 id="auditMilestone"
                 width="100%"
-                forceSelection="false"
                 enabled="{= ${audit>/mode} === 'create' }"
                 selectedKey="{audit>/values/milestone_ID}"
                 items="{path: 'audit>/milestones', templateShareable: false}"
                 valueState="{= ${audit>/errors/milestone_ID} ? 'Error' : 'None' }"
                 valueStateText="{audit>/errors/milestone_ID}">
                 <core:Item key="{audit>ID}" text="{audit>label}"/>
-            </Select>
+            </gt:SearchSelect>
             <Text
                 text="{i18n>auditNoMilestones}"
                 visible="{= ${audit>/mode} === 'create' &amp;&amp; !!${audit>/values/project_ID} &amp;&amp; ${audit>/milestones}.length === 0 }"
@@ -54,7 +54,7 @@
                 valueStateText="{audit>/errors/date}"/>
 
             <Label text="{i18n>auditAuditor}" labelFor="auditAuditor" required="true"/>
-            <ComboBox
+            <gt:SearchSelect
                 id="auditAuditor"
                 width="100%"
                 selectedKey="{audit>/values/auditor_ID}"
@@ -62,7 +62,7 @@
                 valueState="{= ${audit>/errors/auditor_ID} ? 'Error' : 'None' }"
                 valueStateText="{audit>/errors/auditor_ID}">
                 <core:ListItem key="{audit>ID}" text="{audit>name}" additionalText="{audit>email}"/>
-            </ComboBox>
+            </gt:SearchSelect>
 
             <Label text="{i18n>auditResult}" labelFor="auditResult" required="true"/>
             <SegmentedButton id="auditResult" selectedKey="{audit>/values/result}" width="100%">

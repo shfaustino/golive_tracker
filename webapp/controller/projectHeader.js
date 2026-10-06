@@ -5,8 +5,9 @@ sap.ui.define([
     "sap/m/MessageToast",
     "../model/projectOverview",
     "../model/memberRules",
-    "../formatter/formatter"
-], function (Fragment, ActionSheet, Button, MessageToast, projectOverview, memberRules, formatter) {
+    "../formatter/formatter",
+    "./projectModules"
+], function (Fragment, ActionSheet, Button, MessageToast, projectOverview, memberRules, formatter, projectModules) {
     "use strict";
 
     /** The project statuses, in the order the status dialog offers them. */
@@ -23,10 +24,10 @@ sap.ui.define([
      * - "…" > Gravar baseline: ProjectService.setBaseline { reason } (BR-06).
      * - Visão geral and Módulos read the "overview" model, filled by
      *   _loadOverview with the project's milestones, team, modules and
-     *   latest updates.
+     *   latest updates; adding and taking off a module is ./projectModules.
      * - Updates: POST .../updates { text }; the API fills in the author.
      */
-    return {
+    return Object.assign({}, projectModules, {
 
         /**
          * The "…" next to the status.
@@ -272,5 +273,5 @@ sap.ui.define([
             }
             return this._pActionDialog;
         }
-    };
+    });
 });

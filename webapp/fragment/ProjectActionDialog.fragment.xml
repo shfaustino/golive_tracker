@@ -1,6 +1,7 @@
 <core:FragmentDefinition
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
     xmlns:f="sap.ui.layout.form">
 
     <!-- The project's "…" actions (controller/projectHeader.js), in two
@@ -20,13 +21,13 @@
             <Text text="{action>/intro}" class="gtSubtle"/>
 
             <Label text="{i18n>actNewStatus}" labelFor="actionStatus" required="true" visible="{= ${action>/mode} === 'status' }"/>
-            <Select
+            <gt:SearchSelect
                 id="actionStatus"
                 visible="{= ${action>/mode} === 'status' }"
                 selectedKey="{action>/values/status}"
                 items="{path: 'action>/statuses', templateShareable: false}">
                 <core:Item key="{action>key}" text="{action>text}"/>
-            </Select>
+            </gt:SearchSelect>
 
             <Label text="{i18n>actReason}" labelFor="actionReason" required="{= ${action>/mode} === 'baseline' }"/>
             <TextArea

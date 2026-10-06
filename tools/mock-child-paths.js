@@ -17,6 +17,7 @@ const SETS = {
     updates: "Updates",
     attachments: "Attachments",
     items: "MilestoneItems",
+    modules: "ProjectModules",
     owners: "MilestoneOwners"
 };
 

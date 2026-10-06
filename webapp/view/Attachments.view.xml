@@ -2,6 +2,7 @@
     controllerName="com.amt.golivetracker.controller.Attachments"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
     xmlns:mvc="sap.ui.core.mvc">
 
     <!-- Anexos (US-29): GET /project/AllAttachments, every attachment of the
@@ -35,7 +36,7 @@
                         class="gtFilterSearch"/>
                     <VBox class="gtFilterField" renderType="Bare">
                         <Label text="{i18n>mwColProject}" labelFor="attachmentProjectFilter" class="gtFilterLabel"/>
-                        <ComboBox
+                        <gt:SearchSelect
                             id="attachmentProjectFilter"
                             width="100%"
                             placeholder="{i18n>filterAll}"
@@ -43,14 +44,15 @@
                             selectionChange=".onFilterChange"
                             items="{path: 'attach>/projects', length: 1000}">
                             <core:ListItem key="{attach>ID}" text="{attach>code}" additionalText="{attach>name}"/>
-                        </ComboBox>
+                        </gt:SearchSelect>
                     </VBox>
                     <VBox class="gtFilterField" renderType="Bare">
                         <Label text="{i18n>attType}" labelFor="attachmentTypeFilter" class="gtFilterLabel"/>
-                        <Select id="attachmentTypeFilter" width="100%" change=".onFilterChange"
+                        <gt:SearchSelect id="attachmentTypeFilter" width="100%" selectionChange=".onFilterChange"
+                            placeholder="{i18n>filterAll}" showClearIcon="true"
                             items="{path: 'atts>/typeFilter'}">
                             <core:Item key="{atts>key}" text="{atts>text}"/>
-                        </Select>
+                        </gt:SearchSelect>
                     </VBox>
                 </HBox>
 

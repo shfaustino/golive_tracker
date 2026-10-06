@@ -2,6 +2,7 @@
     controllerName="com.amt.golivetracker.controller.Admin"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
     xmlns:mvc="sap.ui.core.mvc">
 
     <!-- Pessoas e Clientes (docs/mockups/09-administracao-pessoas.png),
@@ -57,20 +58,20 @@
                     class="gtFilterSearch"/>
                 <VBox class="gtFilterField" renderType="Bare" visible="{= ${dir>/tab} === 'pessoas' }">
                     <Label text="{i18n>teamColProfile}" labelFor="profileFilter" class="gtFilterLabel"/>
-                    <Select id="profileFilter" width="100%" selectedKey="{dir>/profile}" change=".onFilterChange">
-                        <core:Item key="" text="{i18n>filterAll}"/>
+                    <gt:SearchSelect id="profileFilter" width="100%" selectedKey="{dir>/profile}" selectionChange=".onFilterChange"
+                        placeholder="{i18n>filterAll}" showClearIcon="true">
                         <core:Item key="Administrator" text="{i18n>profileAdministrator}"/>
                         <core:Item key="Architect" text="{i18n>profileArchitect}"/>
                         <core:Item key="User" text="{i18n>profileUser}"/>
-                    </Select>
+                    </gt:SearchSelect>
                 </VBox>
                 <VBox class="gtFilterField" renderType="Bare" visible="{user>/isAdmin}">
                     <Label text="{i18n>colStatus}" labelFor="activeFilter" class="gtFilterLabel"/>
-                    <Select id="activeFilter" width="100%" selectedKey="{dir>/state}" change=".onFilterChange">
-                        <core:Item key="" text="{i18n>filterAll}"/>
+                    <gt:SearchSelect id="activeFilter" width="100%" selectedKey="{dir>/state}" selectionChange=".onFilterChange"
+                        placeholder="{i18n>filterAll}" showClearIcon="true">
                         <core:Item key="active" text="{i18n>teamActive}"/>
                         <core:Item key="inactive" text="{i18n>teamInactive}"/>
-                    </Select>
+                    </gt:SearchSelect>
                 </VBox>
             </HBox>
 

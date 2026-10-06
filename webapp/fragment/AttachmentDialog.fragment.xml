@@ -1,6 +1,7 @@
 <core:FragmentDefinition
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
     xmlns:f="sap.ui.layout.form">
 
     <!-- Novo anexo (US-29, BR-11), in the "attach" model
@@ -13,7 +14,7 @@
         class="sapUiContentPadding">
         <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
             <Label text="{i18n>mwColProject}" labelFor="attProject" required="true"/>
-            <ComboBox
+            <gt:SearchSelect
                 id="attProject"
                 width="100%"
                 enabled="{= !${attach>/projectFixed} }"
@@ -23,7 +24,7 @@
                 valueState="{= ${attach>/errors/project_ID} ? 'Error' : 'None' }"
                 valueStateText="{attach>/errors/project_ID}">
                 <core:ListItem key="{attach>ID}" text="{attach>code}" additionalText="{attach>name}"/>
-            </ComboBox>
+            </gt:SearchSelect>
 
             <Label text="{i18n>attOwner}" labelFor="attOwner"/>
             <SegmentedButton id="attOwner" selectedKey="{attach>/values/owner}" width="100%">
@@ -35,10 +36,9 @@
             </SegmentedButton>
 
             <Label text="{i18n>colMilestone}" labelFor="attMilestone" required="true" visible="{= ${attach>/values/owner} !== 'project' }"/>
-            <Select
+            <gt:SearchSelect
                 id="attMilestone"
                 width="100%"
-                forceSelection="false"
                 visible="{= ${attach>/values/owner} !== 'project' }"
                 selectedKey="{attach>/values/milestone_ID}"
                 change=".onAttachmentMilestoneChange"
@@ -46,32 +46,31 @@
                 valueState="{= ${attach>/errors/milestone_ID} ? 'Error' : 'None' }"
                 valueStateText="{attach>/errors/milestone_ID}">
                 <core:Item key="{attach>ID}" text="{attach>label}"/>
-            </Select>
+            </gt:SearchSelect>
 
             <Label text="{i18n>attOwnerItem}" labelFor="attItem" required="true" visible="{= ${attach>/values/owner} === 'item' }"/>
-            <Select
+            <gt:SearchSelect
                 id="attItem"
                 width="100%"
-                forceSelection="false"
                 visible="{= ${attach>/values/owner} === 'item' }"
                 selectedKey="{attach>/values/milestoneItem_ID}"
                 items="{path: 'attach>/items', templateShareable: false}"
                 valueState="{= ${attach>/errors/milestoneItem_ID} ? 'Error' : 'None' }"
                 valueStateText="{attach>/errors/milestoneItem_ID}">
                 <core:Item key="{attach>ID}" text="{attach>name}"/>
-            </Select>
+            </gt:SearchSelect>
             <Text
                 text="{i18n>attNoItems}"
                 visible="{= ${attach>/values/owner} === 'item' &amp;&amp; !!${attach>/values/milestone_ID} &amp;&amp; ${attach>/items}.length === 0 }"
                 class="gtHint"/>
 
             <Label text="{i18n>attType}" labelFor="attType" required="true"/>
-            <Select id="attType" width="100%" forceSelection="false" selectedKey="{attach>/values/documentType}"
+            <gt:SearchSelect id="attType" width="100%" selectedKey="{attach>/values/documentType}"
                 items="{path: 'attach>/types', templateShareable: false}"
                 valueState="{= ${attach>/errors/documentType} ? 'Error' : 'None' }"
                 valueStateText="{attach>/errors/documentType}">
                 <core:Item key="{attach>key}" text="{attach>text}"/>
-            </Select>
+            </gt:SearchSelect>
 
             <Label text="{i18n>attName}" labelFor="attName" required="true"/>
             <Input

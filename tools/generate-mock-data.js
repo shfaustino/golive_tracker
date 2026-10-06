@@ -363,7 +363,8 @@ const files = {
     Members: members,
     Milestones: milestones,
     MilestoneOwners: owners,
-    ProjectModules: modules,
+    // keyed by project and module, as in the API; the ID only keeps the other IDs where they were
+    ProjectModules: modules.map(({ project_ID, module }) => ({ project_ID, module })),
     Clients: CLIENTS,
     People: PEOPLE,
     Currencies: [{ code: "EUR", name: "Euro" }, { code: "USD", name: "US Dollar" }, { code: "GBP", name: "British Pound" }]

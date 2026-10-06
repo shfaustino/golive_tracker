@@ -1,6 +1,7 @@
 <core:FragmentDefinition
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
     xmlns:f="sap.ui.layout.form">
 
     <!-- Editing one milestone (US-14 to US-20), or adding one (msEdit>/mode
@@ -17,7 +18,7 @@
         class="sapUiContentPadding">
         <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
             <Label text="{i18n>colMilestone}" labelFor="msType" visible="{= ${msEdit>/mode} === 'create' }"/>
-            <Select id="msType" selectedKey="{msEdit>/values/milestoneType}" visible="{= ${msEdit>/mode} === 'create' }">
+            <gt:SearchSelect id="msType" selectedKey="{msEdit>/values/milestoneType}" visible="{= ${msEdit>/mode} === 'create' }">
                 <core:Item key="KO" text="{i18n>msTypeKO}"/>
                 <core:Item key="PTO" text="{i18n>msTypePTO}"/>
                 <core:Item key="GOP" text="{i18n>msTypeGOP}"/>
@@ -26,7 +27,7 @@
                 <core:Item key="Go-live" text="{i18n>msTypeGoLive}"/>
                 <core:Item key="Report delivery" text="{i18n>msTypeReportDelivery}"/>
                 <core:Item key="Closure" text="{i18n>msTypeClosure}"/>
-            </Select>
+            </gt:SearchSelect>
 
             <Label text="{i18n>msForecastStart}" labelFor="msForecastStart"/>
             <DatePicker
@@ -58,14 +59,14 @@
                 valueStateText="{msEdit>/errors/changeReason}"/>
 
             <Label text="{i18n>colStatus}" labelFor="msStatus" visible="{= ${msEdit>/mode} === 'edit' }"/>
-            <Select id="msStatus" selectedKey="{msEdit>/values/status}" visible="{= ${msEdit>/mode} === 'edit' }">
+            <gt:SearchSelect id="msStatus" selectedKey="{msEdit>/values/status}" visible="{= ${msEdit>/mode} === 'edit' }">
                 <core:Item key="Planned" text="{i18n>msStatusPlanned}"/>
                 <core:Item key="InProgress" text="{i18n>msStatusInProgress}"/>
                 <core:Item key="Completed" text="{i18n>msStatusCompleted}"/>
                 <core:Item key="Postponed" text="{i18n>msStatusPostponed}"/>
                 <core:Item key="NotApplicable" text="{i18n>msStatusNotApplicable}"/>
                 <core:Item key="Cancelled" text="{i18n>msStatusCancelled}"/>
-            </Select>
+            </gt:SearchSelect>
 
             <Label text="{i18n>msColActual}" labelFor="msActualDate" visible="{= ${msEdit>/mode} === 'edit' &amp;&amp; ${msEdit>/values/status} === 'Completed' }"/>
             <DatePicker

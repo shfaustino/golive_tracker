@@ -198,27 +198,24 @@ sap.ui.define([
         },
 
         /**
-         * The client and PM choices, each led by "Todos" (no filter), read
-         * once: GET /project/Clients and /project/People list only active
-         * ones.
+         * The client and PM choices, read once: GET /project/Clients and
+         * /project/People list only active ones. An empty filter is "Todos".
          * @private
          */
         _loadOptions: function () {
             var oModel = this.getOwnerComponent().getModel(),
-                oOptions = this.getModel("options"),
-                sAll = this.getResourceBundle().getText("filterAll");
+                oOptions = this.getModel("options");
 
             ["clients", "people"].forEach(function (sKey) {
                 var oBinding = oModel.bindList(sKey === "clients" ? "/Clients" : "/People", undefined,
                     [new Sorter("name")], [], { $select: "ID,name" });
 
-                oOptions.setProperty("/" + sKey, [{ key: "", text: sAll }]);
                 oBinding.requestContexts(0, 1000).then(function (aContexts) {
-                    oOptions.setProperty("/" + sKey, [{ key: "", text: sAll }].concat(aContexts.map(function (oContext) {
+                    oOptions.setProperty("/" + sKey, aContexts.map(function (oContext) {
                         return { key: oContext.getProperty("ID"), text: oContext.getProperty("name") };
-                    })));
+                    }));
                 }).catch(function () {
-                    // the filter keeps only "Todos"; the ErrorHandler has said why
+                    // the filter stays empty, i.e. "Todos"; the ErrorHandler has said why
                 }).finally(function () {
                     oBinding.destroy();
                 });

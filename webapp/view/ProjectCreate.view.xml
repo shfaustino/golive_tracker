@@ -2,6 +2,7 @@
     controllerName="com.amt.golivetracker.controller.ProjectCreate"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
     xmlns:mvc="sap.ui.core.mvc">
 
     <!-- Novo projeto (docs/mockups/06-novo-projeto.png), US-01 to US-03:
@@ -62,7 +63,7 @@
                             </VBox>
                             <VBox class="gtField" renderType="Bare">
                                 <Label text="{i18n>colClient}" labelFor="pfClient" required="true"/>
-                                <ComboBox
+                                <gt:SearchSelect
                                     id="pfClient"
                                     width="100%"
                                     selectedKey="{form>/values/client_ID}"
@@ -70,21 +71,20 @@
                                     valueState="{= ${form>/errors/client_ID} ? 'Error' : 'None' }"
                                     valueStateText="{form>/errors/client_ID}">
                                     <core:ListItem key="{form>ID}" text="{form>name}"/>
-                                </ComboBox>
+                                </gt:SearchSelect>
                             </VBox>
                             <VBox class="gtField" renderType="Bare">
                                 <Label text="{i18n>projectType}" labelFor="pfType" required="true"/>
-                                <Select
+                                <gt:SearchSelect
                                     id="pfType"
                                     width="100%"
-                                    forceSelection="false"
                                     selectedKey="{form>/values/projectType}"
                                     change=".onTypeChange"
                                     items="{path: 'form>/types', templateShareable: false}"
                                     valueState="{= ${form>/errors/projectType} ? 'Error' : 'None' }"
                                     valueStateText="{form>/errors/projectType}">
                                     <core:Item key="{form>key}" text="{form>text}"/>
-                                </Select>
+                                </gt:SearchSelect>
                             </VBox>
                             <VBox class="gtField" renderType="Bare">
                                 <Label text="{i18n>projectExternalCode}" labelFor="pfExternal"/>
@@ -94,7 +94,7 @@
                             </VBox>
                             <VBox class="gtField" renderType="Bare">
                                 <Label text="{i18n>projectCurrency}" labelFor="pfCurrency" required="true"/>
-                                <Select
+                                <gt:SearchSelect
                                     id="pfCurrency"
                                     width="100%"
                                     selectedKey="{form>/values/currency_code}"
@@ -102,7 +102,7 @@
                                     valueState="{= ${form>/errors/currency_code} ? 'Error' : 'None' }"
                                     valueStateText="{form>/errors/currency_code}">
                                     <core:Item key="{form>code}" text="{form>label}"/>
-                                </Select>
+                                </gt:SearchSelect>
                             </VBox>
                             <VBox class="gtField" renderType="Bare">
                                 <Label text="{i18n>projectStartDate}" labelFor="pfStart" required="true"/>
@@ -190,7 +190,7 @@
                             <items>
                                 <ColumnListItem highlight="{= ${form>error} ? 'Error' : 'None' }">
                                     <cells>
-                                        <ComboBox
+                                        <gt:SearchSelect
                                             width="100%"
                                             selectedKey="{form>person_ID}"
                                             selectionChange=".onRowPersonChange"
@@ -199,11 +199,11 @@
                                             valueStateText="{form>error}"
                                             items="{path: 'form>/people', templateShareable: false}">
                                             <core:ListItem key="{form>ID}" text="{form>name}" additionalText="{form>email}"/>
-                                        </ComboBox>
+                                        </gt:SearchSelect>
                                         <Text text="{path: 'form>profile', formatter: '.formatter.profileText'}" wrapping="false"/>
-                                        <Select width="100%" selectedKey="{form>role}" items="{path: 'form>/roles', templateShareable: false}">
+                                        <gt:SearchSelect width="100%" selectedKey="{form>role}" items="{path: 'form>/roles', templateShareable: false}">
                                             <core:Item key="{form>key}" text="{form>text}"/>
-                                        </Select>
+                                        </gt:SearchSelect>
                                         <DatePicker
                                             value="{form>startDate}"
                                             valueFormat="yyyy-MM-dd"
