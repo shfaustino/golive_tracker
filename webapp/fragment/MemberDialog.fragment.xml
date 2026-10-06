@@ -21,6 +21,8 @@
             <Text text="{member>/handoverNote}" visible="{= ${member>/mode} === 'handover' }" class="gtSubtle"/>
 
             <Label text="{= ${member>/mode} === 'handover' ? ${i18n>teamNewPm} : ${i18n>teamColPerson} }" labelFor="memberPerson" required="true"/>
+            <!-- only one of the two shows; each takes the whole row, or the
+                 form would split it between them -->
             <gt:SearchSelect
                 id="memberPerson"
                 visible="{= ${member>/mode} !== 'edit' }"
@@ -28,9 +30,12 @@
                 items="{path: 'member>/people', templateShareable: false}"
                 valueState="{= ${member>/errors/person_ID} ? 'Error' : 'None' }"
                 valueStateText="{member>/errors/person_ID}">
+                <gt:layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></gt:layoutData>
                 <core:ListItem key="{member>ID}" text="{member>name}" additionalText="{member>email}"/>
             </gt:SearchSelect>
-            <Text text="{member>/personName}" visible="{= ${member>/mode} === 'edit' }"/>
+            <Text text="{member>/personName}" visible="{= ${member>/mode} === 'edit' }">
+                <layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></layoutData>
+            </Text>
 
             <Label text="{i18n>teamColRole}" labelFor="memberRole" required="true" visible="{= ${member>/mode} !== 'handover' }"/>
             <gt:SearchSelect

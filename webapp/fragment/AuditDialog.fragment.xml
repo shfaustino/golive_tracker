@@ -34,12 +34,15 @@
                 items="{path: 'audit>/milestones', templateShareable: false}"
                 valueState="{= ${audit>/errors/milestone_ID} ? 'Error' : 'None' }"
                 valueStateText="{audit>/errors/milestone_ID}">
+                <gt:layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></gt:layoutData>
                 <core:Item key="{audit>ID}" text="{audit>label}"/>
             </gt:SearchSelect>
             <Text
                 text="{i18n>auditNoMilestones}"
                 visible="{= ${audit>/mode} === 'create' &amp;&amp; !!${audit>/values/project_ID} &amp;&amp; ${audit>/milestones}.length === 0 }"
-                class="gtHint"/>
+                class="gtHint">
+                <layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></layoutData>
+            </Text>
 
             <Label text="{i18n>auditCode}" labelFor="auditCode"/>
             <Input id="auditCode" value="{audit>/values/code}" placeholder="{i18n>auditCodePlaceholder}" maxLength="60"/>

@@ -57,12 +57,15 @@
                 items="{path: 'attach>/items', templateShareable: false}"
                 valueState="{= ${attach>/errors/milestoneItem_ID} ? 'Error' : 'None' }"
                 valueStateText="{attach>/errors/milestoneItem_ID}">
+                <gt:layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></gt:layoutData>
                 <core:Item key="{attach>ID}" text="{attach>name}"/>
             </gt:SearchSelect>
             <Text
                 text="{i18n>attNoItems}"
                 visible="{= ${attach>/values/owner} === 'item' &amp;&amp; !!${attach>/values/milestone_ID} &amp;&amp; ${attach>/items}.length === 0 }"
-                class="gtHint"/>
+                class="gtHint">
+                <layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></layoutData>
+            </Text>
 
             <Label text="{i18n>attType}" labelFor="attType" required="true"/>
             <gt:SearchSelect id="attType" width="100%" selectedKey="{attach>/values/documentType}"
@@ -87,8 +90,12 @@
                 value="{attach>/values/url}"
                 placeholder="https://…sharepoint.com/…"
                 valueState="{= ${attach>/errors/url} ? 'Error' : 'None' }"
-                valueStateText="{attach>/errors/url}"/>
-            <Text text="{i18n>attUrlHint}" class="gtHint"/>
+                valueStateText="{attach>/errors/url}">
+                <layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></layoutData>
+            </Input>
+            <Text text="{i18n>attUrlHint}" class="gtHint">
+                <layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></layoutData>
+            </Text>
         </f:SimpleForm>
         <beginButton>
             <Button text="{i18n>attAdd}" type="Emphasized" press=".onSaveAttachment" enabled="{= !${attach>/busy} }"/>
