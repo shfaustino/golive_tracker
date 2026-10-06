@@ -1,8 +1,9 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
-    "sap/ui/core/routing/History"
-], function (Controller, UIComponent, History) {
+    "sap/ui/core/routing/History",
+    "../service/childWrites"
+], function (Controller, UIComponent, History, childWrites) {
     "use strict";
 
     /**
@@ -47,6 +48,21 @@ sap.ui.define([
             } else {
                 this.getRouter().navTo(sFallbackRoute || "dashboard", {}, undefined, true);
             }
+        },
+
+        /**
+         * A PATCH or a DELETE of something under a project, sent to the path
+         * under its parent (/Projects(<id>)/milestones(<id>)), which is the
+         * only one the API takes for it; service/childWrites.js says why the
+         * OData model cannot send it there. A refusal shows the API's message.
+         * @public
+         * @param {string} sMethod PATCH or DELETE
+         * @param {string} sPath path in the /project service, starting with /
+         * @param {object} [oBody] the fields to change
+         * @returns {Promise<boolean>} whether the API took it
+         */
+        writeUnderParent: function (sMethod, sPath, oBody) {
+            return childWrites.write(this.getOwnerComponent().getModel(), sMethod, sPath, oBody);
         },
 
         /**

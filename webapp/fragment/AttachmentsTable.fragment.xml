@@ -1,0 +1,54 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <!-- The attachments table of the Anexos page and of a project's Anexos
+         tab, both on the "atts" model (rows from attachmentRules.flatten);
+         atts>/showProject shows the project column, which a project's own
+         tab does not need. -->
+    <Table
+        id="attachmentsTable"
+        class="gtTable gtTableInset"
+        fixedLayout="false"
+        busy="{atts>/busy}"
+        busyIndicatorDelay="0"
+        noDataText="{atts>/noDataText}"
+        items="{atts>/rows}">
+        <columns>
+            <Column><Text text="{i18n>attName}"/></Column>
+            <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>attType}"/></Column>
+            <Column visible="{atts>/showProject}"><Text text="{i18n>mwColProject}"/></Column>
+            <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>attOwner}"/></Column>
+            <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>attAuthor}"/></Column>
+            <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>attDate}"/></Column>
+            <Column width="4rem" hAlign="Center"/>
+        </columns>
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <HBox alignItems="Center" renderType="Bare" class="gtPersonCell">
+                        <HBox class="gtFeedIcon gtTintBlue" renderType="Bare"><core:Icon src="sap-icon://chain-link"/></HBox>
+                        <VBox renderType="Bare" class="gtMiniText">
+                            <Link text="{atts>name}" press=".onOpenAttachment" class="gtCodeLink"/>
+                            <Text text="{atts>url}" tooltip="{atts>url}" class="gtSubtle gtUrl" wrapping="false"/>
+                        </VBox>
+                    </HBox>
+                    <ObjectStatus
+                        text="{path: 'atts>documentType', formatter: '.formatter.documentTypeText'}"
+                        state="Information"
+                        inverted="true"
+                        visible="{= !!${atts>documentType} }"/>
+                    <VBox renderType="Bare">
+                        <Text text="{atts>projectCode}" class="gtFeedCode"/>
+                        <Text text="{atts>projectName}" tooltip="{atts>projectName}" class="gtSubtle gtEllipsis" wrapping="false"/>
+                    </VBox>
+                    <Text text="{parts: ['atts>owner', 'atts>milestoneType', 'atts>itemName'], formatter: '.formatter.attachmentOwnerText'}"/>
+                    <Text text="{atts>authorName}"/>
+                    <Text text="{path: 'atts>createdAt', formatter: '.formatter.timestampDate'}" wrapping="false"/>
+                    <Button icon="sap-icon://overflow" type="Transparent" tooltip="{i18n>admActions}" press=".onAttachmentActions" class="gtRowAction"/>
+                </cells>
+            </ColumnListItem>
+        </items>
+    </Table>
+
+</core:FragmentDefinition>

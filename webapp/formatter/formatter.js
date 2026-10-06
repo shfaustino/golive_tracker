@@ -295,6 +295,34 @@ sap.ui.define([
         },
 
         /**
+         * The label of a document type ("Project plan" -> "Plano de projeto").
+         * @param {string} sType the API's documentType
+         * @returns {string} the label, or "" for none
+         */
+        documentTypeText: function (sType) {
+            return sType ? this.getResourceBundle().getText("docType" + sType.replace(/[^A-Za-z]/g, "")) : "";
+        },
+
+        /**
+         * What an attachment hangs on: the project, a milestone or an item.
+         * @param {string} sOwner project, milestone or item
+         * @param {string} sMilestoneType the milestone's type, when on one
+         * @param {string} sItemName the item's name, when on one
+         * @returns {string} the text
+         */
+        attachmentOwnerText: function (sOwner, sMilestoneType, sItemName) {
+            var oBundle = this.getResourceBundle();
+
+            if (sOwner === "item") {
+                return oBundle.getText("attOwnerItem") + " · " + (sItemName || "");
+            }
+            if (sOwner === "milestone") {
+                return oBundle.getText("attOwnerMilestone") + " · " + this.formatter.milestoneTypeText.call(this, sMilestoneType);
+            }
+            return oBundle.getText("attOwnerProject");
+        },
+
+        /**
          * The label of an audit result.
          * @param {string} sResult Approved, ApprovedWithReservations or Rejected
          * @returns {string} the label

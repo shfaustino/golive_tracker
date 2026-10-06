@@ -162,8 +162,7 @@ sap.ui.define([
          */
         _removeMember: function (oContext) {
             var oMember = oContext.getObject(),
-                oBundle = this.getResourceBundle(),
-                oModel = this.getOwnerComponent().getModel();
+                oBundle = this.getResourceBundle();
 
             MessageBox.confirm(oBundle.getText("teamRemoveConfirm", [
                 oMember.person && oMember.person.name, formatter.roleText.call(this, oMember.role)
@@ -173,18 +172,32 @@ sap.ui.define([
                     if (sAction !== MessageBox.Action.OK) {
                         return;
                     }
-                    oContext.delete(TEAM_GROUP).catch(function () {
-                        // a refusal is reported by the ErrorHandler; resetChanges below brings the row back
-                    });
-                    oModel.submitBatch(TEAM_GROUP).then(function () {
-                        if (oModel.hasPendingChanges(TEAM_GROUP)) {
-                            oModel.resetChanges(TEAM_GROUP);
-                            return;
+                    // under the project: the only path the API takes for a member
+                    this.writeUnderParent("DELETE", this._memberPath(oMember)).then(function (bDone) {
+                        if (bDone) {
+                            MessageToast.show(oBundle.getText("teamRemoved"));
+                            this._afterTeamChange();
                         }
-                        MessageToast.show(oBundle.getText("teamRemoved"));
-                    });
-                }
+                    }.bind(this));
+                }.bind(this)
             });
+        },
+
+        /**
+         * @param {object} oMember a membership
+         * @returns {string} its path under the project
+         * @private
+         */
+        _memberPath: function (oMember) {
+            return "/Projects(" + this._sProjectId + ")/members(" + oMember.ID + ")";
+        },
+
+        /**
+         * The team, the header's PM and Visão geral, read again after a change.
+         * @private
+         */
+        _afterTeamChange: function () {
+            this._refreshProject();
         },
 
         /**
@@ -211,21 +224,25 @@ sap.ui.define([
          * @private
          */
         _sendMemberChanges: function (oValues, bAll) {
-            var oContext = this._oMemberContext,
-                oBefore = oContext.getObject(),
-                aFields = ["role", "startDate", "endDate"].filter(function (sField) {
-                    return sField in oValues && (bAll || (oValues[sField] || null) !== (oBefore[sField] || null));
-                });
+            var oBefore = this._oMemberContext.getObject(),
+                oChanges = {};
 
-            if (!aFields.length) {
+            ["role", "startDate", "endDate"].filter(function (sField) {
+                return sField in oValues && (bAll || (oValues[sField] || null) !== (oBefore[sField] || null));
+            }).forEach(function (sField) {
+                oChanges[sField] = oValues[sField] || null;
+            });
+            if (!Object.keys(oChanges).length) {
                 return Promise.resolve(true);
             }
-            aFields.forEach(function (sField) {
-                oContext.setProperty(sField, oValues[sField] || null, TEAM_GROUP).catch(function () {
-                    // settled with the batch; handled once in _submitTeam
-                });
-            });
-            return this._submitTeam(this.getResourceBundle().getText("teamSaved"));
+            // under the project: the only path the API takes for a member
+            return this.writeUnderParent("PATCH", this._memberPath(oBefore), oChanges).then(function (bDone) {
+                if (bDone) {
+                    MessageToast.show(this.getResourceBundle().getText("teamSaved"));
+                    this._afterTeamChange();
+                }
+                return bDone;
+            }.bind(this));
         },
 
         /**
@@ -246,8 +263,7 @@ sap.ui.define([
             oAction.setParameter("startDate", oValues.startDate);
             return oAction.execute().then(function () {
                 MessageToast.show(this.getResourceBundle().getText("teamHandedOver", [oPerson ? oPerson.name : ""]));
-                this.getView().getElementBinding().refresh();
-                this._loadOverview();
+                this._refreshProject();
                 return true;
             }.bind(this)).catch(function () {
                 // the ErrorHandler shows the API's reason; the dialog stays open
@@ -274,8 +290,7 @@ sap.ui.define([
                 }
                 MessageToast.show(sDoneText);
                 // "Ativo"/"Inativo" and the PM in the header may have moved.
-                this.getView().getElementBinding().refresh();
-                this._loadOverview();
+                this._refreshProject();
                 return true;
             }.bind(this));
         },

@@ -90,13 +90,8 @@ sap.ui.define([
                     ? oBundle.getText("actStatusDone", [formatter.projectStatusText.call(this, oValues.status)])
                     : oBundle.getText("actBaselineDone"));
                 this.onCancelProjectAction();
-                // The status, the automatic update and the baselines are the
-                // API's. The tables under the project have caches of their
-                // own, which refreshing the project does not reach.
-                this.getView().getElementBinding().refresh();
-                this.byId("updatesList").getBinding("items").refresh();
-                this.byId("milestonesTable").getBinding("items").refresh();
-                this._loadOverview();
+                // The status, the automatic update and the baselines are the API's.
+                this._refreshProject();
             }.bind(this)).catch(function () {
                 // The ErrorHandler shows the API's reason (a 409 lists what is
                 // still open); the dialog stays for another try.
@@ -137,9 +132,24 @@ sap.ui.define([
                 oOverview.setProperty("/draft", "");
                 MessageToast.show(this.getResourceBundle().getText("updPosted"));
                 // author and postedAt are the API's to fill in
-                oList.getBinding("items").refresh();
-                this._loadOverview();
+                this._refreshProject();
             }.bind(this));
+        },
+
+        /**
+         * Reads the project again, with everything under it, after a change.
+         *
+         * Through the project's own binding, not each table's: with
+         * autoExpandSelect the model folds the tables' queries (milestones,
+         * members, updates) into the project's, so they have no request of
+         * their own to repeat, and refreshing one of them throws ("Refresh on
+         * this binding is not supported"). Refreshing the project refreshes
+         * them all. Visão geral reads on its own and is read again too.
+         * @private
+         */
+        _refreshProject: function () {
+            this.getView().getElementBinding().refresh();
+            this._loadOverview();
         },
 
         /**

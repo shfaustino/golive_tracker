@@ -303,7 +303,56 @@ items.forEach(function (item) {
     item.isOverdue = item.date < isoDate(TODAY) && (item.status === "ToDo" || item.status === "InProgress");
 });
 
+// Attachments: links on projects, milestones and items, and AllAttachments,
+// the API's view of them with the project, milestone and item flattened in.
+const DOCS = [
+    ["Proposal", "Proposta comercial"], ["Contract", "Contrato assinado"], ["Project plan", "Plano de projeto"],
+    ["Status report", "Relatório de estado"], ["KO minutes", "Ata de kick-off"], ["GOP presentation", "Apresentação GOP"],
+    ["Test plan", "Plano de testes"], ["Final report", "Relatório final"]
+];
+const attachments = [];
+projects.slice(0, 10).forEach(function (project, n) {
+    const projectMilestones = milestones.filter((m) => m.project_ID === project.ID);
+    const folder = "https://amtconsulting.sharepoint.com/sites/" + project.code + "/";
+    const add = function (doc, owner) {
+        attachments.push(Object.assign({
+            ID: uuid("4"), documentType: doc[0], name: doc[1] + (n % 3 ? "" : " v2"),
+            url: folder + doc[1].replace(/\s+/g, "_") + ".pdf", author_ID: pick(PEOPLE.slice(0, 6)).ID,
+            createdAt: addDays(new Date(project.startDate + "T09:00:00Z"), Math.floor(random() * 90)).toISOString().replace(".000Z", "Z"),
+            project_ID: null, milestone_ID: null, milestoneItem_ID: null
+        }, owner));
+    };
+
+    add(DOCS[0], { project_ID: project.ID });
+    if (random() < 0.6) {
+        add(DOCS[1], { project_ID: project.ID });
+    }
+    if (projectMilestones[0]) {
+        add(DOCS[4], { milestone_ID: projectMilestones[0].ID });
+    }
+    const gop = projectMilestones.find((m) => m.milestoneType === "GOP");
+    if (gop) {
+        add(DOCS[5], { milestone_ID: gop.ID });
+    }
+    const item = items.find((i) => projectMilestones.some((m) => m.ID === i.milestone_ID));
+    if (item) {
+        add(DOCS[6], { milestoneItem_ID: item.ID });
+    }
+});
+const allAttachments = attachments.map(function (a) {
+    const item = a.milestoneItem_ID && items.find((i) => i.ID === a.milestoneItem_ID);
+    const milestone = milestones.find((m) => m.ID === (a.milestone_ID || (item && item.milestone_ID)));
+    const project = projects.find((p) => p.ID === (a.project_ID || (milestone && milestone.project_ID)));
+
+    return Object.assign({}, a, {
+        projectID: project.ID, projectCode: project.code, projectName: project.name,
+        milestoneType: milestone ? milestone.milestoneType : null, module: null, itemName: item ? item.name : null
+    });
+});
+
 const files = {
+    Attachments: attachments,
+    AllAttachments: allAttachments,
     Audits: audits,
     MilestoneItems: items,
     RecentUpdates: recentUpdates,

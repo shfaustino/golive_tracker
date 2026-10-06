@@ -17,6 +17,7 @@
           <NavigationPropertyBinding Path="milestones" Target="Milestones"/>
           <NavigationPropertyBinding Path="modules" Target="ProjectModules"/>
           <NavigationPropertyBinding Path="updates" Target="Updates"/>
+          <NavigationPropertyBinding Path="attachments" Target="Attachments"/>
         </EntitySet>
         <EntitySet Name="Updates" EntityType="ProjectService.Updates">
           <NavigationPropertyBinding Path="project" Target="Projects"/>
@@ -31,6 +32,7 @@
           <NavigationPropertyBinding Path="owners" Target="MilestoneOwners"/>
           <NavigationPropertyBinding Path="audits" Target="Audits"/>
           <NavigationPropertyBinding Path="items" Target="MilestoneItems"/>
+          <NavigationPropertyBinding Path="attachments" Target="Attachments"/>
         </EntitySet>
         <EntitySet Name="Audits" EntityType="ProjectService.Audits">
           <NavigationPropertyBinding Path="milestone" Target="Milestones"/>
@@ -41,6 +43,7 @@
           <NavigationPropertyBinding Path="milestone" Target="Milestones"/>
           <NavigationPropertyBinding Path="owner" Target="People"/>
           <NavigationPropertyBinding Path="audit" Target="Audits"/>
+          <NavigationPropertyBinding Path="attachments" Target="Attachments"/>
         </EntitySet>
         <EntitySet Name="MilestoneOwners" EntityType="ProjectService.MilestoneOwners">
           <NavigationPropertyBinding Path="person" Target="People"/>
@@ -48,6 +51,13 @@
         </EntitySet>
         <EntitySet Name="ProjectModules" EntityType="ProjectService.ProjectModules">
           <NavigationPropertyBinding Path="project" Target="Projects"/>
+        </EntitySet>
+        <EntitySet Name="Attachments" EntityType="ProjectService.Attachments">
+          <NavigationPropertyBinding Path="author" Target="People"/>
+        </EntitySet>
+        <EntitySet Name="AllAttachments" EntityType="ProjectService.AllAttachments">
+          <NavigationPropertyBinding Path="author" Target="People"/>
+          <NavigationPropertyBinding Path="milestoneItem" Target="MilestoneItems"/>
         </EntitySet>
         <EntitySet Name="RecentUpdates" EntityType="ProjectService.RecentUpdates"/>
         <EntitySet Name="MyItems" EntityType="ProjectService.MyItems"/>
@@ -87,6 +97,7 @@
         <NavigationProperty Name="milestones" Type="Collection(ProjectService.Milestones)" Partner="project"/>
         <NavigationProperty Name="modules" Type="Collection(ProjectService.ProjectModules)" Partner="project"/>
         <NavigationProperty Name="updates" Type="Collection(ProjectService.Updates)" Partner="project"/>
+        <NavigationProperty Name="attachments" Type="Collection(ProjectService.Attachments)" Partner="project"/>
       </EntityType>
 
       <!-- Status updates (US-27); the API's StatusUpdates. -->
@@ -148,6 +159,7 @@
         <NavigationProperty Name="owners" Type="Collection(ProjectService.MilestoneOwners)" Partner="milestone"/>
         <NavigationProperty Name="audits" Type="Collection(ProjectService.Audits)" Partner="milestone"/>
         <NavigationProperty Name="items" Type="Collection(ProjectService.MilestoneItems)" Partner="milestone"/>
+        <NavigationProperty Name="attachments" Type="Collection(ProjectService.Attachments)" Partner="milestone"/>
       </EntityType>
 
       <!-- Audits (US-24 to US-26, BR-10): only on the milestones that require
@@ -193,6 +205,7 @@
         <NavigationProperty Name="audit" Type="ProjectService.Audits" Partner="followUps">
           <ReferentialConstraint Property="audit_ID" ReferencedProperty="ID"/>
         </NavigationProperty>
+        <NavigationProperty Name="attachments" Type="Collection(ProjectService.Attachments)" Partner="milestoneItem"/>
       </EntityType>
 
       <EntityType Name="MilestoneOwners">
@@ -284,6 +297,59 @@
         <Property Name="projectCode" Type="Edm.String"/>
         <Property Name="projectName" Type="Edm.String"/>
         <Property Name="authorName" Type="Edm.String"/>
+      </EntityType>
+
+      <!-- Attachments (US-29, BR-11): a link on exactly one owner. -->
+      <EntityType Name="Attachments">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="documentType" Type="Edm.String" MaxLength="40"/>
+        <Property Name="name" Type="Edm.String" MaxLength="200"/>
+        <Property Name="url" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="author_ID" Type="Edm.Guid"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="project_ID" Type="Edm.Guid"/>
+        <Property Name="milestone_ID" Type="Edm.Guid"/>
+        <Property Name="milestoneItem_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="author" Type="ProjectService.People">
+          <ReferentialConstraint Property="author_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="project" Type="ProjectService.Projects" Partner="attachments">
+          <ReferentialConstraint Property="project_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="milestone" Type="ProjectService.Milestones" Partner="attachments">
+          <ReferentialConstraint Property="milestone_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="milestoneItem" Type="ProjectService.MilestoneItems" Partner="attachments">
+          <ReferentialConstraint Property="milestoneItem_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+      </EntityType>
+
+      <!-- The Anexos page's view: every attachment, the project (projectID,
+           as the API names it here), milestone and item flattened in. -->
+      <EntityType Name="AllAttachments">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="documentType" Type="Edm.String"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="url" Type="Edm.String"/>
+        <Property Name="author_ID" Type="Edm.Guid"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="project_ID" Type="Edm.Guid"/>
+        <Property Name="milestone_ID" Type="Edm.Guid"/>
+        <Property Name="milestoneItem_ID" Type="Edm.Guid"/>
+        <Property Name="projectID" Type="Edm.Guid"/>
+        <Property Name="projectCode" Type="Edm.String"/>
+        <Property Name="projectName" Type="Edm.String"/>
+        <Property Name="milestoneType" Type="Edm.String"/>
+        <Property Name="module" Type="Edm.String"/>
+        <Property Name="itemName" Type="Edm.String"/>
+        <NavigationProperty Name="author" Type="ProjectService.People">
+          <ReferentialConstraint Property="author_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="milestoneItem" Type="ProjectService.MilestoneItems">
+          <ReferentialConstraint Property="milestoneItem_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
       </EntityType>
 
       <ComplexType Name="MonthCount">

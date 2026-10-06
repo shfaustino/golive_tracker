@@ -6,8 +6,8 @@ sap.ui.define([
     "../formatter/formatter",
     "./projectTeam",
     "./projectHeader",
-    "./projectAudits"
-], function (BaseController, JSONModel, MessageToast, milestoneSummary, formatter, projectTeam, projectHeader, projectAudits) {
+    "./projectRecordTabs"
+], function (BaseController, JSONModel, MessageToast, milestoneSummary, formatter, projectTeam, projectHeader, projectRecordTabs) {
     "use strict";
 
     /** The tab a project opens on when the route names none. */
@@ -18,9 +18,9 @@ sap.ui.define([
 
     // The Equipa tab's handlers live in ./projectTeam, the header's actions,
     // Visão geral, Módulos and Updates in ./projectHeader, and the
-    // Auditorias tab in ./projectAudits; all three are mixed in here.
+    // Auditorias and Anexos tabs in ./projectRecordTabs; all three are mixed in here.
     return BaseController.extend("com.amt.golivetracker.controller.ProjectDetail",
-        Object.assign({}, projectTeam, projectHeader, projectAudits, {
+        Object.assign({}, projectTeam, projectHeader, projectRecordTabs, {
 
         formatter: formatter,
 
@@ -34,7 +34,7 @@ sap.ui.define([
             this.setModel(new JSONModel({ busy: false, values: {}, errors: {}, people: [], roles: [] }), "member");
             this.setModel(new JSONModel({ busy: false, values: {}, errors: {}, statuses: [] }), "action");
             this.setModel(new JSONModel(this._emptyOverview()), "overview");
-            this._initProjectAudits();
+            this._initProjectRecordTabs();
             this.getRouter().getRoute("projectDetail").attachPatternMatched(this._onRouteMatched, this);
         },
 
@@ -141,8 +141,7 @@ sap.ui.define([
             var oEditModel = this.getModel("msEdit"),
                 oResult = milestoneSummary.editChanges(this._oEditContext.getObject(), oEditModel.getProperty("/values")),
                 oBundle = this.getResourceBundle(),
-                oModel = this.getOwnerComponent().getModel(),
-                oContext = this._oEditContext,
+                sMilestoneId = this._oEditContext.getProperty("ID"),
                 aFields = Object.keys(oResult.changes),
                 oErrors = {};
 
@@ -158,24 +157,20 @@ sap.ui.define([
                 return;
             }
 
+            // One PATCH under the project, which is the only path the API takes
+            // for a milestone (BaseController#writeUnderParent).
             oEditModel.setProperty("/busy", true);
-            aFields.forEach(function (sField) {
-                // The promise of each field settles with the batch; a failure
-                // is handled once, below, for the whole edit.
-                oContext.setProperty(sField, oResult.changes[sField], EDIT_GROUP).catch(function () {});
-            });
-            oModel.submitBatch(EDIT_GROUP).then(function () {
+            this.writeUnderParent("PATCH", "/Projects(" + this._sProjectId + ")/milestones(" + sMilestoneId + ")",
+                oResult.changes).then(function (bDone) {
                 oEditModel.setProperty("/busy", false);
-                if (oModel.hasPendingChanges(EDIT_GROUP)) {
-                    oModel.resetChanges(EDIT_GROUP);
+                if (!bDone) {
                     return;
                 }
                 MessageToast.show(oBundle.getText("msSaved"));
                 this.onCancelMilestone();
                 // isOverdue, itemsCompletion and the history are the API's to
                 // work out again.
-                this.byId("milestonesTable").getBinding("items").refresh();
-                this._loadOverview();
+                this._refreshProject();
             }.bind(this));
         },
 
@@ -216,8 +211,7 @@ sap.ui.define([
                 MessageToast.show(oBundle.getText("msCreated"));
                 this.onCancelMilestone();
                 // sortOrder, status and the rest are the API's to fill in.
-                this.byId("milestonesTable").getBinding("items").refresh();
-                this._loadOverview();
+                this._refreshProject();
             }.bind(this));
         },
 
@@ -259,8 +253,7 @@ sap.ui.define([
             this._sProjectId = oArgs.projectId;
             this.getModel("overview").setData(this._emptyOverview());
             this._loadOverview();
-            this.getModel("projAudits").setProperty("/rows", []);
-            this._loadProjectAudits();
+            this._loadProjectRecordTabs();
             oDetailModel.setProperty("/summary", milestoneSummary.summarise([]));
             oDetailModel.setProperty("/busy", true);
             this.getView().bindElement(sPath);

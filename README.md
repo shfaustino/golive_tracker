@@ -62,7 +62,7 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
 | `webapp/view/ProjectDetail.view.xml` | Projeto: header, tabs, milestones (create, edit) |
 | `webapp/model/*.js` | Logic without UI (paging, milestone rules, chart), tested with `npm test` |
 | `webapp/localService/project` | Mock `/project` service for `npm run start-mock` |
-| `webapp/view/Placeholder.view.xml` | Stand-in for the screens not built yet |
+| `webapp/service/childWrites.js` | PATCH/DELETE of a project's milestones, members and attachments under the project's path (the API refuses them on the flat sets with 405) |
 | `deploy/approuter` | Approuter: XSUAA login, `/project` and `/admin` to the API destination |
 | `mta.yaml` | BTP deployment |
 
@@ -73,8 +73,8 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
 - [x] 03 Projetos — paged list, sorting, search, filters
 - [x] 04 Projeto — header with Mudar estado and Gravar baseline; Visão geral
   (progress, timeline, details, next milestone, team, latest updates); Marcos
-  (KPIs, table, new and edit dialog); Módulos; Updates (feed and posting).
-  Auditorias and Anexos tabs to do.
+  (KPIs, table, new and edit dialog); Módulos; Updates (feed and posting);
+  Auditorias; Anexos
 - [x] 05 Projeto — equipa (add, edit, end today, remove, PM hand-over)
 - [x] 06 Novo projeto — general data, modules, initial team, preview of the
   milestones the type generates; one deep insert
@@ -85,10 +85,9 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
 - [x] 09 Administração — Pessoas and Clientes tabs; Administrators manage
   them through /admin (new, edit, deactivate, delete), others see the active
   ones read-only through /project; also the side menu's Pessoas and Clientes
-
-"Evolução dos projetos" and "Últimas atualizações" on the dashboard mockup
-have no source in the API yet; their places show overdue milestones and
-projects with no recent update.
+- [x] Anexos — every project's documents (links) with search, project and
+  type filters; new (on the project, a milestone or an item), open, delete;
+  also as the project's Anexos tab
 
 The login screen (01) is the XSUAA login page the approuter redirects to; the
 app has no login form of its own.

@@ -26,6 +26,9 @@ server:
         port: 35729
         path: webapp
         delay: 300
+    # listed first, so it runs before the mock server: both go before csp
+    - name: mock-child-paths
+      beforeMiddleware: csp
     - name: sap-fe-mockserver
       beforeMiddleware: csp
       configuration:
@@ -45,3 +48,12 @@ builder:
     excludes:
       - /test/**
       - /localService/**
+---
+# Writes under a project's path go to the mock's flat sets (tools/mock-child-paths.js).
+specVersion: "4.0"
+kind: extension
+type: server-middleware
+metadata:
+  name: mock-child-paths
+middleware:
+  path: tools/mock-child-paths.js

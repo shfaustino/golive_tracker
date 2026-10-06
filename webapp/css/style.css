@@ -432,6 +432,16 @@
     box-shadow: none;
 }
 
+/* Anexos: a long link is cut with an ellipsis (the whole of it in the tooltip) */
+.gtApp .gtUrl,
+.gtApp .gtEllipsis {
+    display: block;
+    max-width: 14rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* Pessoas e Clientes: the filters between the tabs and the table */
 .gtAdminFilters {
     display: flex;

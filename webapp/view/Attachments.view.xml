@@ -1,0 +1,73 @@
+<mvc:View
+    controllerName="com.amt.golivetracker.controller.Attachments"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc">
+
+    <!-- Anexos (US-29): GET /project/AllAttachments, every attachment of the
+         projects the person may see, wherever it hangs (project, milestone
+         or item), a page at a time. No mockup of its own: it follows the
+         Auditorias page. Dialogs in controller/attachmentDialogs.js. -->
+    <Page id="attachmentsPage" showHeader="false" class="gtPage">
+        <VBox class="gtPageContent" renderType="Bare">
+            <HBox class="gtPageHeader" alignItems="Start" renderType="Bare">
+                <VBox renderType="Bare">
+                    <Title text="{i18n>navAttachments}" level="H1" class="gtPageTitle"/>
+                    <Text text="{i18n>attSubtitle}" class="gtSubtitle"/>
+                </VBox>
+                <Button
+                    id="newAttachmentButton"
+                    text="{i18n>attNew}"
+                    icon="sap-icon://add"
+                    type="Emphasized"
+                    press=".onNewAttachment"
+                    class="gtPrimaryButton"/>
+            </HBox>
+
+            <VBox class="gtCard gtTableCard" renderType="Bare">
+                <HBox class="gtFilterBar gtFilterBarInCard" alignItems="End" renderType="Bare">
+                    <SearchField
+                        id="attachmentSearch"
+                        placeholder="{i18n>attSearch}"
+                        search=".onSearch"
+                        liveChange=".onSearch"
+                        showSearchButton="false"
+                        class="gtFilterSearch"/>
+                    <VBox class="gtFilterField" renderType="Bare">
+                        <Label text="{i18n>mwColProject}" labelFor="attachmentProjectFilter" class="gtFilterLabel"/>
+                        <ComboBox
+                            id="attachmentProjectFilter"
+                            width="100%"
+                            placeholder="{i18n>filterAll}"
+                            showClearIcon="true"
+                            selectionChange=".onFilterChange"
+                            items="{path: 'attach>/projects', length: 1000}">
+                            <core:ListItem key="{attach>ID}" text="{attach>code}" additionalText="{attach>name}"/>
+                        </ComboBox>
+                    </VBox>
+                    <VBox class="gtFilterField" renderType="Bare">
+                        <Label text="{i18n>attType}" labelFor="attachmentTypeFilter" class="gtFilterLabel"/>
+                        <Select id="attachmentTypeFilter" width="100%" change=".onFilterChange"
+                            items="{path: 'atts>/typeFilter'}">
+                            <core:Item key="{atts>key}" text="{atts>text}"/>
+                        </Select>
+                    </VBox>
+                </HBox>
+
+                <core:Fragment fragmentName="com.amt.golivetracker.fragment.AttachmentsTable" type="XML"/>
+
+                <HBox class="gtTableFooter" justifyContent="SpaceBetween" alignItems="Center" renderType="Bare">
+                    <Text text="{atts>/rangeText}" class="gtSubtle"/>
+                    <HBox class="gtPager" alignItems="Center" renderType="Bare" visible="{= ${atts>/pageCount} > 1 }">
+                        <Button icon="sap-icon://slim-arrow-left" tooltip="{i18n>pagePrevious}" enabled="{= ${atts>/page} > 1 }" press=".onPagePrevious" class="gtPagerButton"/>
+                        <HBox items="{atts>/pages}" renderType="Bare" class="gtPagerPages">
+                            <Button text="{atts>n}" type="{= ${atts>current} ? 'Emphasized' : 'Default' }" press=".onPagePress" class="gtPagerButton"/>
+                        </HBox>
+                        <Button icon="sap-icon://slim-arrow-right" tooltip="{i18n>pageNext}" enabled="{= ${atts>/page} &lt; ${atts>/pageCount} }" press=".onPageNext" class="gtPagerButton"/>
+                    </HBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </Page>
+
+</mvc:View>
