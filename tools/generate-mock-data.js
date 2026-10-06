@@ -37,7 +37,7 @@ function isoDate(oDate) {
 }
 
 const PEOPLE = [
-    ["Marlon Teixeira", "Administrator"], ["Ana Silva", "Administrator"], ["João Pereira", "Architect"],
+    ["Salif Faustino", "Administrator"], ["Ana Silva", "Administrator"], ["João Pereira", "Architect"],
     ["Maria Santos", "User"], ["Pedro Costa", "User"], ["Carla Mendes", "User"], ["Rui Almeida", "Architect"],
     ["Sofia Carvalho", "User"], ["Miguel Rodrigues", "User"], ["Beatriz Oliveira", "User"],
     ["Tiago Ferreira", "User"], ["Marcos Silva", "User"], ["Marta Oliveira", "User"], ["Carlos Mendes", "User"],
