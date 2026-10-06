@@ -1,0 +1,94 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
+    xmlns:f="sap.ui.layout.form">
+
+    <!-- Nova auditoria / Editar auditoria (US-24, BR-10), in the "audit"
+         model (controller/auditDialogs.js). Only milestones that require an
+         audit are offered; project and milestone are fixed once the audit
+         exists. An empty code is filled in by the API. -->
+    <Dialog
+        id="auditDialog"
+        title="{audit>/title}"
+        contentWidth="34rem"
+        class="gtApp gtDialog sapUiContentPadding">
+        <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
+            <Label text="{i18n>mwColProject}" labelFor="auditProject" required="true"/>
+            <gt:SearchSelect
+                id="auditProject"
+                width="100%"
+                enabled="{= ${audit>/mode} === 'create' &amp;&amp; !${audit>/projectFixed} }"
+                selectedKey="{audit>/values/project_ID}"
+                selectionChange=".onAuditProjectChange"
+                items="{path: 'audit>/projects', templateShareable: false, length: 1000}">
+                <core:ListItem key="{audit>ID}" text="{audit>code}" additionalText="{audit>name}"/>
+            </gt:SearchSelect>
+
+            <Label text="{i18n>colMilestone}" labelFor="auditMilestone" required="true"/>
+            <gt:SearchSelect
+                id="auditMilestone"
+                width="100%"
+                enabled="{= ${audit>/mode} === 'create' }"
+                selectedKey="{audit>/values/milestone_ID}"
+                items="{path: 'audit>/milestones', templateShareable: false}"
+                valueState="{= ${audit>/errors/milestone_ID} ? 'Error' : 'None' }"
+                valueStateText="{audit>/errors/milestone_ID}">
+                <gt:layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></gt:layoutData>
+                <core:Item key="{audit>ID}" text="{audit>label}"/>
+            </gt:SearchSelect>
+            <Text
+                text="{i18n>auditNoMilestones}"
+                visible="{= ${audit>/mode} === 'create' &amp;&amp; !!${audit>/values/project_ID} &amp;&amp; ${audit>/milestones}.length === 0 }"
+                class="gtHint">
+                <layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></layoutData>
+            </Text>
+
+            <Label text="{i18n>auditCode}" labelFor="auditCode"/>
+            <Input id="auditCode" value="{audit>/values/code}" placeholder="{i18n>auditCodePlaceholder}" maxLength="60"/>
+
+            <Label text="{i18n>auditDate}" labelFor="auditDate" required="true"/>
+            <DatePicker
+                id="auditDate"
+                value="{audit>/values/date}"
+                valueFormat="yyyy-MM-dd"
+                displayFormat="dd/MM/yyyy"
+                valueState="{= ${audit>/errors/date} ? 'Error' : 'None' }"
+                valueStateText="{audit>/errors/date}"/>
+
+            <Label text="{i18n>auditAuditor}" labelFor="auditAuditor" required="true"/>
+            <gt:SearchSelect
+                id="auditAuditor"
+                width="100%"
+                selectedKey="{audit>/values/auditor_ID}"
+                items="{path: 'audit>/people', templateShareable: false, length: 1000}"
+                valueState="{= ${audit>/errors/auditor_ID} ? 'Error' : 'None' }"
+                valueStateText="{audit>/errors/auditor_ID}">
+                <core:ListItem key="{audit>ID}" text="{audit>name}" additionalText="{audit>email}"/>
+            </gt:SearchSelect>
+
+            <Label text="{i18n>auditResult}" labelFor="auditResult" required="true"/>
+            <!-- "Por iniciar" (NotStarted) is an audit with no result yet: the API keeps null -->
+            <gt:SearchSelect
+                id="auditResult"
+                selectedKey="{audit>/values/result}"
+                valueState="{= ${audit>/errors/result} ? 'Error' : 'None' }"
+                valueStateText="{audit>/errors/result}">
+                <core:Item key="NotStarted" text="{i18n>resultNotStarted}"/>
+                <core:Item key="Approved" text="{i18n>resultApproved}"/>
+                <core:Item key="ApprovedWithReservations" text="{i18n>resultApprovedWithReservations}"/>
+                <core:Item key="Rejected" text="{i18n>resultRejected}"/>
+            </gt:SearchSelect>
+
+            <Label text="{i18n>auditNotes}" labelFor="auditNotes"/>
+            <TextArea id="auditNotes" value="{audit>/values/notes}" rows="3" growing="true" width="100%"/>
+        </f:SimpleForm>
+        <beginButton>
+            <Button text="{i18n>save}" type="Emphasized" press=".onSaveAudit" enabled="{= !${audit>/busy} }"/>
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>cancel}" press=".onCancelAudit"/>
+        </endButton>
+    </Dialog>
+
+</core:FragmentDefinition>

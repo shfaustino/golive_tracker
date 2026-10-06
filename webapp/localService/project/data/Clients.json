@@ -1,0 +1,58 @@
+[
+  {
+    "ID": "00000000-0000-4000-8000-000000000c14",
+    "name": "Cliente A",
+    "taxId": "500000001",
+    "erpCode": "ERP-1001",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-000000000c15",
+    "name": "Cliente B",
+    "taxId": "500000002",
+    "erpCode": "ERP-1002",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-000000000c16",
+    "name": "Cliente C",
+    "taxId": "500000003",
+    "erpCode": "ERP-1003",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-000000000c17",
+    "name": "Cliente D",
+    "taxId": "500000004",
+    "erpCode": "ERP-1004",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-000000000c18",
+    "name": "Cliente E",
+    "taxId": "500000005",
+    "erpCode": "ERP-1005",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-000000000c19",
+    "name": "Cliente F",
+    "taxId": "500000006",
+    "erpCode": "ERP-1006",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-000000000c1a",
+    "name": "Cerejeira SA",
+    "taxId": "500000007",
+    "erpCode": "ERP-1007",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-000000000c1b",
+    "name": "Lusitânia Retail",
+    "taxId": "500000008",
+    "erpCode": "ERP-1008",
+    "active": true
+  }
+]

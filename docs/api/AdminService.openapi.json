@@ -1,0 +1,936 @@
+{
+ "openapi": "3.0.2",
+ "info": {
+  "title": "GoLive Tracker \u2014 Admin",
+  "description": "Dados mestre: clientes e pessoas, incluindo o perfil de acesso de cada pessoa. S\u00f3 para o perfil **Administrator**; qualquer outro perfil recebe 403.\n\nUm cliente com projetos n\u00e3o pode ser apagado (409): use `active: false`. Pessoas com hist\u00f3rico em projetos tamb\u00e9m s\u00f3 podem ser desativadas.",
+  "version": "1.0"
+ },
+ "x-sap-api-type": "ODATAV4",
+ "x-odata-version": "4.01",
+ "x-sap-shortText": "Use the Core.Description annotation on your CDS service to provide a meaningful short text.",
+ "servers": [
+  {
+   "url": "https://amt---consulting--s-a--h2h-sandbox-lwsjexg2-sandbox-gol62961c38.cfapps.us10.hana.ondemand.com/admin",
+   "description": "BTP sandbox"
+  },
+  {
+   "url": "http://localhost:4004/admin",
+   "description": "Local (npm run watch)"
+  }
+ ],
+ "tags": [
+  {
+   "name": "Clients"
+  },
+  {
+   "name": "People"
+  }
+ ],
+ "paths": {
+  "/$batch": {
+   "post": {
+    "summary": "Sends a group of requests",
+    "description": "Group multiple requests into a single request payload, see [Batch Requests](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_BatchRequests).\n\n*Please note that \"Try it out\" is not supported for this request.*",
+    "tags": [
+     "Batch Requests"
+    ],
+    "requestBody": {
+     "required": true,
+     "description": "Batch request",
+     "content": {
+      "multipart/mixed;boundary=request-separator": {
+       "schema": {
+        "type": "string"
+       },
+       "example": "--request-separator\nContent-Type: application/http\nContent-Transfer-Encoding: binary\n\nGET Clients HTTP/1.1\nAccept: application/json\n\n\n--request-separator--"
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Batch response",
+      "content": {
+       "multipart/mixed": {
+        "schema": {
+         "type": "string"
+        },
+        "example": "--response-separator\nContent-Type: application/http\n\nHTTP/1.1 200 OK\nContent-Type: application/json\n\n{...}\n--response-separator--"
+       }
+      }
+     },
+     "4XX": {
+      "$ref": "#/components/responses/error"
+     }
+    }
+   }
+  },
+  "/Clients": {
+   "get": {
+    "summary": "Retrieves a list of clients.",
+    "tags": [
+     "Clients"
+    ],
+    "parameters": [
+     {
+      "$ref": "#/components/parameters/top"
+     },
+     {
+      "$ref": "#/components/parameters/skip"
+     },
+     {
+      "$ref": "#/components/parameters/search"
+     },
+     {
+      "name": "$filter",
+      "description": "Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+      "in": "query",
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "$ref": "#/components/parameters/count"
+     },
+     {
+      "name": "$orderby",
+      "description": "Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+      "in": "query",
+      "explode": false,
+      "schema": {
+       "type": "array",
+       "uniqueItems": true,
+       "items": {
+        "type": "string",
+        "enum": [
+         "ID",
+         "ID desc",
+         "createdAt",
+         "createdAt desc",
+         "createdBy",
+         "createdBy desc",
+         "modifiedAt",
+         "modifiedAt desc",
+         "modifiedBy",
+         "modifiedBy desc",
+         "name",
+         "name desc",
+         "taxId",
+         "taxId desc",
+         "erpCode",
+         "erpCode desc",
+         "active",
+         "active desc"
+        ]
+       }
+      }
+     },
+     {
+      "name": "$select",
+      "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+      "in": "query",
+      "explode": false,
+      "schema": {
+       "type": "array",
+       "uniqueItems": true,
+       "items": {
+        "type": "string",
+        "enum": [
+         "ID",
+         "createdAt",
+         "createdBy",
+         "modifiedAt",
+         "modifiedBy",
+         "name",
+         "taxId",
+         "erpCode",
+         "active"
+        ]
+       }
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Retrieved clients",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "title": "Collection of Clients",
+         "properties": {
+          "@count": {
+           "$ref": "#/components/schemas/count"
+          },
+          "value": {
+           "type": "array",
+           "items": {
+            "$ref": "#/components/schemas/AdminService.Clients"
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "4XX": {
+      "$ref": "#/components/responses/error"
+     }
+    }
+   },
+   "post": {
+    "summary": "Creates a single client.",
+    "tags": [
+     "Clients"
+    ],
+    "requestBody": {
+     "description": "New client",
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/AdminService.Clients-create"
+       },
+       "example": {
+        "name": "Scalar Demo Client",
+        "taxId": "500000099"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Created client",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AdminService.Clients"
+        }
+       }
+      }
+     },
+     "4XX": {
+      "$ref": "#/components/responses/error"
+     }
+    }
+   }
+  },
+  "/Clients({ID})": {
+   "parameters": [
+    {
+     "description": "key: ID",
+     "in": "path",
+     "name": "ID",
+     "required": true,
+     "schema": {
+      "type": "string",
+      "format": "uuid"
+     }
+    }
+   ],
+   "get": {
+    "summary": "Retrieves a single client.",
+    "tags": [
+     "Clients"
+    ],
+    "parameters": [
+     {
+      "name": "$select",
+      "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+      "in": "query",
+      "explode": false,
+      "schema": {
+       "type": "array",
+       "uniqueItems": true,
+       "items": {
+        "type": "string",
+        "enum": [
+         "ID",
+         "createdAt",
+         "createdBy",
+         "modifiedAt",
+         "modifiedBy",
+         "name",
+         "taxId",
+         "erpCode",
+         "active"
+        ]
+       }
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Retrieved client",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AdminService.Clients"
+        }
+       }
+      }
+     },
+     "4XX": {
+      "$ref": "#/components/responses/error"
+     }
+    }
+   },
+   "patch": {
+    "summary": "Changes a single client.",
+    "tags": [
+     "Clients"
+    ],
+    "requestBody": {
+     "description": "New property values",
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/AdminService.Clients-update"
+       }
+      }
+     }
+    },
+    "responses": {
+     "204": {
+      "description": "Success"
+     },
+     "4XX": {
+      "$ref": "#/components/responses/error"
+     }
+    }
+   },
+   "delete": {
+    "summary": "Deletes a single client.",
+    "tags": [
+     "Clients"
+    ],
+    "responses": {
+     "204": {
+      "description": "Success"
+     },
+     "4XX": {
+      "$ref": "#/components/responses/error"
+     }
+    }
+   }
+  },
+  "/People": {
+   "get": {
+    "summary": "Retrieves a list of people.",
+    "tags": [
+     "People"
+    ],
+    "parameters": [
+     {
+      "$ref": "#/components/parameters/top"
+     },
+     {
+      "$ref": "#/components/parameters/skip"
+     },
+     {
+      "$ref": "#/components/parameters/search"
+     },
+     {
+      "name": "$filter",
+      "description": "Filter items by property values, see [Filtering](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionfilter)",
+      "in": "query",
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "$ref": "#/components/parameters/count"
+     },
+     {
+      "name": "$orderby",
+      "description": "Order items by property values, see [Sorting](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionorderby)",
+      "in": "query",
+      "explode": false,
+      "schema": {
+       "type": "array",
+       "uniqueItems": true,
+       "items": {
+        "type": "string",
+        "enum": [
+         "ID",
+         "ID desc",
+         "createdAt",
+         "createdAt desc",
+         "createdBy",
+         "createdBy desc",
+         "modifiedAt",
+         "modifiedAt desc",
+         "modifiedBy",
+         "modifiedBy desc",
+         "name",
+         "name desc",
+         "email",
+         "email desc",
+         "profile",
+         "profile desc",
+         "active",
+         "active desc"
+        ]
+       }
+      }
+     },
+     {
+      "name": "$select",
+      "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+      "in": "query",
+      "explode": false,
+      "schema": {
+       "type": "array",
+       "uniqueItems": true,
+       "items": {
+        "type": "string",
+        "enum": [
+         "ID",
+         "createdAt",
+         "createdBy",
+         "modifiedAt",
+         "modifiedBy",
+         "name",
+         "email",
+         "profile",
+         "active"
+        ]
+       }
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Retrieved people",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "title": "Collection of People",
+         "properties": {
+          "@count": {
+           "$ref": "#/components/schemas/count"
+          },
+          "value": {
+           "type": "array",
+           "items": {
+            "$ref": "#/components/schemas/AdminService.People"
+           }
+          }
+         }
+        }
+       }
+      }
+     },
+     "4XX": {
+      "$ref": "#/components/responses/error"
+     }
+    }
+   },
+   "post": {
+    "summary": "Creates a single person.",
+    "tags": [
+     "People"
+    ],
+    "requestBody": {
+     "description": "New person",
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/AdminService.People-create"
+       },
+       "example": {
+        "name": "New Person",
+        "email": "new.person@golive.test",
+        "profile": "User"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Created person",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AdminService.People"
+        }
+       }
+      }
+     },
+     "4XX": {
+      "$ref": "#/components/responses/error"
+     }
+    }
+   }
+  },
+  "/People({ID})": {
+   "parameters": [
+    {
+     "description": "key: ID",
+     "in": "path",
+     "name": "ID",
+     "required": true,
+     "schema": {
+      "type": "string",
+      "format": "uuid"
+     }
+    }
+   ],
+   "get": {
+    "summary": "Retrieves a single person.",
+    "tags": [
+     "People"
+    ],
+    "parameters": [
+     {
+      "name": "$select",
+      "description": "Select properties to be returned, see [Select](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect)",
+      "in": "query",
+      "explode": false,
+      "schema": {
+       "type": "array",
+       "uniqueItems": true,
+       "items": {
+        "type": "string",
+        "enum": [
+         "ID",
+         "createdAt",
+         "createdBy",
+         "modifiedAt",
+         "modifiedBy",
+         "name",
+         "email",
+         "profile",
+         "active"
+        ]
+       }
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Retrieved person",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AdminService.People"
+        }
+       }
+      }
+     },
+     "4XX": {
+      "$ref": "#/components/responses/error"
+     }
+    }
+   },
+   "patch": {
+    "summary": "Changes a single person.",
+    "tags": [
+     "People"
+    ],
+    "requestBody": {
+     "description": "New property values",
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/AdminService.People-update"
+       },
+       "example": {
+        "profile": "Architect"
+       }
+      }
+     }
+    },
+    "responses": {
+     "204": {
+      "description": "Success"
+     },
+     "4XX": {
+      "$ref": "#/components/responses/error"
+     }
+    },
+    "parameters": [
+     {
+      "description": "key: ID",
+      "in": "path",
+      "name": "ID",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid"
+      }
+     }
+    ]
+   },
+   "delete": {
+    "summary": "Deletes a single person.",
+    "tags": [
+     "People"
+    ],
+    "responses": {
+     "204": {
+      "description": "Success"
+     },
+     "4XX": {
+      "$ref": "#/components/responses/error"
+     }
+    }
+   }
+  }
+ },
+ "components": {
+  "schemas": {
+   "AdminService.Clients": {
+    "title": "Clients",
+    "type": "object",
+    "properties": {
+     "ID": {
+      "type": "string",
+      "format": "uuid",
+      "example": "01234567-89ab-cdef-0123-456789abcdef"
+     },
+     "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "example": "2017-04-13T15:51:04.0000000Z",
+      "nullable": true
+     },
+     "createdBy": {
+      "type": "string",
+      "maxLength": 255,
+      "nullable": true,
+      "description": "{i18n>UserID.Description}"
+     },
+     "modifiedAt": {
+      "type": "string",
+      "format": "date-time",
+      "example": "2017-04-13T15:51:04.0000000Z",
+      "nullable": true
+     },
+     "modifiedBy": {
+      "type": "string",
+      "maxLength": 255,
+      "nullable": true,
+      "description": "{i18n>UserID.Description}"
+     },
+     "name": {
+      "type": "string",
+      "maxLength": 200
+     },
+     "taxId": {
+      "type": "string",
+      "maxLength": 20,
+      "nullable": true
+     },
+     "erpCode": {
+      "type": "string",
+      "maxLength": 50,
+      "nullable": true
+     },
+     "active": {
+      "type": "boolean",
+      "default": true
+     }
+    }
+   },
+   "AdminService.Clients-create": {
+    "title": "Clients (for create)",
+    "type": "object",
+    "properties": {
+     "ID": {
+      "type": "string",
+      "format": "uuid",
+      "example": "01234567-89ab-cdef-0123-456789abcdef"
+     },
+     "name": {
+      "type": "string",
+      "maxLength": 200
+     },
+     "taxId": {
+      "type": "string",
+      "maxLength": 20,
+      "nullable": true
+     },
+     "erpCode": {
+      "type": "string",
+      "maxLength": 50,
+      "nullable": true
+     },
+     "active": {
+      "type": "boolean",
+      "default": true
+     }
+    }
+   },
+   "AdminService.Clients-update": {
+    "title": "Clients (for update)",
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "maxLength": 200
+     },
+     "taxId": {
+      "type": "string",
+      "maxLength": 20,
+      "nullable": true
+     },
+     "erpCode": {
+      "type": "string",
+      "maxLength": 50,
+      "nullable": true
+     },
+     "active": {
+      "type": "boolean",
+      "default": true
+     }
+    }
+   },
+   "AdminService.People": {
+    "title": "People",
+    "type": "object",
+    "properties": {
+     "ID": {
+      "type": "string",
+      "format": "uuid",
+      "example": "01234567-89ab-cdef-0123-456789abcdef"
+     },
+     "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "example": "2017-04-13T15:51:04.0000000Z",
+      "nullable": true
+     },
+     "createdBy": {
+      "type": "string",
+      "maxLength": 255,
+      "nullable": true,
+      "description": "{i18n>UserID.Description}"
+     },
+     "modifiedAt": {
+      "type": "string",
+      "format": "date-time",
+      "example": "2017-04-13T15:51:04.0000000Z",
+      "nullable": true
+     },
+     "modifiedBy": {
+      "type": "string",
+      "maxLength": 255,
+      "nullable": true,
+      "description": "{i18n>UserID.Description}"
+     },
+     "name": {
+      "type": "string",
+      "maxLength": 150
+     },
+     "email": {
+      "type": "string",
+      "maxLength": 200
+     },
+     "profile": {
+      "type": "string",
+      "maxLength": 20,
+      "enum": [
+       "Administrator",
+       "Architect",
+       "User"
+      ],
+      "default": "User"
+     },
+     "active": {
+      "type": "boolean",
+      "default": true
+     }
+    }
+   },
+   "AdminService.People-create": {
+    "title": "People (for create)",
+    "type": "object",
+    "properties": {
+     "ID": {
+      "type": "string",
+      "format": "uuid",
+      "example": "01234567-89ab-cdef-0123-456789abcdef"
+     },
+     "name": {
+      "type": "string",
+      "maxLength": 150
+     },
+     "email": {
+      "type": "string",
+      "maxLength": 200
+     },
+     "profile": {
+      "type": "string",
+      "maxLength": 20,
+      "enum": [
+       "Administrator",
+       "Architect",
+       "User"
+      ],
+      "default": "User"
+     },
+     "active": {
+      "type": "boolean",
+      "default": true
+     }
+    }
+   },
+   "AdminService.People-update": {
+    "title": "People (for update)",
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string",
+      "maxLength": 150
+     },
+     "email": {
+      "type": "string",
+      "maxLength": 200
+     },
+     "profile": {
+      "type": "string",
+      "maxLength": 20,
+      "enum": [
+       "Administrator",
+       "Architect",
+       "User"
+      ],
+      "default": "User"
+     },
+     "active": {
+      "type": "boolean",
+      "default": true
+     }
+    }
+   },
+   "count": {
+    "anyOf": [
+     {
+      "type": "number"
+     },
+     {
+      "type": "string"
+     }
+    ],
+    "description": "The number of entities in the collection. Available when using the [$count](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptioncount) query option."
+   },
+   "error": {
+    "type": "object",
+    "required": [
+     "error"
+    ],
+    "properties": {
+     "error": {
+      "type": "object",
+      "required": [
+       "code",
+       "message"
+      ],
+      "properties": {
+       "code": {
+        "type": "string"
+       },
+       "message": {
+        "type": "string"
+       },
+       "target": {
+        "type": "string"
+       },
+       "details": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "required": [
+          "code",
+          "message"
+         ],
+         "properties": {
+          "code": {
+           "type": "string"
+          },
+          "message": {
+           "type": "string"
+          },
+          "target": {
+           "type": "string"
+          }
+         }
+        }
+       },
+       "innererror": {
+        "type": "object",
+        "description": "The structure of this object is service-specific"
+       }
+      }
+     }
+    }
+   }
+  },
+  "parameters": {
+   "top": {
+    "name": "$top",
+    "in": "query",
+    "description": "Show only the first n items, see [Paging - Top](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptiontop)",
+    "schema": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "example": 50
+   },
+   "skip": {
+    "name": "$skip",
+    "in": "query",
+    "description": "Skip the first n items, see [Paging - Skip](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionskip)",
+    "schema": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "count": {
+    "name": "$count",
+    "in": "query",
+    "description": "Include count of items, see [Count](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptioncount)",
+    "schema": {
+     "type": "boolean"
+    }
+   },
+   "search": {
+    "name": "$search",
+    "in": "query",
+    "description": "Search items by search phrases, see [Searching](http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionsearch)",
+    "schema": {
+     "type": "string"
+    }
+   }
+  },
+  "responses": {
+   "error": {
+    "description": "Error",
+    "content": {
+     "application/json": {
+      "schema": {
+       "$ref": "#/components/schemas/error"
+      }
+     }
+    }
+   }
+  },
+  "securitySchemes": {
+   "xsuaa": {
+    "type": "http",
+    "scheme": "bearer",
+    "bearerFormat": "JWT",
+    "description": "Token XSUAA (OAuth 2.0). No browser \u00e9 injetado pelo approuter."
+   }
+  }
+ },
+ "security": [
+  {
+   "xsuaa": []
+  }
+ ]
+}

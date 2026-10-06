@@ -1,0 +1,2026 @@
+/* GoLive Tracker look (docs/mockups). Everything is scoped under .gtApp
+   (App.view.xml) so nothing leaks onto a Launchpad page.
+
+   Two layers: first the theme's own variables, remapped inside .gtApp so
+   every control (buttons, fields, tables, links) takes the mockup's colours,
+   radius and font on its own; then the few places the mockup differs from
+   what any variable reaches (the sidebar, the cards, the chips). */
+
+.gtApp {
+    /* the mockup's palette */
+    --gtNavy: #0b1f45;
+    --gtNavyDeep: #081733;
+    --gtBlue: #1463f3;
+    --gtBlueHover: #0f55d6;
+    --gtBlueSoft: #e8f0fe;
+    --gtInk: #0b1f45;
+    --gtText: #1f2a3d;
+    --gtMuted: #667085;
+    --gtLine: #e7ebf2;
+    --gtBg: #f5f7fb;
+    --gtCardShadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
+    --gtRadius: 0.875rem;
+
+    /* the theme's variables, remapped */
+    --sapFontFamily: "Inter", "72", "72full", Arial, Helvetica, sans-serif;
+    --sapFontHeaderFamily: "Inter", "72", "72full", Arial, Helvetica, sans-serif;
+    --sapFontBoldFamily: "Inter", "72-Bold", "72", Arial, Helvetica, sans-serif;
+    --sapFontSemiboldFamily: "Inter", "72-Semibold", "72", Arial, Helvetica, sans-serif;
+    --sapFontSemiboldDuplexFamily: "Inter", "72-SemiboldDuplex", "72", Arial, Helvetica, sans-serif;
+    --sapFontSize: 0.9375rem;
+    --sapBackgroundColor: var(--gtBg);
+    --sapShellColor: #ffffff;
+    --sapTextColor: var(--gtText);
+    --sapTitleColor: var(--gtInk);
+    --sapGroup_TitleTextColor: var(--gtInk);
+    --sapContent_LabelColor: var(--gtMuted);
+    --sapBrandColor: var(--gtBlue);
+    --sapHighlightColor: var(--gtBlue);
+    --sapSelectedColor: var(--gtBlue);
+    --sapLinkColor: var(--gtBlue);
+    --sapLink_Hover_Color: var(--gtBlueHover);
+    --sapContent_FocusColor: var(--gtBlue);
+    --sapButton_BorderCornerRadius: 0.5rem;
+    --sapButton_Emphasized_Background: var(--gtBlue);
+    --sapButton_Emphasized_BorderColor: var(--gtBlue);
+    --sapButton_Emphasized_Hover_Background: var(--gtBlueHover);
+    --sapButton_Emphasized_Hover_BorderColor: var(--gtBlueHover);
+    --sapButton_Emphasized_Active_Background: var(--gtBlueHover);
+    --sapButton_Emphasized_FontWeight: 600;
+    --sapButton_BorderColor: var(--gtLine);
+    --sapButton_TextColor: var(--gtText);
+    --sapButton_Lite_TextColor: var(--gtText);
+    --sapField_BorderCornerRadius: 0.5rem;
+    --sapField_BorderColor: #d9dfe8;
+    --sapField_BorderWidth: 1px;
+    --sapField_Hover_BorderColor: var(--gtBlue);
+    --sapField_Background: #ffffff;
+    --sapList_HeaderBackground: #f7f9fc;
+    --sapList_HeaderBorderColor: var(--gtLine);
+    --sapList_BorderColor: var(--gtLine);
+    --sapList_TableGroupHeaderBorderColor: var(--gtLine);
+    --sapList_Hover_Background: #f7f9fc;
+    --sapList_SelectionBackgroundColor: var(--gtBlueSoft);
+    --sapList_TextColor: var(--gtText);
+    --sapList_HeaderTextColor: var(--gtInk);
+    --sapList_FooterBackground: #ffffff;
+    --sapGroup_ContentBackground: #ffffff;
+    --sapTile_Background: #ffffff;
+    --sapPageHeader_Background: transparent;
+    --sapObjectHeader_Background: transparent;
+
+    font-family: var(--sapFontFamily);
+    color: var(--gtText);
+    background: var(--gtBg);
+}
+
+/* The theme writes its font names ("72", "72-Bold", ...) straight into
+   each control's rule, not through --sapFontFamily, so the remap above does
+   not reach them: every element takes Inter here. Icons are left alone: they
+   are a font too (SAP-icons, set inline on .sapUiIcon). */
+.gtApp *:not(.sapUiIcon):not(.sapMBtnIcon) {
+    font-family: "Inter", "72", "72full", Arial, Helvetica, sans-serif !important;
+}
+
+/* What the theme made bold through the font's name ("72-Bold") is bold by
+   weight once the font is Inter. */
+.gtApp .sapMBtnEmphasized .sapMBtnInner,
+.gtApp .sapMTitle,
+.gtApp .sapMLabelBold,
+.gtApp .sapMListTblHeaderCell {
+    font-weight: 600;
+}
+
+/* ------------------------------------------------------------------ */
+/* Shell: sidebar beside the top bar and pages                         */
+/* ------------------------------------------------------------------ */
+
+.gtShell {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.gtSidebar {
+    flex: 0 0 15.5rem;
+    width: 15.5rem;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, var(--gtNavy) 0%, var(--gtNavyDeep) 100%);
+    padding: 1.5rem 0.75rem;
+    box-sizing: border-box;
+    overflow-y: auto;
+    z-index: 2;
+}
+
+.gtApp .gtBrand.sapMTitle {
+    color: #ffffff;
+    font-size: 1.625rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    padding: 0 0.75rem 1.75rem;
+    white-space: nowrap;
+}
+
+/* The navigation list: white text and icons on navy, the current place in
+   blue. The theme draws its items as light boxes; all of that goes. */
+.gtApp .gtSideNav,
+.gtApp .gtSideNav.sapTntNavLI,
+.gtApp .gtSideNav ul {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.gtApp .gtSideNav .sapTntNavLIItem {
+    display: flex;
+    align-items: center;
+    height: 3rem;
+    margin-bottom: 0.375rem;
+    padding: 0 0.875rem;
+    background: transparent;
+    border: none;
+    border-radius: 0.625rem;
+    box-shadow: none;
+    cursor: pointer;
+}
+
+.gtApp .gtSideNav .sapTntNavLIItem:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.gtApp .gtSideNav .sapTntNavLIItem .sapTntNavLIText {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.gtApp .gtSideNav .sapTntNavLIItemSelected .sapTntNavLIText {
+    font-weight: 500;
+}
+
+.gtApp .gtSideNav .sapTntNavLIItem .sapUiIcon {
+    color: #ffffff;
+    font-size: 1.25rem;
+    width: 1.5rem;
+    margin-right: 0.875rem;
+}
+
+.gtApp .gtSideNav .sapTntNavLIItem.sapTntNavLIItemSelected {
+    background: linear-gradient(90deg, #1a6bff 0%, var(--gtBlue) 100%);
+    box-shadow: 0 6px 16px rgba(20, 99, 243, 0.35);
+}
+
+.gtApp .gtSideNav .sapTntNavLIItem.sapTntNavLIItemSelected::after,
+.gtApp .gtSideNav .sapTntNavLISelectionIndicator {
+    display: none;
+}
+
+.gtApp .gtSideNav .sapTntNavLIItem > a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.gtApp .gtSideNav .sapTntNavLIItem:focus,
+.gtApp .gtSideNav .sapTntNavLIItem:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.7);
+    outline-offset: -2px;
+}
+
+.gtSidebarScrim {
+    display: none;
+}
+
+.gtMain {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--gtBg);
+}
+
+.gtApp .gtPages {
+    flex: 1 1 auto;
+    min-height: 0;
+    position: relative;
+}
+
+/* Top bar */
+.gtTopBar {
+    flex: 0 0 4.5rem;
+    height: 4.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1.75rem;
+    background: #ffffff;
+    border-bottom: 1px solid var(--gtLine);
+    box-sizing: border-box;
+}
+
+.gtApp .gtSideToggle {
+    display: none;
+}
+
+.gtApp .gtTopBarSearch.sapMSF {
+    flex: 0 1 42rem;
+    width: auto;
+    height: 2.75rem;
+}
+
+.gtApp .gtTopBarSearch .sapMSFF {
+    height: 2.75rem;
+    border-radius: 0.625rem;
+    background: #f7f9fc;
+    border: 1px solid var(--gtLine);
+    box-shadow: none;
+}
+
+.gtApp .gtTopBarSearch .sapMSFI {
+    font-size: 0.9375rem;
+}
+
+.gtTopBarEnd {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.gtApp .gtTopBarBell .sapUiIcon {
+    font-size: 1.375rem;
+    color: var(--gtInk);
+}
+
+.gtTopBarDivider {
+    width: 1px;
+    height: 2rem;
+    background: var(--gtLine);
+}
+
+.gtTopBarPerson {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.gtApp .gtTopBarAvatar.sapFAvatar,
+.gtApp .gtTopBarAvatar.sapFAvatar:hover {
+    background: var(--gtBlue);
+    border: none;
+    box-shadow: none;
+}
+
+.gtApp .gtTopBarAvatar.sapFAvatar,
+.gtApp .gtTopBarAvatar.sapFAvatar * {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* A magnifier on the left of the search boxes, as in the mockups; the
+   theme's own search button is turned off (showSearchButton="false"). */
+.gtApp .gtTopBarSearch .sapMSFF,
+.gtApp .gtFilterSearch .sapMSFF {
+    position: relative;
+    padding-left: 2.75rem;
+}
+
+.gtApp .gtTopBarSearch .sapMSFF::before,
+.gtApp .gtFilterSearch .sapMSFF::before {
+    content: "\e00d";
+    font-family: "SAP-icons";
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.125rem;
+    color: var(--gtMuted);
+    pointer-events: none;
+}
+
+.gtApp .sapMSFI::placeholder,
+.gtApp .sapMInputBaseInner::placeholder {
+    font-style: normal;
+    color: #8a94a6;
+}
+
+.gtTopBarPersonText {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.gtApp .gtTopBarPersonName {
+    font-weight: 700;
+    color: var(--gtInk);
+}
+
+.gtApp .gtTopBarPersonProfile {
+    font-size: 0.8125rem;
+    color: var(--gtMuted);
+}
+
+/* ------------------------------------------------------------------ */
+/* Pages                                                               */
+/* ------------------------------------------------------------------ */
+
+.gtApp .gtPage,
+.gtApp .gtPage > section {
+    background: var(--gtBg);
+}
+
+.gtPageContent {
+    display: flex;
+    flex-direction: column;
+    padding: 1.75rem 2rem 2.5rem;
+    /* no max-width: pages use the whole window, however wide */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.gtPageHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.gtApp .gtPageTitle.sapMTitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--gtInk);
+    line-height: 1.15;
+}
+
+.gtApp .gtSubtitle {
+    font-size: 1.0625rem;
+    color: var(--gtMuted);
+    margin-top: 0.25rem;
+}
+
+.gtApp .gtSubtle {
+    font-size: 0.8125rem;
+    color: var(--gtMuted);
+}
+
+.gtApp .gtSectionTitle.sapMTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gtInk);
+}
+
+/* Primary action: "+ Novo projeto", "+ Novo marco" */
+.gtApp .gtPrimaryButton.sapMBtn {
+    height: 3rem;
+}
+
+.gtApp .gtPrimaryButton .sapMBtnInner {
+    display: flex;
+    align-items: center;
+    height: 3rem;
+    padding: 0 1.25rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.gtApp .gtPrimaryButton .sapMBtnInner .sapMBtnIcon {
+    font-size: 1.125rem;
+}
+
+/* Cards */
+.gtCard {
+    background: #ffffff;
+    border: 1px solid var(--gtLine);
+    border-radius: var(--gtRadius);
+    box-shadow: var(--gtCardShadow);
+    margin-bottom: 1.25rem;
+    box-sizing: border-box;
+}
+
+.gtCardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem 1rem;
+}
+
+/* Filter bar (Projetos) */
+.gtFilterBar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1rem 1.25rem;
+    padding: 1.25rem 1.5rem;
+}
+
+.gtApp .gtFilterSearch.sapMSF {
+    flex: 1 1 22rem;
+    width: auto;
+    height: 2.75rem;
+}
+
+.gtApp .gtFilterSearch .sapMSFF {
+    height: 2.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d9dfe8;
+    background: #ffffff;
+    box-shadow: none;
+}
+
+/* Anexos: a long link is cut with an ellipsis (the whole of it in the tooltip) */
+/* an audit's code ("2_Testing_26092026") may break where it must */
+.gtApp .gtBreakCode {
+    display: block;
+    max-width: 10.5rem;
+    overflow-wrap: anywhere;
+}
+
+.gtApp .gtUrl,
+.gtApp .gtEllipsis {
+    display: block;
+    max-width: 12rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Pessoas e Clientes: the filters between the tabs and the table */
+.gtAdminFilters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1rem 1.25rem;
+    margin: 1.25rem 0 1.5rem;
+}
+
+.gtAdminFilters + .gtCard {
+    margin-top: 0;
+}
+
+/* Filters on top of a table in the same card (Auditorias), as in the mockup */
+.gtFilterBarInCard {
+    padding: 1.5rem 1.5rem 1.25rem;
+}
+
+.gtFilterField {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 12rem;
+    min-width: 10rem;
+}
+
+.gtApp .gtFilterLabel.sapMLabel {
+    font-weight: 600;
+    color: var(--gtInk);
+    margin-bottom: 0.375rem;
+}
+
+.gtApp .gtFilterField .sapMSlt,
+.gtApp .gtFilterField .sapMInputBaseContentWrapper {
+    height: 2.75rem;
+    border-radius: 0.5rem;
+}
+
+.gtApp .gtFilterField .sapMComboBox,
+.gtApp .gtFilterField .sapMInputBase {
+    height: 2.75rem;
+}
+
+/* Tables inside a card: the card draws the frame */
+.gtTableCard {
+    overflow: hidden;
+}
+
+.gtApp .gtTable.sapMList,
+.gtApp .gtTable .sapMListTbl {
+    background: transparent;
+}
+
+.gtApp .gtTable .sapMListTblHeader {
+    background: #f7f9fc;
+}
+
+.gtApp .gtTable .sapMListTblHeaderCell {
+    height: 3.25rem;
+    padding: 0 0.75rem;
+    font-weight: 600;
+    color: var(--gtInk);
+    background: #f7f9fc;
+    border-bottom: 1px solid var(--gtLine);
+}
+
+.gtApp .gtTable .sapMListTblHeaderCell .sapMText {
+    font-weight: 600;
+    color: var(--gtInk);
+    white-space: nowrap;
+}
+
+.gtApp .gtTable .sapMListTblCell {
+    padding: 0.5rem 0.75rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--gtLine);
+}
+
+.gtApp .gtTable .sapMLIB {
+    border-bottom: none;
+}
+
+.gtApp .gtTable .sapMListTblRow:last-child .sapMListTblCell {
+    border-bottom: none;
+}
+
+.gtApp .gtSortHeader.sapMBtn {
+    height: auto;
+    padding: 0;
+}
+
+.gtApp .gtSortHeader .sapMBtnInner {
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-weight: 700;
+    color: var(--gtInk);
+}
+
+.gtApp .gtSortHeader .sapMBtnInner .sapMBtnIcon {
+    font-size: 0.75rem;
+    color: var(--gtMuted);
+    margin-left: 0.375rem;
+}
+
+.gtApp .gtCodeLink.sapMLnk {
+    font-weight: 500;
+}
+
+.gtApp .gtRowAction .sapMBtnInner {
+    border: 1px solid var(--gtLine);
+    border-radius: 0.5rem;
+    background: #ffffff;
+}
+
+.gtTableFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--gtLine);
+}
+
+.gtPager,
+.gtPagerPages {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.gtApp .gtPagerButton .sapMBtnInner {
+    min-width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+}
+
+/* Status chips: pastel pills, as in the mockups */
+.gtChips {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.375rem;
+}
+
+.gtApp .gtChips .sapMObjStatus {
+    white-space: nowrap;
+}
+
+.gtApp .sapMObjStatusInverted {
+    white-space: nowrap;
+    padding: 0.3125rem 0.75rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.gtApp .sapMObjStatusInverted .sapMObjStatusText {
+    font-weight: 500;
+    font-size: 0.875rem;
+    /* the theme paints the text's own box in a strong colour; the pill is the root */
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    text-shadow: none;
+}
+
+.gtApp .sapMObjStatusInverted.sapMObjStatusSuccess {
+    background: #e3f6ea;
+}
+
+.gtApp .sapMObjStatusInverted.sapMObjStatusSuccess .sapMObjStatusText {
+    color: #17803d;
+}
+
+.gtApp .sapMObjStatusInverted.sapMObjStatusInformation {
+    background: #e7f0ff;
+}
+
+.gtApp .sapMObjStatusInverted.sapMObjStatusInformation .sapMObjStatusText {
+    color: var(--gtBlue);
+}
+
+.gtApp .sapMObjStatusInverted.sapMObjStatusWarning {
+    background: #fff1dc;
+}
+
+.gtApp .sapMObjStatusInverted.sapMObjStatusWarning .sapMObjStatusText {
+    color: #c26a00;
+}
+
+.gtApp .sapMObjStatusInverted.sapMObjStatusError {
+    background: #fde8ea;
+}
+
+.gtApp .sapMObjStatusInverted.sapMObjStatusError .sapMObjStatusText {
+    color: #d1242f;
+}
+
+.gtApp .sapMObjStatusInverted.sapMObjStatusNone {
+    background: #eef1f5;
+}
+
+.gtApp .sapMObjStatusInverted.sapMObjStatusNone .sapMObjStatusText {
+    color: #475467;
+}
+
+/* KPI tiles: a coloured icon square, the number, the label */
+.gtKpiRow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.gtKpi {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 0;
+}
+
+.gtKpiHead {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.gtKpiIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.625rem;
+    margin-bottom: 0.875rem;
+}
+
+.gtApp .gtKpiIcon .sapUiIcon {
+    font-size: 1.375rem;
+}
+
+.gtKpiIcon.gtTintBlue { background: #e7f0ff; }
+.gtKpiIcon.gtTintGreen { background: #e3f6ea; }
+.gtKpiIcon.gtTintOrange { background: #fff1dc; }
+.gtKpiIcon.gtTintGrey { background: #eef1f5; }
+.gtKpiIcon.gtTintRed { background: #fde8ea; }
+.gtApp .gtTintBlue .sapUiIcon { color: var(--gtBlue); }
+.gtApp .gtTintGreen .sapUiIcon { color: #17a34a; }
+.gtApp .gtTintOrange .sapUiIcon { color: #f08c00; }
+.gtApp .gtTintGrey .sapUiIcon { color: #667085; }
+.gtApp .gtTintRed .sapUiIcon { color: #d1242f; }
+
+.gtApp .gtKpiNumber {
+    font-size: 2.125rem;
+    font-weight: 800;
+    color: var(--gtInk);
+    line-height: 1.1;
+}
+
+.gtApp .gtKpiLabel {
+    font-size: 1rem;
+    color: var(--gtText);
+    margin-top: 0.25rem;
+}
+
+.gtApp .gtKpiPct {
+    font-size: 0.9375rem;
+    color: var(--gtMuted);
+}
+
+/* ------------------------------------------------------------------ */
+/* Dashboard                                                           */
+/* ------------------------------------------------------------------ */
+
+.gtDashboardGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(26rem, 1fr));
+    gap: 1.25rem;
+}
+
+.gtDashboardGrid > .gtCard {
+    margin-bottom: 0;
+}
+
+.gtDonutCard {
+    /* fills the card's height when the card beside it is taller, so the
+       chart sits in the middle rather than at the top */
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 0.5rem 1.5rem 1.5rem;
+}
+
+.gtDonut {
+    position: relative;
+    flex: 0 0 13rem;
+    width: 13rem;
+    height: 13rem;
+    border-radius: 50%;
+}
+
+.gtDonut::after {
+    content: "";
+    position: absolute;
+    inset: 2.25rem;
+    border-radius: 50%;
+    background: #ffffff;
+}
+
+.gtDonutCenter {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--gtMuted);
+}
+
+.gtDonutCenter strong {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--gtInk);
+    line-height: 1.1;
+}
+
+.gtCountBadge {
+    display: inline-flex;
+    margin-left: 0.625rem;
+    padding: 0.125rem 0.625rem;
+    border-radius: 999px;
+    background: #fde8ea;
+    color: #d1242f;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.gtApp .gtSeeAll.sapMLnk {
+    font-weight: 500;
+}
+
+.gtDashboardRow {
+    margin-bottom: 1.25rem;
+}
+
+.gtApp .gtPeriodPicker .sapMInputBaseContentWrapper {
+    height: 2.75rem;
+    border-radius: 0.5rem;
+}
+
+/* Evolução dos projetos: bar pairs on a ruled axis */
+.gtBarLegend {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.gtBarKey {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 0.1875rem;
+}
+
+.gtBarKey.gtBarClosed {
+    margin-left: 0.75rem;
+}
+
+.gtBarNew { background: #9cc2ff; }
+.gtBarClosed { background: var(--gtBlue); }
+
+.gtBars {
+    padding: 1rem 1.5rem 1.25rem 3rem;
+}
+
+/* The ticks (left of the box) and the gridlines share the box's height */
+.gtBarsArea {
+    position: relative;
+    height: 13rem;
+}
+
+.gtTick {
+    position: absolute;
+    left: -2.25rem;
+    width: 1.75rem;
+    transform: translateY(50%);
+    text-align: right;
+    font-size: 0.8125rem;
+    line-height: 1;
+    color: var(--gtMuted);
+}
+
+.gtGridLine {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gtLine);
+}
+
+.gtBarsPlot {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.gtBarPair {
+    flex: 1 1 0;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.375rem;
+}
+
+.gtBar {
+    display: block;
+    width: 1.5rem;
+    min-height: 2px;
+    border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.gtBarsLabels {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 0.5rem;
+    border-top: 1px solid #d9dfe8;
+}
+
+.gtBarsLabels span {
+    flex: 1 1 0;
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--gtMuted);
+}
+
+.gtBarsEmpty {
+    padding: 2rem 1.5rem;
+    color: var(--gtMuted);
+}
+
+/* Últimas atualizações: green for automatic, blue for a note */
+.gtFeedIconTinted { background: #e7f0ff; }
+.gtFeedIconTinted[data-kind="auto"] { background: #e3f6ea; }
+.gtApp .gtFeedIconTinted .sapUiIcon { color: var(--gtBlue); }
+.gtApp .gtFeedIconTinted[data-kind="auto"] .sapUiIcon { color: #17a34a; }
+
+.gtApp .gtFeedCodeCol {
+    flex: 0 0 6rem;
+}
+
+/* the "há 2 horas" on the right of a feed row keeps its room */
+.gtApp .gtFeedRow > .sapMText:last-child {
+    flex: 0 0 auto;
+}
+
+.gtLegendList {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.gtLegendRow {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--gtLine);
+}
+
+.gtLegendRow:last-child {
+    border-bottom: none;
+}
+
+.gtApp .gtLegendDot {
+    font-size: 0.75rem;
+    margin-right: 0.625rem;
+}
+
+.gtApp .gtLegendLabel {
+    flex: 1 1 auto;
+}
+
+.gtApp .gtLegendNum {
+    width: 3rem;
+    text-align: right;
+    font-weight: 600;
+    color: var(--gtInk);
+}
+
+.gtApp .gtLegendPct {
+    width: 4.5rem;
+    text-align: right;
+    color: var(--gtMuted);
+}
+
+/* Feeds: an icon in a tinted circle, a code and a title, something on the right */
+.gtApp .gtFeed.sapMList,
+.gtApp .gtFeed .sapMListUl,
+.gtApp .gtFeed .sapMLIB {
+    background: transparent;
+}
+
+.gtApp .gtFeed .sapMLIB {
+    padding: 0 1.5rem;
+    border-bottom-color: var(--gtLine);
+}
+
+.gtFeedRow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.75rem 0;
+}
+
+.gtFeedIcon {
+    flex: 0 0 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+}
+
+.gtFeedIcon.gtTintBlue { background: #e7f0ff; }
+.gtFeedIcon.gtTintRed { background: #fde8ea; }
+.gtFeedIcon.gtTintGreen { background: #e3f6ea; }
+
+.gtFeedText {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.gtApp .gtFeedCode {
+    color: var(--gtBlue);
+    font-weight: 600;
+}
+
+.gtApp .gtFeedTitle {
+    color: var(--gtInk);
+}
+
+/* ------------------------------------------------------------------ */
+/* Project detail (docs/mockups/04-projeto-marcos.png)                 */
+/* ------------------------------------------------------------------ */
+
+.gtApp .gtBreadcrumbs {
+    margin-bottom: 1rem;
+}
+
+.gtApp .gtBreadcrumbs .sapMLnk,
+.gtApp .gtBreadcrumbs .sapMBreadcrumbsCurrentLocation {
+    font-size: 1rem;
+}
+
+.gtApp .gtProjectCode.sapMTitle {
+    font-size: 2.75rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--gtInk);
+    line-height: 1.1;
+}
+
+.gtApp .gtProjectName {
+    font-size: 1.5rem;
+    color: var(--gtText);
+    margin-top: 0.375rem;
+}
+
+.gtProjectHeadEnd {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.gtApp .gtProjectStatus.sapMObjStatusInverted {
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.625rem;
+}
+
+.gtApp .gtProjectStatus .sapMObjStatusText {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.gtApp .gtSquareButton .sapMBtnInner {
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid var(--gtLine);
+    border-radius: 0.625rem;
+    background: #ffffff;
+}
+
+.gtProjectFacts {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1.5rem 0 1.25rem;
+}
+
+.gtProjectFact {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0 1.75rem;
+    border-left: 1px solid var(--gtLine);
+}
+
+.gtProjectFact:first-child {
+    padding-left: 0;
+    border-left: none;
+}
+
+.gtApp .gtProjectFact .sapUiIcon {
+    font-size: 1.5rem;
+    color: var(--gtInk);
+}
+
+.gtApp .gtProjectFact .sapMLabel {
+    font-size: 0.875rem;
+    color: var(--gtMuted);
+}
+
+.gtApp .gtProjectFact .sapMText {
+    font-size: 1.0625rem;
+    color: var(--gtInk);
+}
+
+/* Tabs: plain text, the current one blue and underlined */
+.gtApp .gtProjectTabs .sapMITH {
+    background: transparent;
+    box-shadow: inset 0 -1px 0 var(--gtLine);
+    padding: 0;
+}
+
+.gtApp .gtProjectTabs .sapMITBFilter .sapMITBText {
+    font-size: 1.0625rem;
+    color: var(--gtText);
+}
+
+.gtApp .gtProjectTabs .sapMITBFilter.sapMITBSelected .sapMITBText {
+    color: var(--gtBlue);
+    font-weight: 600;
+}
+
+.gtApp .gtProjectTabs .sapMITBFilter.sapMITBSelected .sapMITBContentArrow::after {
+    background: var(--gtBlue);
+    height: 0.1875rem;
+}
+
+.gtApp .gtProjectTabs .sapMITBContainerContent,
+.gtApp .gtProjectTabs .sapMITBContent {
+    background: transparent;
+    border: none;
+    padding: 1.25rem 0 0;
+}
+
+.gtApp .gtOwners .sapFAvatarGroupItem .sapFAvatar,
+.gtApp .gtOwners .sapFAvatar {
+    background: #e7f0ff;
+    color: var(--gtBlue);
+    border: 2px solid #ffffff;
+    font-weight: 600;
+}
+
+/* Header: the warning strip, and the facts row as one card */
+.gtApp .gtReviewStrip {
+    margin-bottom: 1rem;
+    border-radius: 0.625rem;
+}
+
+.gtProjectFacts.gtCard {
+    padding: 1rem 1.5rem;
+    margin: 0.5rem 0 1.5rem;
+    gap: 0.75rem 0;
+}
+
+.gtFactIcon {
+    flex: 0 0 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.625rem;
+    background: #eef3ff;
+}
+
+.gtApp .gtProjectFact .gtFactIcon .sapUiIcon {
+    font-size: 1.125rem;
+    color: var(--gtBlue);
+}
+
+/* Tabs: room between them, as in the mockups, and no clipped descenders */
+.gtApp .gtProjectTabs .sapMITBFilter {
+    padding: 0 1.25rem 0 0;
+    margin-right: 1.25rem;
+}
+
+.gtApp .gtProjectTabs .sapMITBFilter .sapMITBText {
+    line-height: 1.5;
+    padding-bottom: 0.5rem;
+}
+
+/* Cards with padding of their own (Visão geral, Módulos, Updates) */
+.gtCardBody {
+    padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.gtCardHeaderPlain {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Visão geral: main column and side column */
+.gtOverviewGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(18rem, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.gtOverviewMain,
+.gtOverviewSide {
+    display: flex;
+    flex-direction: column;
+}
+
+.gtProgress {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.gtProgressTrack {
+    flex: 1 1 auto;
+    height: 0.625rem;
+    border-radius: 999px;
+    background: #eef1f5;
+    overflow: hidden;
+}
+
+.gtProgressTrack > div {
+    width: 100%;
+    height: 100%;
+}
+
+.gtProgressFill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #3b82ff 0%, var(--gtBlue) 100%);
+}
+
+.gtApp .gtProgressPct {
+    font-weight: 700;
+    color: var(--gtInk);
+    min-width: 3rem;
+    text-align: right;
+}
+
+/* The milestone timeline: a dot per milestone on one line */
+.gtTimeline {
+    display: flex;
+    position: relative;
+    overflow-x: auto;
+    padding-top: 0.25rem;
+}
+
+.gtStep {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.gtStep::before {
+    content: "";
+    position: absolute;
+    top: 0.875rem;
+    left: -50%;
+    width: 100%;
+    height: 2px;
+    background: var(--gtLine);
+    z-index: 0;
+}
+
+.gtStep:first-child::before {
+    display: none;
+}
+
+.gtStep[data-step="done"]::before,
+.gtStep[data-step="late"]::before,
+.gtStep[data-step="current"]::before {
+    background: var(--gtBlue);
+}
+
+.gtStepDot {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2px solid #c9d2e0;
+    box-sizing: border-box;
+    margin-bottom: 0.5rem;
+}
+
+.gtApp .gtStepDot .sapUiIcon {
+    font-size: 0.75rem;
+    color: #ffffff;
+}
+
+.gtStep[data-step="done"] .gtStepDot {
+    background: #17a34a;
+    border-color: #17a34a;
+}
+
+.gtStep[data-step="late"] .gtStepDot {
+    background: #d1242f;
+    border-color: #d1242f;
+}
+
+.gtStep[data-step="current"] .gtStepDot {
+    border-color: var(--gtBlue);
+    box-shadow: 0 0 0 4px rgba(20, 99, 243, 0.15);
+}
+
+.gtApp .gtStepLabel {
+    font-weight: 600;
+    color: var(--gtInk);
+    font-size: 0.875rem;
+}
+
+.gtApp .gtStepDate {
+    font-size: 0.8125rem;
+    color: var(--gtMuted);
+}
+
+/* Project details as a two-column description list */
+.gtDetails {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 1.25rem 2rem;
+}
+
+.gtDetail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.gtApp .gtDetail .sapMLabel {
+    color: var(--gtMuted);
+    font-size: 0.8125rem;
+}
+
+.gtApp .gtDetail > .sapMText {
+    color: var(--gtInk);
+    font-size: 1rem;
+}
+
+.gtChipsWrap {
+    flex-wrap: wrap;
+}
+
+/* Side cards */
+.gtNext {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.gtNext .gtKpiIcon {
+    margin-bottom: 0;
+    flex: 0 0 3rem;
+}
+
+.gtNextIcon { background: #e7f0ff; }
+.gtNextIcon[data-late="yes"] { background: #fde8ea; }
+.gtApp .gtNextIcon .sapUiIcon { color: var(--gtBlue); }
+.gtApp .gtNextIcon[data-late="yes"] .sapUiIcon { color: #d1242f; }
+
+.gtNextText {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.gtApp .gtNextTitle {
+    font-weight: 700;
+    color: var(--gtInk);
+    font-size: 1.0625rem;
+}
+
+.gtMiniList {
+    display: flex;
+    flex-direction: column;
+}
+
+.gtMiniRow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--gtLine);
+}
+
+.gtMiniRow:last-child,
+.gtMiniUpdate:last-child {
+    border-bottom: none;
+}
+
+.gtMiniText {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.gtApp .gtMiniTitle {
+    color: var(--gtInk);
+    font-weight: 500;
+}
+
+.gtMiniUpdate {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.625rem 0;
+    border-bottom: 1px solid var(--gtLine);
+}
+
+/* Módulos */
+.gtModuleGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 1rem;
+    align-items: start;
+}
+
+/* a module: its header, then milestones, team, and audit and attachment counts */
+.gtModuleCard {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--gtLine);
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.gtModule {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 1rem;
+}
+
+.gtModuleSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.875rem 1rem;
+    border-top: 1px solid var(--gtLine);
+}
+
+.gtModuleSectionHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.gtApp .gtModuleLabel {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--gtMuted);
+}
+
+.gtModuleTeam {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.gtModuleCounts {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--gtLine);
+    background: #f9fafc;
+}
+
+.gtModuleCount {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.gtApp .gtModuleCount .sapUiIcon {
+    color: var(--gtMuted);
+}
+
+.gtApp .gtModuleCountValue {
+    font-weight: 700;
+    color: var(--gtInk);
+}
+
+.gtModule .gtKpiIcon {
+    margin-bottom: 0;
+}
+
+.gtApp .gtModuleCode {
+    font-weight: 700;
+    color: var(--gtInk);
+    font-size: 1.0625rem;
+}
+
+/* the module's name takes the room; the "×" stays at the card's end */
+.gtModuleText {
+    flex: 1;
+    min-width: 0;
+}
+
+.gtApp .gtModuleRemove .sapMBtnInner {
+    color: var(--gtMuted);
+}
+
+/* Updates */
+.gtComposer {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.gtApp .gtComposerText {
+    flex: 1 1 auto;
+}
+
+.gtApp .gtUpdates .sapMLIB {
+    padding: 0;
+}
+
+.gtUpdateHead {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    flex-wrap: wrap;
+}
+
+.gtApp .gtStrong {
+    font-weight: 600;
+}
+
+.gtApp .gtUpdateText {
+    margin-top: 0.25rem;
+    color: var(--gtText);
+    line-height: 1.45;
+}
+
+@media (max-width: 1024px) {
+    .gtOverviewGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* O meu trabalho (docs/mockups/07-o-meu-trabalho.png) */
+.gtPageHeaderStack {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+}
+
+.gtKpiRowInline {
+    margin-top: 0.25rem;
+}
+
+.gtKpiInline {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0;
+}
+
+.gtKpiInline .gtKpiIcon {
+    margin-bottom: 0;
+}
+
+/* Chips in the side lists: smaller, and never squeezed out of the card */
+.gtApp .gtMiniRow .sapMObjStatusInverted {
+    flex: 0 0 auto;
+    padding: 0.1875rem 0.5rem;
+}
+
+.gtApp .gtMiniRow .sapMObjStatusInverted .sapMObjStatusText {
+    font-size: 0.8125rem;
+}
+
+.gtWorkGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 23rem;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.gtWorkGrid > .gtCard {
+    margin-bottom: 0;
+}
+
+.gtCardTools {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* A card header with tools: the title keeps its words, the tools wrap below */
+.gtCardHeader:has(.gtCardTools) {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.gtApp .gtCardHeader .gtSectionTitle.sapMTitle {
+    white-space: nowrap;
+    overflow: visible;
+}
+
+.gtApp .gtToolSearch.sapMSF {
+    width: 13rem;
+    flex: 0 0 auto;
+}
+
+.gtGrow {
+    flex: 1 1 auto;
+}
+
+.gtDateBadge {
+    flex: 0 0 2.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 0.75rem;
+    border-right: 1px solid var(--gtLine);
+}
+
+.gtApp .gtDateDay {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--gtInk);
+    line-height: 1.1;
+}
+
+.gtApp .gtDateMonth {
+    font-size: 0.75rem;
+    color: var(--gtMuted);
+}
+
+.gtCountBadgeGrey {
+    background: #eef1f5;
+    color: var(--gtInk);
+}
+
+@media (max-width: 1200px) {
+    .gtWorkGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Novo projeto (docs/mockups/06-novo-projeto.png) */
+.gtHeaderButtons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.gtApp .gtSecondaryButton.sapMBtn,
+.gtApp .gtSecondaryButton .sapMBtnInner {
+    height: 3rem;
+}
+
+.gtApp .gtSecondaryButton .sapMBtnInner {
+    display: flex;
+    align-items: center;
+    padding: 0 1.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d9dfe8;
+    background: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gtInk);
+}
+
+.gtApp .gtOutlineButton .sapMBtnInner {
+    border: 1px solid var(--gtBlue);
+    border-radius: 0.5rem;
+    background: #ffffff;
+    color: var(--gtBlue);
+    font-weight: 600;
+}
+
+.gtApp .gtOutlineButton .sapMBtnInner .sapMBtnIcon {
+    color: var(--gtBlue);
+}
+
+.gtCreateGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.gtCreateMain {
+    display: flex;
+    flex-direction: column;
+}
+
+.gtCreateSide {
+    position: sticky;
+    top: 0;
+}
+
+.gtApp .gtFormTitle {
+    margin-bottom: 1.25rem;
+}
+
+.gtApp .gtFormSubtitle {
+    display: block;
+    margin: 0.25rem 0 1rem;
+}
+
+.gtFormGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem 1.5rem;
+}
+
+.gtField {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.gtFieldWide {
+    grid-column: span 2;
+}
+
+.gtFieldFull {
+    grid-column: 1 / -1;
+}
+
+.gtApp .gtCounter {
+    align-self: flex-end;
+}
+
+.gtApp .gtDescription {
+    display: block;
+    margin-bottom: 1.25rem;
+    color: var(--gtText);
+    line-height: 1.5;
+}
+
+.gtApp .gtField .sapMLabel {
+    font-weight: 600;
+    color: var(--gtInk);
+}
+
+.gtApp .gtHint {
+    font-size: 0.8125rem;
+    color: var(--gtMuted);
+}
+
+/* ------------------------------------------------------------------ */
+/* Dialogs: they open outside the shell (UI5's static area), so each   */
+/* carries "gtApp gtDialog" to take the app's look                     */
+/* ------------------------------------------------------------------ */
+
+.gtApp.gtDialog {
+    background: #ffffff;
+    border-radius: var(--gtRadius);
+    overflow: hidden;
+}
+
+.gtApp.gtDialog .sapMDialogTitleGroup,
+.gtApp.gtDialog .sapMIBar.sapMHeader-CTX {
+    padding: 0 0.5rem;
+}
+
+.gtApp.gtDialog .sapMDialogTitleGroup .sapMTitle,
+.gtApp.gtDialog .sapMIBar.sapMHeader-CTX .sapMTitle {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--gtInk);
+}
+
+.gtApp.gtDialog .sapMDialogFooter .sapMIBar {
+    padding: 0 0.5rem;
+}
+
+.gtDialogBody {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.gtFieldRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Choice cards (a person's profile): a list in SingleSelectLeft mode,
+   each item a bordered card, the chosen one outlined in blue */
+.gtApp .gtChoiceList.sapMList,
+.gtApp .gtChoiceList .sapMListUl {
+    background: transparent;
+}
+
+.gtApp .gtChoiceList .sapMListUl {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.gtApp .gtChoiceList .sapMLIB {
+    border: 1px solid var(--gtLine);
+    border-radius: 0.75rem;
+    background: #ffffff;
+    padding: 0.25rem 1rem 0.25rem 0.5rem;
+    height: auto;
+}
+
+.gtApp .gtChoiceList .sapMLIB.sapMLIBSelected {
+    border-color: var(--gtBlue);
+    background: var(--gtBlueSoft);
+    box-shadow: 0 0 0 1px var(--gtBlue);
+}
+
+.gtApp .gtChoiceList .sapMLIBSelected .gtKpiIcon {
+    background: #ffffff;
+}
+
+.gtApp .gtChoiceList .sapMLIBFocusable:focus {
+    outline-offset: -2px;
+}
+
+.gtChoice {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.625rem 0;
+}
+
+.gtChoice .gtKpiIcon {
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
+.gtApp .gtChoiceTitle,
+.gtApp .gtChoiceTitle.sapMLabel {
+    font-weight: 600;
+    color: var(--gtInk);
+}
+
+/* A milestone's type with its module beside it */
+.gtInlineChips {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* a module chip under the milestone's name, in the lists */
+.gtStackedChip {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    max-width: 8.5rem;
+}
+
+.gtApp .gtMiniChip .sapMObjStatusText {
+    font-size: 0.75rem;
+    padding: 0 0.375rem;
+}
+
+/* Ativo: a row with what it means, and the switch at its end */
+.gtToggleRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--gtLine);
+    border-radius: 0.75rem;
+    background: #f9fafc;
+}
+
+.gtApp .gtTableNote {
+    display: block;
+    padding: 0 1.5rem 1.25rem;
+}
+
+.gtStepDotSmall {
+    width: 0.875rem;
+    height: 0.875rem;
+    margin-bottom: 0;
+    border-color: var(--gtBlue);
+}
+
+.gtApp .gtPushRight {
+    margin-left: auto;
+}
+
+@media (max-width: 1200px) {
+    .gtCreateGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .gtCreateSide {
+        position: static;
+    }
+}
+
+@media (max-width: 800px) {
+    .gtFormGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .gtFieldWide {
+        grid-column: auto;
+    }
+}
+
+.gtKpiRowFive {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+}
+
+.gtApp .gtPrimaryButtonSmall.sapMBtn,
+.gtApp .gtPrimaryButtonSmall .sapMBtnInner {
+    height: 2.75rem;
+}
+
+/* A table inside a card with a header: framed in the card's padding, as
+   "Marcos do projeto" and "Equipa do projeto" are in the mockups. */
+.gtApp .gtTableInset {
+    margin: 0 1.5rem 1.5rem;
+    /* the table sets width: 100% inline; leave room for the side margins */
+    width: calc(100% - 3rem) !important;
+    box-sizing: border-box;
+    border: 1px solid var(--gtLine);
+    border-radius: 0.625rem;
+    overflow: hidden;
+}
+
+.gtOwners {
+    display: flex;
+}
+
+.gtApp .gtOwners .sapFAvatar + .sapFAvatar {
+    margin-left: -0.375rem;
+}
+
+.gtApp .gtOwners .sapFAvatar {
+    background: #dbe7ff;
+    border: 2px solid #ffffff;
+    box-sizing: content-box;
+}
+
+.gtApp .gtOwners .sapFAvatar * {
+    color: var(--gtBlue);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.gtApp .gtProjectTabs .sapMITBFilter:not(.sapMITBSelected) .sapMITBText {
+    font-weight: 400;
+}
+
+.gtPersonCell {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.gtApp .gtPersonAvatar.sapFAvatar {
+    background: #dbe7ff;
+    border: none;
+}
+
+.gtApp .gtPersonAvatar.sapFAvatar * {
+    color: var(--gtBlue);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.gtApp .gtOverviewForm {
+    padding: 0.5rem 0.5rem 1rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Narrow windows: the sidebar slides in over the page                  */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 1024px) {
+    .gtSidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        transform: translateX(-100%);
+        transition: transform 0.2s ease;
+    }
+
+    .gtShell[data-side-open="yes"] .gtSidebar {
+        transform: none;
+    }
+
+    .gtShell[data-side-open="yes"] .gtSidebarScrim {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        background: rgba(11, 31, 69, 0.35);
+    }
+
+    .gtApp .gtSidebarScrimButton,
+    .gtApp .gtSidebarScrimButton .sapMBtnInner {
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+
+    .gtApp .gtSideToggle {
+        display: inline-block;
+    }
+
+    .gtTopBar {
+        padding: 0 1rem;
+    }
+
+    .gtTopBarPersonText,
+    .gtTopBarDivider {
+        display: none;
+    }
+
+    .gtPageContent {
+        padding: 1.25rem 1rem 2rem;
+    }
+
+    .gtDashboardGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .gtDonutCard {
+        flex-direction: column;
+    }
+}

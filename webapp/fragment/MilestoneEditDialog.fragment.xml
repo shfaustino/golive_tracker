@@ -1,0 +1,122 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
+    xmlns:f="sap.ui.layout.form">
+
+    <!-- Editing one milestone (US-14 to US-20), or adding one (msEdit>/mode
+         "create": only the type and the forecast dates). The dialog works on a copy
+         in the "msEdit" model; Guardar sends only what changed, in one
+         PATCH (ProjectDetail.controller.js#onSaveMilestone). The rules the
+         API enforces are checked first and shown next to their field:
+         new forecast dates need a reason, Completed needs the actual date,
+         Not applicable needs a justification. -->
+    <Dialog
+        id="milestoneEditDialog"
+        title="{msEdit>/title}"
+        contentWidth="32rem"
+        class="gtApp gtDialog sapUiContentPadding">
+        <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
+            <Label text="{i18n>colMilestone}" labelFor="msType" visible="{= ${msEdit>/mode} === 'create' }"/>
+            <gt:SearchSelect id="msType" selectedKey="{msEdit>/values/milestoneType}" visible="{= ${msEdit>/mode} === 'create' }">
+                <core:Item key="KO" text="{i18n>msTypeKO}"/>
+                <core:Item key="PTO" text="{i18n>msTypePTO}"/>
+                <core:Item key="GOP" text="{i18n>msTypeGOP}"/>
+                <core:Item key="Training" text="{i18n>msTypeTraining}"/>
+                <core:Item key="Testing" text="{i18n>msTypeTesting}"/>
+                <core:Item key="Go-live" text="{i18n>msTypeGoLive}"/>
+                <core:Item key="Report delivery" text="{i18n>msTypeReportDelivery}"/>
+                <core:Item key="Closure" text="{i18n>msTypeClosure}"/>
+            </gt:SearchSelect>
+
+            <!-- empty: the milestone is the whole project's -->
+            <Label text="{i18n>msModule}" labelFor="msModule"/>
+            <gt:SearchSelect
+                id="msModule"
+                selectedKey="{msEdit>/values/module}"
+                placeholder="{i18n>msWholeProject}"
+                showClearIcon="true"
+                items="{path: 'msEdit>/modules', templateShareable: false}">
+                <core:ListItem key="{msEdit>key}" text="{msEdit>key}" additionalText="{msEdit>name}"/>
+            </gt:SearchSelect>
+
+            <!-- one or more, from the active team (BR-12) -->
+            <Label text="{i18n>msColOwners}" labelFor="msOwners"/>
+            <MultiComboBox
+                id="msOwners"
+                width="100%"
+                selectedKeys="{msEdit>/values/owners}"
+                placeholder="{i18n>msOwnersPlaceholder}"
+                showClearIcon="true"
+                items="{path: 'msEdit>/people', templateShareable: false}">
+                <core:Item key="{msEdit>ID}" text="{msEdit>name}"/>
+            </MultiComboBox>
+
+            <Label text="{i18n>msForecastStart}" labelFor="msForecastStart"/>
+            <DatePicker
+                id="msForecastStart"
+                value="{msEdit>/values/forecastStart}"
+                valueFormat="yyyy-MM-dd"
+                displayFormat="dd/MM/yyyy"
+                valueState="{= ${msEdit>/errors/forecastStart} ? 'Error' : 'None' }"
+                valueStateText="{msEdit>/errors/forecastStart}"/>
+
+            <Label text="{i18n>msForecastEnd}" labelFor="msForecastEnd"/>
+            <DatePicker
+                id="msForecastEnd"
+                value="{msEdit>/values/forecastEnd}"
+                valueFormat="yyyy-MM-dd"
+                displayFormat="dd/MM/yyyy"
+                valueState="{= ${msEdit>/errors/forecastEnd} ? 'Error' : 'None' }"
+                valueStateText="{msEdit>/errors/forecastEnd}"/>
+
+            <Label text="{i18n>msChangeReason}" labelFor="msChangeReason" visible="{= ${msEdit>/mode} === 'edit' }"/>
+            <TextArea
+                id="msChangeReason"
+                visible="{= ${msEdit>/mode} === 'edit' }"
+                value="{msEdit>/values/changeReason}"
+                rows="2"
+                growing="true"
+                placeholder="{i18n>msChangeReasonPlaceholder}"
+                valueState="{= ${msEdit>/errors/changeReason} ? 'Error' : 'None' }"
+                valueStateText="{msEdit>/errors/changeReason}"/>
+
+            <Label text="{i18n>colStatus}" labelFor="msStatus" visible="{= ${msEdit>/mode} === 'edit' }"/>
+            <gt:SearchSelect id="msStatus" selectedKey="{msEdit>/values/status}" visible="{= ${msEdit>/mode} === 'edit' }">
+                <core:Item key="Planned" text="{i18n>msStatusPlanned}"/>
+                <core:Item key="InProgress" text="{i18n>msStatusInProgress}"/>
+                <core:Item key="Completed" text="{i18n>msStatusCompleted}"/>
+                <core:Item key="Postponed" text="{i18n>msStatusPostponed}"/>
+                <core:Item key="NotApplicable" text="{i18n>msStatusNotApplicable}"/>
+                <core:Item key="Cancelled" text="{i18n>msStatusCancelled}"/>
+            </gt:SearchSelect>
+
+            <Label text="{i18n>msColActual}" labelFor="msActualDate" visible="{= ${msEdit>/mode} === 'edit' &amp;&amp; ${msEdit>/values/status} === 'Completed' }"/>
+            <DatePicker
+                id="msActualDate"
+                visible="{= ${msEdit>/mode} === 'edit' &amp;&amp; ${msEdit>/values/status} === 'Completed' }"
+                value="{msEdit>/values/actualDate}"
+                valueFormat="yyyy-MM-dd"
+                displayFormat="dd/MM/yyyy"
+                valueState="{= ${msEdit>/errors/actualDate} ? 'Error' : 'None' }"
+                valueStateText="{msEdit>/errors/actualDate}"/>
+
+            <Label text="{i18n>msJustification}" labelFor="msJustification" visible="{= ${msEdit>/mode} === 'edit' &amp;&amp; ${msEdit>/values/status} === 'NotApplicable' }"/>
+            <TextArea
+                id="msJustification"
+                visible="{= ${msEdit>/mode} === 'edit' &amp;&amp; ${msEdit>/values/status} === 'NotApplicable' }"
+                value="{msEdit>/values/justification}"
+                rows="2"
+                growing="true"
+                valueState="{= ${msEdit>/errors/justification} ? 'Error' : 'None' }"
+                valueStateText="{msEdit>/errors/justification}"/>
+        </f:SimpleForm>
+        <beginButton>
+            <Button text="{i18n>save}" type="Emphasized" press=".onSaveMilestone" enabled="{= !${msEdit>/busy} }"/>
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>cancel}" press=".onCancelMilestone"/>
+        </endButton>
+    </Dialog>
+
+</core:FragmentDefinition>

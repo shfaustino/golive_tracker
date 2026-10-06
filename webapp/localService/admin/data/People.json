@@ -1,0 +1,135 @@
+[
+  {
+    "ID": "00000000-0000-4000-8000-0000000000a1",
+    "name": "Salif Faustino",
+    "email": "salif.faustino@amt-consulting.com",
+    "profile": "Administrator",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000000a2",
+    "name": "Ana Silva",
+    "email": "ana.silva@amt-consulting.com",
+    "profile": "Administrator",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000000a3",
+    "name": "João Pereira",
+    "email": "joao.pereira@amt-consulting.com",
+    "profile": "Architect",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000000a4",
+    "name": "Maria Santos",
+    "email": "maria.santos@amt-consulting.com",
+    "profile": "User",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000000a5",
+    "name": "Pedro Costa",
+    "email": "pedro.costa@amt-consulting.com",
+    "profile": "User",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000000a6",
+    "name": "Carla Mendes",
+    "email": "carla.mendes@amt-consulting.com",
+    "profile": "User",
+    "active": false
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000000a7",
+    "name": "Rui Almeida",
+    "email": "rui.almeida@amt-consulting.com",
+    "profile": "Architect",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000000a8",
+    "name": "Sofia Carvalho",
+    "email": "sofia.carvalho@amt-consulting.com",
+    "profile": "User",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000000a9",
+    "name": "Miguel Rodrigues",
+    "email": "miguel.rodrigues@amt-consulting.com",
+    "profile": "User",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000000aa",
+    "name": "Beatriz Oliveira",
+    "email": "beatriz.oliveira@amt-consulting.com",
+    "profile": "User",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000000ab",
+    "name": "Tiago Ferreira",
+    "email": "tiago.ferreira@amt-consulting.com",
+    "profile": "User",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000000ac",
+    "name": "Marcos Silva",
+    "email": "marcos.silva@amt-consulting.com",
+    "profile": "User",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000000ad",
+    "name": "Marta Oliveira",
+    "email": "marta.oliveira@amt-consulting.com",
+    "profile": "User",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000000ae",
+    "name": "Carlos Mendes",
+    "email": "carlos.mendes@amt-consulting.com",
+    "profile": "User",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000000af",
+    "name": "Ricardo Alves",
+    "email": "ricardo.alves@amt-consulting.com",
+    "profile": "User",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-000000000a10",
+    "name": "Sofia Almeida",
+    "email": "sofia.almeida@amt-consulting.com",
+    "profile": "User",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-000000000a11",
+    "name": "Mariana Lopes",
+    "email": "mariana.lopes@amt-consulting.com",
+    "profile": "User",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-000000000a12",
+    "name": "Ana Pereira",
+    "email": "ana.pereira@amt-consulting.com",
+    "profile": "User",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-000000000a13",
+    "name": "João Santos",
+    "email": "joao.santos@amt-consulting.com",
+    "profile": "User",
+    "active": true
+  }
+]

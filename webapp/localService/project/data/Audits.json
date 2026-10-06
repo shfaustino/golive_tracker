@@ -1,0 +1,119 @@
+[
+  {
+    "ID": "00000000-0000-4000-8000-00000000629b",
+    "milestone_ID": "00000000-0000-4000-8000-000000000f28",
+    "code": "1_GOP_30072026",
+    "date": "2026-07-30",
+    "auditor_ID": "00000000-0000-4000-8000-0000000000a3",
+    "result": "Rejected",
+    "notes": "Observações registadas; ver follow-ups."
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000629f",
+    "milestone_ID": "00000000-0000-4000-8000-000000000f44",
+    "code": "2_Testing_26092026",
+    "date": "2026-09-26",
+    "auditor_ID": "00000000-0000-4000-8000-0000000000a2",
+    "result": "Rejected",
+    "notes": "Observações registadas; ver follow-ups."
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000062a3",
+    "milestone_ID": "00000000-0000-4000-8000-000000000f46",
+    "code": "2_Golive_04012027",
+    "date": "2027-01-04",
+    "auditor_ID": "00000000-0000-4000-8000-0000000000a3",
+    "result": "Rejected",
+    "notes": "Observações registadas; ver follow-ups."
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000062a5",
+    "milestone_ID": "00000000-0000-4000-8000-000000000f82",
+    "code": "5_GOP_16082026",
+    "date": "2026-08-16",
+    "auditor_ID": "00000000-0000-4000-8000-0000000000a2",
+    "result": "Approved",
+    "notes": "Sem observações."
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000062a7",
+    "milestone_ID": "00000000-0000-4000-8000-000000000fa0",
+    "code": "6_Testing_10092026",
+    "date": "2026-09-10",
+    "auditor_ID": "00000000-0000-4000-8000-0000000000a1",
+    "result": "ApprovedWithReservations",
+    "notes": "Observações registadas; ver follow-ups."
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000062aa",
+    "milestone_ID": "00000000-0000-4000-8000-00000000f140",
+    "code": "13_Testing_21042026",
+    "date": "2026-04-21",
+    "auditor_ID": "00000000-0000-4000-8000-0000000000a1",
+    "result": "Approved",
+    "notes": "Sem observações."
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000062ab",
+    "milestone_ID": "00000000-0000-4000-8000-00000000f142",
+    "code": "13_Golive_19062026",
+    "date": "2026-06-19",
+    "auditor_ID": "00000000-0000-4000-8000-0000000000a1",
+    "result": "Approved",
+    "notes": "Sem observações."
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000062ad",
+    "milestone_ID": "00000000-0000-4000-8000-00000000f1a7",
+    "code": "18_Testing_04052026",
+    "date": "2026-05-04",
+    "auditor_ID": "00000000-0000-4000-8000-0000000000a1",
+    "result": "Rejected",
+    "notes": "Observações registadas; ver follow-ups."
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000062af",
+    "milestone_ID": "00000000-0000-4000-8000-00000000f1aa",
+    "code": "18_Golive_27062026",
+    "date": "2026-06-27",
+    "auditor_ID": "00000000-0000-4000-8000-0000000000a2",
+    "result": "Approved",
+    "notes": "Sem observações."
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000062b0",
+    "milestone_ID": "00000000-0000-4000-8000-00000000f1bc",
+    "code": "19_Testing_28122026",
+    "date": "2026-12-28",
+    "auditor_ID": "00000000-0000-4000-8000-0000000000a3",
+    "result": "Approved",
+    "notes": "Sem observações."
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000062b1",
+    "milestone_ID": "00000000-0000-4000-8000-00000000f1c1",
+    "code": "19_Golive_13032027",
+    "date": "2027-03-13",
+    "auditor_ID": "00000000-0000-4000-8000-0000000000a1",
+    "result": "Approved",
+    "notes": "Sem observações."
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000062b2",
+    "milestone_ID": "00000000-0000-4000-8000-00000000f1e6",
+    "code": "21_Testing_16082026",
+    "date": "2026-08-16",
+    "auditor_ID": "00000000-0000-4000-8000-0000000000a2",
+    "result": "ApprovedWithReservations",
+    "notes": "Observações registadas; ver follow-ups."
+  },
+  {
+    "ID": "00000000-0000-4000-8000-0000000062b4",
+    "milestone_ID": "00000000-0000-4000-8000-00000000f1eb",
+    "code": "21_Golive_19092026",
+    "date": "2026-09-19",
+    "auditor_ID": "00000000-0000-4000-8000-0000000000a2",
+    "result": "Rejected",
+    "notes": "Observações registadas; ver follow-ups."
+  }
+]

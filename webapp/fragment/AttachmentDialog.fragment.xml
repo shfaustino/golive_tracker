@@ -1,0 +1,108 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
+    xmlns:f="sap.ui.layout.form">
+
+    <!-- Novo anexo (US-29, BR-11), in the "attach" model
+         (controller/attachmentDialogs.js): a link on the project, on one of
+         its milestones, or on one of a milestone's items. -->
+    <Dialog
+        id="attachmentDialog"
+        title="{i18n>attNew}"
+        contentWidth="32rem"
+        class="gtApp gtDialog sapUiContentPadding">
+        <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
+            <Label text="{i18n>mwColProject}" labelFor="attProject" required="true"/>
+            <gt:SearchSelect
+                id="attProject"
+                width="100%"
+                enabled="{= !${attach>/projectFixed} }"
+                selectedKey="{attach>/values/project_ID}"
+                selectionChange=".onAttachmentProjectChange"
+                items="{path: 'attach>/projects', templateShareable: false, length: 1000}"
+                valueState="{= ${attach>/errors/project_ID} ? 'Error' : 'None' }"
+                valueStateText="{attach>/errors/project_ID}">
+                <core:ListItem key="{attach>ID}" text="{attach>code}" additionalText="{attach>name}"/>
+            </gt:SearchSelect>
+
+            <Label text="{i18n>attOwner}" labelFor="attOwner"/>
+            <SegmentedButton id="attOwner" selectedKey="{attach>/values/owner}" width="100%">
+                <items>
+                    <SegmentedButtonItem key="project" text="{i18n>attOwnerProject}"/>
+                    <SegmentedButtonItem key="milestone" text="{i18n>attOwnerMilestone}"/>
+                    <SegmentedButtonItem key="item" text="{i18n>attOwnerItem}"/>
+                </items>
+            </SegmentedButton>
+
+            <Label text="{i18n>colMilestone}" labelFor="attMilestone" required="true" visible="{= ${attach>/values/owner} !== 'project' }"/>
+            <gt:SearchSelect
+                id="attMilestone"
+                width="100%"
+                visible="{= ${attach>/values/owner} !== 'project' }"
+                selectedKey="{attach>/values/milestone_ID}"
+                change=".onAttachmentMilestoneChange"
+                items="{path: 'attach>/milestones', templateShareable: false}"
+                valueState="{= ${attach>/errors/milestone_ID} ? 'Error' : 'None' }"
+                valueStateText="{attach>/errors/milestone_ID}">
+                <core:Item key="{attach>ID}" text="{attach>label}"/>
+            </gt:SearchSelect>
+
+            <Label text="{i18n>attOwnerItem}" labelFor="attItem" required="true" visible="{= ${attach>/values/owner} === 'item' }"/>
+            <gt:SearchSelect
+                id="attItem"
+                width="100%"
+                visible="{= ${attach>/values/owner} === 'item' }"
+                selectedKey="{attach>/values/milestoneItem_ID}"
+                items="{path: 'attach>/items', templateShareable: false}"
+                valueState="{= ${attach>/errors/milestoneItem_ID} ? 'Error' : 'None' }"
+                valueStateText="{attach>/errors/milestoneItem_ID}">
+                <gt:layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></gt:layoutData>
+                <core:Item key="{attach>ID}" text="{attach>name}"/>
+            </gt:SearchSelect>
+            <Text
+                text="{i18n>attNoItems}"
+                visible="{= ${attach>/values/owner} === 'item' &amp;&amp; !!${attach>/values/milestone_ID} &amp;&amp; ${attach>/items}.length === 0 }"
+                class="gtHint">
+                <layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></layoutData>
+            </Text>
+
+            <Label text="{i18n>attType}" labelFor="attType" required="true"/>
+            <gt:SearchSelect id="attType" width="100%" selectedKey="{attach>/values/documentType}"
+                items="{path: 'attach>/types', templateShareable: false}"
+                valueState="{= ${attach>/errors/documentType} ? 'Error' : 'None' }"
+                valueStateText="{attach>/errors/documentType}">
+                <core:Item key="{attach>key}" text="{attach>text}"/>
+            </gt:SearchSelect>
+
+            <Label text="{i18n>attName}" labelFor="attName" required="true"/>
+            <Input
+                id="attName"
+                value="{attach>/values/name}"
+                maxLength="200"
+                valueState="{= ${attach>/errors/name} ? 'Error' : 'None' }"
+                valueStateText="{attach>/errors/name}"/>
+
+            <Label text="{i18n>attUrl}" labelFor="attUrl" required="true"/>
+            <Input
+                id="attUrl"
+                type="Url"
+                value="{attach>/values/url}"
+                placeholder="https://…sharepoint.com/…"
+                valueState="{= ${attach>/errors/url} ? 'Error' : 'None' }"
+                valueStateText="{attach>/errors/url}">
+                <layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></layoutData>
+            </Input>
+            <Text text="{i18n>attUrlHint}" class="gtHint">
+                <layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></layoutData>
+            </Text>
+        </f:SimpleForm>
+        <beginButton>
+            <Button text="{i18n>attAdd}" type="Emphasized" press=".onSaveAttachment" enabled="{= !${attach>/busy} }"/>
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>cancel}" press=".onCancelAttachment"/>
+        </endButton>
+    </Dialog>
+
+</core:FragmentDefinition>

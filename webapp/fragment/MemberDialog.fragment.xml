@@ -1,0 +1,94 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
+    xmlns:f="sap.ui.layout.form">
+
+    <!-- One dialog for the team, in three modes (member>/mode):
+         "add"      a new membership: person, role, from, until;
+         "edit"     a membership's role and dates (the person stays);
+         "handover" the PM hand-over: the new PM and from when
+                    (ProjectService.handOverPM ends the current PM's
+                    membership and starts the new one's).
+         Works on a copy in the "member" model; ProjectDetail.controller.js
+         #onSaveMember sends it. -->
+    <Dialog
+        id="memberDialog"
+        title="{member>/title}"
+        contentWidth="30rem"
+        class="gtApp gtDialog sapUiContentPadding">
+        <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
+            <Text text="{member>/handoverNote}" visible="{= ${member>/mode} === 'handover' }" class="gtSubtle"/>
+
+            <Label text="{= ${member>/mode} === 'handover' ? ${i18n>teamNewPm} : ${i18n>teamColPerson} }" labelFor="memberPerson" required="true"/>
+            <!-- only one of the two shows; each takes the whole row, or the
+                 form would split it between them -->
+            <gt:SearchSelect
+                id="memberPerson"
+                visible="{= ${member>/mode} !== 'edit' }"
+                selectedKey="{member>/values/person_ID}"
+                items="{path: 'member>/people', templateShareable: false}"
+                valueState="{= ${member>/errors/person_ID} ? 'Error' : 'None' }"
+                valueStateText="{member>/errors/person_ID}">
+                <gt:layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></gt:layoutData>
+                <core:ListItem key="{member>ID}" text="{member>name}" additionalText="{member>email}"/>
+            </gt:SearchSelect>
+            <Text text="{member>/personName}" visible="{= ${member>/mode} === 'edit' }">
+                <layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></layoutData>
+            </Text>
+
+            <Label text="{i18n>teamColRole}" labelFor="memberRole" required="true" visible="{= ${member>/mode} !== 'handover' }"/>
+            <gt:SearchSelect
+                id="memberRole"
+                visible="{= ${member>/mode} !== 'handover' }"
+                enabled="{= ${member>/values/role} !== 'PM' || ${member>/mode} === 'add' }"
+                selectedKey="{member>/values/role}"
+                items="{path: 'member>/roles', templateShareable: false}"
+                valueState="{= ${member>/errors/role} ? 'Error' : 'None' }"
+                valueStateText="{member>/errors/role}">
+                <core:Item key="{member>key}" text="{member>text}"/>
+            </gt:SearchSelect>
+
+            <!-- none: the member works on the whole project -->
+            <Label text="{i18n>teamColModules}" labelFor="memberModules" visible="{= ${member>/mode} !== 'handover' }"/>
+            <MultiComboBox
+                id="memberModules"
+                width="100%"
+                visible="{= ${member>/mode} !== 'handover' }"
+                selectedKeys="{member>/values/modules}"
+                placeholder="{i18n>msWholeProject}"
+                showClearIcon="true"
+                showSecondaryValues="true"
+                items="{path: 'member>/modules', templateShareable: false}">
+                <core:ListItem key="{member>key}" text="{member>key}" additionalText="{member>name}"/>
+            </MultiComboBox>
+
+            <Label text="{i18n>teamColFrom}" labelFor="memberStart" required="true"/>
+            <DatePicker
+                id="memberStart"
+                value="{member>/values/startDate}"
+                valueFormat="yyyy-MM-dd"
+                displayFormat="dd/MM/yyyy"
+                valueState="{= ${member>/errors/startDate} ? 'Error' : 'None' }"
+                valueStateText="{member>/errors/startDate}"/>
+
+            <Label text="{i18n>teamColTo}" labelFor="memberEnd" visible="{= ${member>/mode} !== 'handover' }"/>
+            <DatePicker
+                id="memberEnd"
+                visible="{= ${member>/mode} !== 'handover' }"
+                value="{member>/values/endDate}"
+                valueFormat="yyyy-MM-dd"
+                displayFormat="dd/MM/yyyy"
+                placeholder="{i18n>teamEndPlaceholder}"
+                valueState="{= ${member>/errors/endDate} ? 'Error' : 'None' }"
+                valueStateText="{member>/errors/endDate}"/>
+        </f:SimpleForm>
+        <beginButton>
+            <Button text="{= ${member>/mode} === 'handover' ? ${i18n>teamHandOver} : ${i18n>save} }" type="Emphasized" press=".onSaveMember" enabled="{= !${member>/busy} }"/>
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>cancel}" press=".onCancelMember"/>
+        </endButton>
+    </Dialog>
+
+</core:FragmentDefinition>

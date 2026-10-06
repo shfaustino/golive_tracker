@@ -1,0 +1,203 @@
+<mvc:View
+    controllerName="com.amt.golivetracker.controller.Dashboard"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc">
+
+    <!-- Dashboard (docs/mockups/02-dashboard.png), US-31: GET
+         /project/dashboard(from, to) for the KPIs, the projects by status, the
+         evolution by month, the projects to review, the overdue milestones
+         and the projects with no recent update; GET /project/RecentUpdates
+         for Últimas atualizações. Held in the view's "dashboard" model. -->
+    <Page id="dashboardPage" showHeader="false" class="gtPage" busy="{dashboard>/busy}" busyIndicatorDelay="0">
+        <VBox class="gtPageContent" renderType="Bare">
+            <HBox class="gtPageHeader" renderType="Bare">
+                <Title text="{i18n>navDashboard}" level="H1" class="gtPageTitle"/>
+                <DateRangeSelection
+                    id="dashboardPeriod"
+                    width="17rem"
+                    displayFormat="dd/MM/yyyy"
+                    placeholder="{i18n>dashboardAllTime}"
+                    change=".onPeriodChange"
+                    class="gtPeriodPicker"/>
+            </HBox>
+
+            <HBox class="gtKpiRow" renderType="Bare">
+                <VBox class="gtCard gtKpi" renderType="Bare">
+                    <HBox class="gtKpiIcon gtTintBlue" renderType="Bare"><core:Icon src="sap-icon://folder-full"/></HBox>
+                    <Text text="{dashboard>/kpi/total}" class="gtKpiNumber"/>
+                    <Text text="{i18n>navProjects}" class="gtKpiLabel"/>
+                </VBox>
+                <VBox class="gtCard gtKpi" renderType="Bare">
+                    <HBox class="gtKpiIcon gtTintGreen" renderType="Bare"><core:Icon src="sap-icon://media-play"/></HBox>
+                    <Text text="{dashboard>/kpi/inProgress}" class="gtKpiNumber"/>
+                    <Text text="{i18n>statusInProgress}" class="gtKpiLabel"/>
+                </VBox>
+                <VBox class="gtCard gtKpi" renderType="Bare">
+                    <HBox class="gtKpiIcon gtTintOrange" renderType="Bare"><core:Icon src="sap-icon://alert"/></HBox>
+                    <Text text="{dashboard>/kpi/toReview}" class="gtKpiNumber"/>
+                    <Text text="{i18n>chipToReview}" class="gtKpiLabel"/>
+                </VBox>
+                <VBox class="gtCard gtKpi" renderType="Bare">
+                    <HBox class="gtKpiIcon gtTintGreen" renderType="Bare"><core:Icon src="sap-icon://accept"/></HBox>
+                    <Text text="{dashboard>/kpi/closed}" class="gtKpiNumber"/>
+                    <Text text="{i18n>dashboardClosed}" class="gtKpiLabel"/>
+                </VBox>
+            </HBox>
+
+            <!-- Projetos por estado, Evolução dos projetos -->
+            <HBox class="gtDashboardGrid gtDashboardRow" renderType="Bare">
+                <VBox class="gtCard" renderType="Bare">
+                    <HBox class="gtCardHeader" renderType="Bare">
+                        <Title text="{i18n>dashboardByStatus}" level="H2" class="gtSectionTitle"/>
+                    </HBox>
+                    <HBox class="gtDonutCard" renderType="Bare">
+                        <core:HTML content="{dashboard>/donutHtml}"/>
+                        <VBox class="gtLegendList" items="{dashboard>/chart/rows}" renderType="Bare">
+                            <HBox class="gtLegendRow" alignItems="Center" renderType="Bare">
+                                <core:Icon src="sap-icon://circle-task-2" color="{dashboard>color}" class="gtLegendDot"/>
+                                <Text text="{path: 'dashboard>status', formatter: '.formatter.projectStatusText'}" class="gtLegendLabel"/>
+                                <Text text="{dashboard>count}" class="gtLegendNum"/>
+                                <Text text="{path: 'dashboard>pct', formatter: '.formatter.percent'}" class="gtLegendPct"/>
+                            </HBox>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <VBox class="gtCard" renderType="Bare">
+                    <HBox class="gtCardHeader" renderType="Bare">
+                        <Title text="{i18n>dashboardEvolution}" level="H2" class="gtSectionTitle"/>
+                        <HBox class="gtBarLegend" alignItems="Center" renderType="Bare">
+                            <HBox class="gtBarKey gtBarNew" renderType="Bare"/>
+                            <Text text="{i18n>dashboardNew}" class="gtSubtle"/>
+                            <HBox class="gtBarKey gtBarClosed" renderType="Bare"/>
+                            <Text text="{i18n>dashboardClosed}" class="gtSubtle"/>
+                        </HBox>
+                    </HBox>
+                    <core:HTML content="{dashboard>/barsHtml}"/>
+                </VBox>
+            </HBox>
+
+            <!-- Projetos a rever, Últimas atualizações -->
+            <HBox class="gtDashboardGrid gtDashboardRow" renderType="Bare">
+                <VBox class="gtCard gtTableCard" renderType="Bare">
+                    <HBox class="gtCardHeader" renderType="Bare">
+                        <HBox alignItems="Center" renderType="Bare">
+                            <Title text="{i18n>dashboardToReview}" level="H2" class="gtSectionTitle"/>
+                            <Text text="{dashboard>/kpi/toReview}" class="gtCountBadge" visible="{= ${dashboard>/kpi/toReview} > 0 }"/>
+                        </HBox>
+                        <Link text="{i18n>seeAll}" press=".onSeeAllProjects" class="gtSeeAll"/>
+                    </HBox>
+                    <Table
+                        id="toReviewTable"
+                        class="gtTable gtTableInset"
+                        fixedLayout="false"
+                        noDataText="{i18n>dashboardNothingToReview}"
+                        items="{path: 'dashboard>/data/projectsToReview', length: 5}">
+                        <columns>
+                            <Column><Text text="{i18n>colCode}"/></Column>
+                            <Column><Text text="{i18n>dashboardColProject}"/></Column>
+                            <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>dashboardColReview}"/></Column>
+                            <Column><Text text="{i18n>colStatus}"/></Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem type="Active" press=".onOpenProject">
+                                <cells>
+                                    <Link text="{dashboard>projectCode}" press=".onOpenProject" class="gtCodeLink"/>
+                                    <Text text="{dashboard>projectName}" tooltip="{dashboard>reviewReason}"/>
+                                    <Text text="{path: 'dashboard>reviewRequestedAt', formatter: '.formatter.timestampDate'}" wrapping="false"/>
+                                    <ObjectStatus text="{i18n>chipToReview}" state="Warning" inverted="true" tooltip="{dashboard>reviewReason}"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </VBox>
+
+                <VBox class="gtCard" renderType="Bare">
+                    <HBox class="gtCardHeader" renderType="Bare">
+                        <Title text="{i18n>dashboardRecent}" level="H2" class="gtSectionTitle"/>
+                        <Link text="{i18n>seeAll}" press=".onSeeAllProjects" class="gtSeeAll"/>
+                    </HBox>
+                    <List
+                        id="recentList"
+                        class="gtFeed"
+                        showSeparators="Inner"
+                        noDataText="{i18n>updNoData}"
+                        items="{dashboard>/recent}">
+                        <CustomListItem type="Active" press=".onOpenProject">
+                            <HBox class="gtFeedRow" alignItems="Center" renderType="Bare">
+                                <HBox class="gtFeedIcon gtFeedIconTinted" renderType="Bare">
+                                    <customData>
+                                        <core:CustomData key="kind" value="{= ${dashboard>isAutomatic} ? 'auto' : 'note' }" writeToDom="true"/>
+                                    </customData>
+                                    <core:Icon src="{= ${dashboard>isAutomatic} ? 'sap-icon://accept' : 'sap-icon://edit' }"/>
+                                </HBox>
+                                <Text text="{dashboard>projectCode}" class="gtFeedCode gtFeedCodeCol"/>
+                                <VBox class="gtFeedText" renderType="Bare">
+                                    <Text text="{dashboard>projectName}" class="gtFeedTitle"/>
+                                    <Text text="{dashboard>summary}" class="gtSubtle" maxLines="1"/>
+                                </VBox>
+                                <Text text="{path: 'dashboard>postedAt', formatter: '.formatter.timeAgo'}" class="gtSubtle" wrapping="false"/>
+                            </HBox>
+                        </CustomListItem>
+                    </List>
+                </VBox>
+            </HBox>
+
+            <!-- Marcos em atraso, Projetos sem atualizações -->
+            <HBox class="gtDashboardGrid" renderType="Bare">
+                <VBox class="gtCard" renderType="Bare">
+                    <HBox class="gtCardHeader" renderType="Bare">
+                        <HBox alignItems="Center" renderType="Bare">
+                            <Title text="{i18n>dashboardOverdue}" level="H2" class="gtSectionTitle"/>
+                            <Text text="{dashboard>/overdueCount}" class="gtCountBadge" visible="{= ${dashboard>/overdueCount} > 0 }"/>
+                        </HBox>
+                    </HBox>
+                    <List
+                        id="overdueList"
+                        class="gtFeed"
+                        showSeparators="Inner"
+                        noDataText="{i18n>dashboardNothingOverdue}"
+                        items="{path: 'dashboard>/overdue', length: 5}">
+                        <CustomListItem type="Active" press=".onOpenProject">
+                            <HBox class="gtFeedRow" alignItems="Center" renderType="Bare">
+                                <HBox class="gtFeedIcon gtTintRed" renderType="Bare"><core:Icon src="sap-icon://date-time"/></HBox>
+                                <VBox class="gtFeedText" renderType="Bare">
+                                    <Text text="{dashboard>projectCode}" class="gtFeedCode"/>
+                                    <Text text="{dashboard>projectName}" class="gtFeedTitle"/>
+                                    <Text text="{dashboard>milestoneLabel}" class="gtSubtle"/>
+                                </VBox>
+                                <ObjectStatus text="{dashboard>lateText}" state="Error" inverted="true"/>
+                            </HBox>
+                        </CustomListItem>
+                    </List>
+                </VBox>
+
+                <VBox class="gtCard" renderType="Bare">
+                    <HBox class="gtCardHeader" renderType="Bare">
+                        <Title text="{i18n>dashboardStale}" level="H2" class="gtSectionTitle"/>
+                        <Link text="{i18n>seeAll}" press=".onSeeAllProjects" class="gtSeeAll"/>
+                    </HBox>
+                    <List
+                        id="staleList"
+                        class="gtFeed"
+                        showSeparators="Inner"
+                        noDataText="{i18n>dashboardNothingStale}"
+                        items="{path: 'dashboard>/stale', length: 5}">
+                        <CustomListItem type="Active" press=".onOpenProject">
+                            <HBox class="gtFeedRow" alignItems="Center" renderType="Bare">
+                                <HBox class="gtFeedIcon gtTintBlue" renderType="Bare"><core:Icon src="sap-icon://document"/></HBox>
+                                <VBox class="gtFeedText" renderType="Bare">
+                                    <Text text="{dashboard>projectCode}" class="gtFeedCode"/>
+                                    <Text text="{dashboard>projectName}" class="gtFeedTitle"/>
+                                </VBox>
+                                <Text text="{dashboard>agoText}" class="gtSubtle"/>
+                            </HBox>
+                        </CustomListItem>
+                    </List>
+                </VBox>
+            </HBox>
+        </VBox>
+    </Page>
+
+</mvc:View>

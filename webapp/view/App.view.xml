@@ -1,0 +1,107 @@
+<mvc:View
+    controllerName="com.amt.golivetracker.controller.App"
+    displayBlock="true"
+    height="100%"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:tnt="sap.tnt">
+
+    <!-- The shell from the mockups (docs/mockups/02-dashboard.png): the navy
+         sidebar the full height of the window, with the brand on top, and
+         beside it the white top bar over the pages. Built from plain boxes
+         rather than sap.tnt.ToolPage, which puts its header across the
+         sidebar too. The App keeps the id "app" and stays the router's
+         target (manifest.json). gtApp scopes css/style.css.
+
+         On a phone the sidebar slides in over the page (data-side-open,
+         written from app>/sideExpanded) and the menu button opens it. -->
+    <FlexBox id="shell" class="gtApp gtShell" renderType="Bare" fitContainer="true">
+        <customData>
+            <core:CustomData key="side-open" value="{= ${app>/sideExpanded} ? 'yes' : 'no' }" writeToDom="true"/>
+        </customData>
+
+        <VBox id="sidebar" class="gtSidebar" renderType="Bare">
+            <Title text="{i18n>appTitle}" level="H1" class="gtBrand"/>
+            <!-- The key of every item is the name of its route, so one
+                 handler navigates for all of them and the selection follows
+                 app>/route. -->
+            <tnt:NavigationList
+                id="sideNavigation"
+                class="gtSideNav"
+                selectedKey="{app>/route}"
+                itemSelect=".onNavItemSelect">
+                <tnt:NavigationListItem key="dashboard" text="{i18n>navDashboard}" icon="sap-icon://home"/>
+                <tnt:NavigationListItem key="projects" text="{i18n>navProjects}" icon="sap-icon://folder-blank"/>
+                <tnt:NavigationListItem key="myWork" text="{i18n>navMyWork}" icon="sap-icon://clinical-tast-tracker"/>
+                <tnt:NavigationListItem key="audits" text="{i18n>navAudits}" icon="sap-icon://shield"/>
+                <tnt:NavigationListItem key="attachments" text="{i18n>navAttachments}" icon="sap-icon://attachment"/>
+                <tnt:NavigationListItem key="people" text="{i18n>navPeople}" icon="sap-icon://group"/>
+                <tnt:NavigationListItem key="clients" text="{i18n>navClients}" icon="sap-icon://building"/>
+                <!-- Only Administrators may use /admin. -->
+                <tnt:NavigationListItem
+                    key="admin"
+                    text="{i18n>navAdmin}"
+                    icon="sap-icon://action-settings"
+                    visible="{user>/isAdmin}"/>
+            </tnt:NavigationList>
+        </VBox>
+
+        <!-- Covers the page while the sidebar is open on a phone; a tap closes it. -->
+        <HBox class="gtSidebarScrim" renderType="Bare">
+            <Button type="Transparent" class="gtSidebarScrimButton" tooltip="{i18n>sideToggleTooltip}" press=".onSideToggle"/>
+        </HBox>
+
+        <VBox class="gtMain" renderType="Bare">
+            <HBox class="gtTopBar" alignItems="Center" renderType="Bare">
+                <Button
+                    id="sideToggle"
+                    icon="sap-icon://menu2"
+                    type="Transparent"
+                    tooltip="{i18n>sideToggleTooltip}"
+                    press=".onSideToggle"
+                    class="gtSideToggle"/>
+                <SearchField
+                    id="globalSearch"
+                    placeholder="{i18n>globalSearchPlaceholder}"
+                    search=".onGlobalSearch"
+                    showSearchButton="false"
+                    class="gtTopBarSearch"/>
+                <HBox class="gtTopBarEnd" alignItems="Center" renderType="Bare">
+                    <Button
+                        id="bellButton"
+                        icon="sap-icon://bell"
+                        type="Transparent"
+                        tooltip="{i18n>bellTooltip}"
+                        press=".onBellPress"
+                        class="gtTopBarBell"/>
+                    <HBox class="gtTopBarDivider" renderType="Bare"/>
+                    <HBox id="personBox" class="gtTopBarPerson" alignItems="Center" renderType="Bare">
+                        <Avatar
+                            id="personAvatar"
+                            displaySize="Custom"
+                            customDisplaySize="2.75rem"
+                            customFontSize="1rem"
+                            initials="{path: 'user>/name', formatter: '.formatter.initials'}"
+                            press=".onPersonPress"
+                            class="gtTopBarAvatar"/>
+                        <VBox renderType="Bare" class="gtTopBarPersonText">
+                            <Text text="{user>/name}" class="gtTopBarPersonName" wrapping="false"/>
+                            <Text text="{path: 'user>/profile', formatter: '.formatter.profileText'}" class="gtTopBarPersonProfile" wrapping="false"/>
+                        </VBox>
+                        <Button
+                            id="personMenuButton"
+                            icon="sap-icon://slim-arrow-down"
+                            type="Transparent"
+                            tooltip="{i18n>personMenuTooltip}"
+                            press=".onPersonPress"
+                            class="gtTopBarChevron"/>
+                    </HBox>
+                </HBox>
+            </HBox>
+
+            <App id="app" class="gtPages" autoFocus="false"/>
+        </VBox>
+    </FlexBox>
+
+</mvc:View>

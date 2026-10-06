@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+# `npm run start-mock`: the app against a mock of the API's /project
+# service (webapp/localService/project), no backend needed. Signed in as the
+# first person in People.json, an Administrator. Data lives in memory: a
+# restart brings it back to the generated files (npm run mock:generate).
+specVersion: "4.0"
+metadata:
+  name: com.amt.golivetracker
+type: application
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertErrors: false
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://ui5.sap.com
+          version: 1.120.49
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    # listed first, so it runs before the mock server: both go before csp
+    - name: mock-child-paths
+      beforeMiddleware: csp
+    - name: sap-fe-mockserver
+      beforeMiddleware: csp
+      configuration:
+        mountPath: /
+        services:
+          - urlPath: /project
+            metadataPath: ./webapp/localService/project/metadata.xml
+            mockdataPath: ./webapp/localService/project/data
+            generateMockData: false
+          - urlPath: /admin
+            metadataPath: ./webapp/localService/admin/metadata.xml
+            mockdataPath: ./webapp/localService/admin/data
+            generateMockData: false
+        annotations: []
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+---
+# Writes under a project's path go to the mock's flat sets (tools/mock-child-paths.js).
+specVersion: "4.0"
+kind: extension
+type: server-middleware
+metadata:
+  name: mock-child-paths
+middleware:
+  path: tools/mock-child-paths.js

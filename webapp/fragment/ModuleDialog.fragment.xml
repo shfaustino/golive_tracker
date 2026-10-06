@@ -1,0 +1,35 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
+    xmlns:f="sap.ui.layout.form">
+
+    <!-- Módulos > "Adicionar módulo" (controller/projectModules.js): one of
+         the modules the project has not got yet (modAdd>/choices). -->
+    <Dialog
+        id="moduleDialog"
+        title="{i18n>modAddTitle}"
+        contentWidth="26rem"
+        class="gtApp gtDialog sapUiContentPadding">
+        <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
+            <Label text="{i18n>modModule}" labelFor="moduleChoice" required="true"/>
+            <gt:SearchSelect
+                id="moduleChoice"
+                width="100%"
+                selectedKey="{modAdd>/module}"
+                placeholder="{i18n>modChoose}"
+                items="{path: 'modAdd>/choices', templateShareable: false}"
+                valueState="{= ${modAdd>/error} ? 'Error' : 'None' }"
+                valueStateText="{modAdd>/error}">
+                <core:ListItem key="{modAdd>key}" text="{modAdd>key}" additionalText="{modAdd>name}"/>
+            </gt:SearchSelect>
+        </f:SimpleForm>
+        <beginButton>
+            <Button text="{i18n>modAdd}" type="Emphasized" press=".onConfirmAddModule" enabled="{= !${modAdd>/busy} }"/>
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>cancel}" press=".onCancelModule"/>
+        </endButton>
+    </Dialog>
+
+</core:FragmentDefinition>

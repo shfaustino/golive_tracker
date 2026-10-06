@@ -1,0 +1,248 @@
+<mvc:View
+    controllerName="com.amt.golivetracker.controller.MyWork"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
+    xmlns:mvc="sap.ui.core.mvc">
+
+    <!-- O meu trabalho (docs/mockups/07-o-meu-trabalho.png), US-13: the
+         signed-in person's items (GET /project/MyItems), their milestones
+         (MyMilestones) and the projects they are a member of. Everything is
+         read into the "work" model (MyWork.controller.js) and searched,
+         filtered and paged in the browser: one person's work is small. -->
+    <Page id="myWorkPage" showHeader="false" class="gtPage" busy="{work>/busy}" busyIndicatorDelay="0">
+        <VBox class="gtPageContent" renderType="Bare">
+            <VBox class="gtPageHeader gtPageHeaderStack" renderType="Bare">
+                <Title text="{i18n>navMyWork}" level="H1" class="gtPageTitle"/>
+                <Text text="{i18n>mwSubtitle}" class="gtSubtitle"/>
+            </VBox>
+
+            <IconTabBar
+                id="myWorkTabs"
+                selectedKey="{work>/tab}"
+                expandable="false"
+                headerMode="Inline"
+                headerBackgroundDesign="Transparent"
+                backgroundDesign="Transparent"
+                applyContentPadding="false"
+                class="gtProjectTabs">
+                <items>
+                    <!-- As minhas tarefas -->
+                    <IconTabFilter key="tarefas" text="{i18n>mwTabItems}">
+                        <HBox class="gtKpiRow gtKpiRowInline" renderType="Bare">
+                            <HBox class="gtCard gtKpiInline" alignItems="Center" renderType="Bare">
+                                <HBox class="gtKpiIcon gtTintBlue" renderType="Bare"><core:Icon src="sap-icon://clinical-tast-tracker"/></HBox>
+                                <VBox renderType="Bare">
+                                    <Text text="{work>/kpi/total}" class="gtKpiNumber"/>
+                                    <Text text="{i18n>mwKpiTotal}" class="gtKpiLabel"/>
+                                </VBox>
+                            </HBox>
+                            <HBox class="gtCard gtKpiInline" alignItems="Center" renderType="Bare">
+                                <HBox class="gtKpiIcon gtTintGreen" renderType="Bare"><core:Icon src="sap-icon://media-play"/></HBox>
+                                <VBox renderType="Bare">
+                                    <Text text="{work>/kpi/inProgress}" class="gtKpiNumber"/>
+                                    <Text text="{i18n>statusInProgress}" class="gtKpiLabel"/>
+                                </VBox>
+                            </HBox>
+                            <HBox class="gtCard gtKpiInline" alignItems="Center" renderType="Bare">
+                                <HBox class="gtKpiIcon gtTintOrange" renderType="Bare"><core:Icon src="sap-icon://alert"/></HBox>
+                                <VBox renderType="Bare">
+                                    <Text text="{work>/kpi/late}" class="gtKpiNumber"/>
+                                    <Text text="{i18n>msOverdue}" class="gtKpiLabel"/>
+                                </VBox>
+                            </HBox>
+                            <HBox class="gtCard gtKpiInline" alignItems="Center" renderType="Bare">
+                                <HBox class="gtKpiIcon gtTintGreen" renderType="Bare"><core:Icon src="sap-icon://accept"/></HBox>
+                                <VBox renderType="Bare">
+                                    <Text text="{work>/kpi/done}" class="gtKpiNumber"/>
+                                    <Text text="{i18n>mwKpiDone}" class="gtKpiLabel"/>
+                                </VBox>
+                            </HBox>
+                        </HBox>
+
+                        <HBox class="gtWorkGrid" renderType="Bare">
+                            <VBox class="gtCard gtTableCard" renderType="Bare">
+                                <HBox class="gtCardHeader" renderType="Bare">
+                                    <Title text="{work>/tableTitle}" level="H2" class="gtSectionTitle"/>
+                                    <HBox class="gtCardTools" alignItems="Center" renderType="Bare">
+                                        <SearchField
+                                            id="itemSearch"
+                                            placeholder="{i18n>mwSearch}"
+                                            liveChange=".onSearch"
+                                            search=".onSearch"
+                                            showSearchButton="false"
+                                            class="gtFilterSearch gtToolSearch"/>
+                                        <gt:SearchSelect id="itemState" selectionChange=".onStateChange" selectedKey="{work>/state}"
+                                            placeholder="{i18n>mwAllStates}" showClearIcon="true">
+                                            <core:Item key="Late" text="{i18n>msOverdue}"/>
+                                            <core:Item key="ToDo" text="{i18n>itemToDo}"/>
+                                            <core:Item key="InProgress" text="{i18n>statusInProgress}"/>
+                                            <core:Item key="Done" text="{i18n>itemDone}"/>
+                                            <core:Item key="Cancelled" text="{i18n>statusCancelled}"/>
+                                        </gt:SearchSelect>
+                                    </HBox>
+                                </HBox>
+                                <Table
+                                    id="itemsTable"
+                                    class="gtTable gtTableInset"
+                                    fixedLayout="false"
+                                    noDataText="{= ${work>/kpi/total} ? ${i18n>noSearchResults} : ${i18n>mwNoItems} }"
+                                    items="{work>/page}">
+                                    <columns>
+                                        <Column><Text text="{i18n>mwColProject}"/></Column>
+                                        <Column><Text text="{i18n>mwColItem}"/></Column>
+                                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>mwColType}"/></Column>
+                                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>mwColDate}"/></Column>
+                                        <Column><Text text="{i18n>colStatus}"/></Column>
+                                    </columns>
+                                    <items>
+                                        <ColumnListItem type="Active" press=".onOpenItem">
+                                            <cells>
+                                                <Link text="{work>projectCode}" press=".onOpenItem" class="gtCodeLink"/>
+                                                <VBox renderType="Bare">
+                                                    <Text text="{work>name}"/>
+                                                    <Text text="{path: 'work>milestoneType', formatter: '.formatter.milestoneTypeText'}" class="gtSubtle"/>
+                                                </VBox>
+                                                <ObjectStatus text="{path: 'work>type', formatter: '.formatter.itemTypeText'}" state="Information" inverted="true"/>
+                                                <Text text="{path: 'work>date', formatter: '.formatter.dateOrDash'}" wrapping="false"/>
+                                                <ObjectStatus
+                                                    text="{parts: ['work>status', 'work>late'], formatter: '.formatter.itemStatusText'}"
+                                                    state="{parts: ['work>status', 'work>late'], formatter: '.formatter.itemStatusState'}"
+                                                    inverted="true"/>
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                                <HBox class="gtTableFooter" justifyContent="SpaceBetween" alignItems="Center" renderType="Bare">
+                                    <Text text="{work>/rangeText}" class="gtSubtle"/>
+                                    <HBox class="gtPager" alignItems="Center" renderType="Bare" visible="{= ${work>/pageCount} > 1 }">
+                                        <Button icon="sap-icon://slim-arrow-left" tooltip="{i18n>pagePrevious}" enabled="{= ${work>/pageNo} > 1 }" press=".onPagePrevious" class="gtPagerButton"/>
+                                        <HBox items="{work>/pages}" renderType="Bare" class="gtPagerPages">
+                                            <Button text="{work>n}" type="{= ${work>current} ? 'Emphasized' : 'Default' }" press=".onPagePress" class="gtPagerButton"/>
+                                        </HBox>
+                                        <Button icon="sap-icon://slim-arrow-right" tooltip="{i18n>pageNext}" enabled="{= ${work>/pageNo} &lt; ${work>/pageCount} }" press=".onPageNext" class="gtPagerButton"/>
+                                    </HBox>
+                                </HBox>
+                            </VBox>
+
+                            <VBox class="gtOverviewSide" renderType="Bare">
+                                <VBox class="gtCard gtCardBody" renderType="Bare">
+                                    <HBox class="gtCardHeaderPlain" renderType="Bare">
+                                        <HBox alignItems="Center" renderType="Bare">
+                                            <Title text="{i18n>mwLate}" level="H2" class="gtSectionTitle"/>
+                                            <Text text="{work>/kpi/late}" class="gtCountBadge" visible="{= ${work>/kpi/late} > 0 }"/>
+                                        </HBox>
+                                        <Link text="{i18n>seeAll}" press=".onShowLate" class="gtSeeAll" visible="{= ${work>/kpi/late} > 0 }"/>
+                                    </HBox>
+                                    <VBox items="{path: 'work>/late', length: 4}" renderType="Bare" class="gtMiniList">
+                                        <HBox class="gtMiniRow gtClickable" alignItems="Center" renderType="Bare">
+                                            <VBox renderType="Bare" class="gtMiniText gtGrow">
+                                                <Link text="{work>projectCode}" press=".onOpenItem" class="gtCodeLink"/>
+                                                <Text text="{work>name}" class="gtMiniTitle"/>
+                                                <Text text="{path: 'work>date', formatter: '.formatter.dateOrDash'}" class="gtSubtle"/>
+                                            </VBox>
+                                            <ObjectStatus text="{path: 'work>daysLate', formatter: '.formatter.daysText'}" state="Error" inverted="true"/>
+                                        </HBox>
+                                    </VBox>
+                                    <Text text="{i18n>mwNoneLate}" visible="{= ${work>/kpi/late} === 0 }" class="gtSubtle"/>
+                                </VBox>
+
+                                <VBox class="gtCard gtCardBody" renderType="Bare">
+                                    <HBox class="gtCardHeaderPlain" renderType="Bare">
+                                        <HBox alignItems="Center" renderType="Bare">
+                                            <Title text="{i18n>mwUpcoming}" level="H2" class="gtSectionTitle"/>
+                                            <Text text="{= ${work>/upcoming}.length }" class="gtCountBadge gtCountBadgeGrey" visible="{= ${work>/upcoming}.length > 0 }"/>
+                                        </HBox>
+                                    </HBox>
+                                    <VBox items="{work>/upcoming}" renderType="Bare" class="gtMiniList">
+                                        <HBox class="gtMiniRow" alignItems="Center" renderType="Bare">
+                                            <VBox class="gtDateBadge" renderType="Bare">
+                                                <Text text="{path: 'work>date', formatter: '.formatter.dayOfMonth'}" class="gtDateDay"/>
+                                                <Text text="{path: 'work>date', formatter: '.formatter.monthShort'}" class="gtDateMonth"/>
+                                            </VBox>
+                                            <VBox renderType="Bare" class="gtMiniText gtGrow">
+                                                <Text text="{work>name}" class="gtMiniTitle"/>
+                                                <Link text="{work>projectCode}" press=".onOpenItem" class="gtCodeLink"/>
+                                            </VBox>
+                                            <ObjectStatus
+                                                text="{parts: ['work>status', 'work>late'], formatter: '.formatter.itemStatusText'}"
+                                                state="{parts: ['work>status', 'work>late'], formatter: '.formatter.itemStatusState'}"
+                                                inverted="true"/>
+                                        </HBox>
+                                    </VBox>
+                                    <Text text="{i18n>mwNoneUpcoming}" visible="{= ${work>/upcoming}.length === 0 }" class="gtSubtle"/>
+                                </VBox>
+                            </VBox>
+                        </HBox>
+                    </IconTabFilter>
+
+                    <!-- Os meus marcos -->
+                    <IconTabFilter key="marcos" text="{i18n>mwTabMilestones}" count="{= ${work>/milestones}.length }">
+                        <VBox class="gtCard gtTableCard" renderType="Bare">
+                            <HBox class="gtCardHeader" renderType="Bare">
+                                <Title text="{i18n>mwMilestonesTitle}" level="H2" class="gtSectionTitle"/>
+                            </HBox>
+                            <Table class="gtTable gtTableInset" fixedLayout="false" noDataText="{i18n>mwNoMilestones}" items="{work>/milestones}">
+                                <columns>
+                                    <Column><Text text="{i18n>mwColProject}"/></Column>
+                                    <Column><Text text="{i18n>colMilestone}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>msColForecast}"/></Column>
+                                    <Column><Text text="{i18n>colStatus}"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem type="Active" press=".onOpenMilestone">
+                                        <cells>
+                                            <VBox renderType="Bare">
+                                                <Link text="{work>projectCode}" press=".onOpenMilestone" class="gtCodeLink"/>
+                                                <Text text="{work>projectName}" class="gtSubtle"/>
+                                            </VBox>
+                                            <Text text="{path: 'work>milestoneType', formatter: '.formatter.milestoneTypeText'}"/>
+                                            <Text text="{path: 'work>forecastEnd', formatter: '.formatter.dateOrDash'}"/>
+                                            <ObjectStatus
+                                                text="{parts: ['work>status', 'work>isOverdue'], formatter: '.formatter.milestoneStatusLabel'}"
+                                                state="{parts: ['work>status', 'work>isOverdue'], formatter: '.formatter.milestoneStatusState'}"
+                                                inverted="true"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
+                    </IconTabFilter>
+
+                    <!-- Projetos onde sou membro -->
+                    <IconTabFilter key="projetos" text="{i18n>mwTabProjects}" count="{= ${work>/projects}.length }">
+                        <VBox class="gtCard gtTableCard" renderType="Bare">
+                            <HBox class="gtCardHeader" renderType="Bare">
+                                <Title text="{i18n>mwTabProjects}" level="H2" class="gtSectionTitle"/>
+                            </HBox>
+                            <Table class="gtTable gtTableInset" fixedLayout="false" noDataText="{i18n>mwNoProjects}" items="{work>/projects}">
+                                <columns>
+                                    <Column><Text text="{i18n>colCode}"/></Column>
+                                    <Column><Text text="{i18n>colName}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colClient}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>mwMyRoles}"/></Column>
+                                    <Column><Text text="{i18n>colStatus}"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem type="Active" press=".onOpenProject">
+                                        <cells>
+                                            <Link text="{work>code}" press=".onOpenProject" class="gtCodeLink"/>
+                                            <Text text="{work>name}"/>
+                                            <Text text="{work>client/name}"/>
+                                            <Text text="{work>myRoles}"/>
+                                            <ObjectStatus
+                                                text="{path: 'work>status', formatter: '.formatter.projectStatusText'}"
+                                                state="{path: 'work>status', formatter: '.formatter.projectStatusState'}"
+                                                inverted="true"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </VBox>
+    </Page>
+
+</mvc:View>

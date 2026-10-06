@@ -1,0 +1,139 @@
+<mvc:View
+    controllerName="com.amt.golivetracker.controller.Audits"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
+    xmlns:mvc="sap.ui.core.mvc">
+
+    <!-- Auditorias (docs/mockups/08-auditorias.png), US-24 to US-26: one page
+         of GET /project/Audits at a time, with the audited milestone, its
+         project, the auditor and the follow-ups. The mockup's "Item" is the
+         audit's code and its "Estado" the result; the follow-ups still open
+         are counted next to it. Dialogs in controller/auditDialogs.js. -->
+    <Page id="auditsPage" showHeader="false" class="gtPage">
+        <VBox class="gtPageContent" renderType="Bare">
+            <HBox class="gtPageHeader" alignItems="Start" renderType="Bare">
+                <VBox renderType="Bare">
+                    <Title text="{i18n>navAudits}" level="H1" class="gtPageTitle"/>
+                    <Text text="{i18n>auditSubtitle}" class="gtSubtitle"/>
+                </VBox>
+                <Button
+                    id="newAuditButton"
+                    text="{i18n>auditNew}"
+                    icon="sap-icon://add"
+                    type="Emphasized"
+                    press=".onNewAudit"
+                    class="gtPrimaryButton"/>
+            </HBox>
+
+            <VBox class="gtCard gtTableCard" renderType="Bare">
+                <HBox class="gtFilterBar gtFilterBarInCard" alignItems="End" renderType="Bare">
+                    <SearchField
+                        id="auditSearch"
+                        placeholder="{i18n>auditSearch}"
+                        search=".onSearch"
+                        liveChange=".onSearch"
+                        showSearchButton="false"
+                        class="gtFilterSearch"/>
+                    <VBox class="gtFilterField" renderType="Bare">
+                        <Label text="{i18n>mwColProject}" labelFor="auditProjectFilter" class="gtFilterLabel"/>
+                        <gt:SearchSelect
+                            id="auditProjectFilter"
+                            width="100%"
+                            placeholder="{i18n>filterAll}"
+                            showClearIcon="true"
+                            selectionChange=".onFilterChange"
+                            items="{path: 'audit>/projects', length: 1000}">
+                            <core:ListItem key="{audit>ID}" text="{audit>code}" additionalText="{audit>name}"/>
+                        </gt:SearchSelect>
+                    </VBox>
+                    <VBox class="gtFilterField" renderType="Bare">
+                        <Label text="{i18n>auditResult}" labelFor="auditResultFilter" class="gtFilterLabel"/>
+                        <gt:SearchSelect id="auditResultFilter" width="100%" selectionChange=".onFilterChange"
+                            placeholder="{i18n>filterAll}" showClearIcon="true">
+                            <core:Item key="NotStarted" text="{i18n>resultNotStarted}"/>
+                            <core:Item key="Approved" text="{i18n>resultApproved}"/>
+                            <core:Item key="ApprovedWithReservations" text="{i18n>resultApprovedWithReservations}"/>
+                            <core:Item key="Rejected" text="{i18n>resultRejected}"/>
+                        </gt:SearchSelect>
+                    </VBox>
+                </HBox>
+
+                <Table
+                    id="auditsTable"
+                    class="gtTable gtTableInset"
+                    fixedLayout="false"
+                    busy="{audits>/busy}"
+                    busyIndicatorDelay="0"
+                    noDataText="{i18n>auditNoData}"
+                    items="{audits>/rows}">
+                    <columns>
+                        <Column><Text text="{i18n>mwColProject}"/></Column>
+                        <Column width="8rem"><Text text="{i18n>colMilestone}" wrapping="false"/></Column>
+                        <Column>
+                            <Button text="{i18n>auditCode}" icon="{= ${audits>/sort/path} === 'code' ? (${audits>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="code"/></customData>
+                            </Button>
+                        </Column>
+                        <Column>
+                            <Button text="{i18n>auditResult}" icon="{= ${audits>/sort/path} === 'result' ? (${audits>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="result"/></customData>
+                            </Button>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true">
+                            <Button text="{i18n>auditAuditor}" icon="{= ${audits>/sort/path} === 'auditor/name' ? (${audits>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="auditor/name"/></customData>
+                            </Button>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true">
+                            <Button text="{i18n>auditDate}" icon="{= ${audits>/sort/path} === 'date' ? (${audits>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="date"/></customData>
+                            </Button>
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>auditFollowUps}"/></Column>
+                        <Column width="4rem" hAlign="Center"/>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <VBox renderType="Bare">
+                                    <Link text="{audits>projectCode}" press=".onOpenProject" class="gtCodeLink"/>
+                                    <Text text="{audits>projectName}" tooltip="{audits>projectName}" class="gtSubtle gtEllipsis" wrapping="false"/>
+                                </VBox>
+                                <VBox alignItems="Start" renderType="Bare" class="gtStackedChip">
+                                    <Text text="{path: 'audits>milestoneType', formatter: '.formatter.milestoneTypeText'}" wrapping="false"/>
+                                    <ObjectStatus text="{audits>module}" visible="{= !!${audits>module} }" state="Information" inverted="true" class="gtMiniChip"/>
+                                </VBox>
+                                <Text text="{audits>code}" class="gtBreakCode"/>
+                                <ObjectStatus
+                                    text="{path: 'audits>result', formatter: '.formatter.auditResultText'}"
+                                    state="{path: 'audits>result', formatter: '.formatter.auditResultState'}"
+                                    inverted="true"/>
+                                <Text text="{audits>auditorName}"/>
+                                <Text text="{path: 'audits>date', formatter: '.formatter.dateOrDash'}" wrapping="false"/>
+                                <ObjectStatus
+                                    text="{parts: ['audits>fuOpen', 'audits>fuTotal'], formatter: '.formatter.followUpsText'}"
+                                    state="{= ${audits>fuOpen} > 0 ? 'Warning' : 'None' }"
+                                    inverted="true"
+                                    visible="{= ${audits>fuTotal} > 0 }"/>
+                                <Button icon="sap-icon://overflow" type="Transparent" tooltip="{i18n>auditActions}" press=".onAuditActions" class="gtRowAction"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+
+                <HBox class="gtTableFooter" justifyContent="SpaceBetween" alignItems="Center" renderType="Bare">
+                    <Text text="{audits>/rangeText}" class="gtSubtle"/>
+                    <HBox class="gtPager" alignItems="Center" renderType="Bare" visible="{= ${audits>/pageCount} > 1 }">
+                        <Button icon="sap-icon://slim-arrow-left" tooltip="{i18n>pagePrevious}" enabled="{= ${audits>/page} > 1 }" press=".onPagePrevious" class="gtPagerButton"/>
+                        <HBox items="{audits>/pages}" renderType="Bare" class="gtPagerPages">
+                            <Button text="{audits>n}" type="{= ${audits>current} ? 'Emphasized' : 'Default' }" press=".onPagePress" class="gtPagerButton"/>
+                        </HBox>
+                        <Button icon="sap-icon://slim-arrow-right" tooltip="{i18n>pageNext}" enabled="{= ${audits>/page} &lt; ${audits>/pageCount} }" press=".onPageNext" class="gtPagerButton"/>
+                    </HBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </Page>
+
+</mvc:View>

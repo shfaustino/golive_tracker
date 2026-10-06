@@ -1,0 +1,169 @@
+<mvc:View
+    controllerName="com.amt.golivetracker.controller.Projects"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:gt="com.amt.golivetracker.control"
+    xmlns:mvc="sap.ui.core.mvc">
+
+    <!-- Projetos (docs/mockups/03-projetos.png), US-05 and US-09: one page
+         of GET /project/Projects at a time ($top/$skip, $count), sorted by
+         the column clicked, filtered by status, client and PM and searched
+         with $search. The page is held in the "list" model
+         (Projects.controller.js#_load). -->
+    <Page id="projectsPage" showHeader="false" class="gtPage">
+        <VBox class="gtPageContent" renderType="Bare">
+            <HBox justifyContent="SpaceBetween" alignItems="Center" class="gtPageHeader" renderType="Bare">
+                <Title text="{i18n>navProjects}" level="H1" class="gtPageTitle"/>
+                <Button
+                    id="newProjectButton"
+                    text="{i18n>newProject}"
+                    icon="sap-icon://add"
+                    type="Emphasized"
+                    visible="{user>/canCreateProject}"
+                    press=".onNewProject"
+                    class="gtPrimaryButton"/>
+            </HBox>
+
+            <HBox class="gtCard gtFilterBar" alignItems="End" renderType="Bare">
+                <SearchField
+                    id="projectSearch"
+                    placeholder="{i18n>projectSearchPlaceholder}"
+                    search=".onSearch"
+                    liveChange=".onSearch"
+                    showSearchButton="false"
+                    class="gtFilterSearch"/>
+                <VBox class="gtFilterField" renderType="Bare">
+                    <Label text="{i18n>colStatus}" labelFor="statusFilter" class="gtFilterLabel"/>
+                    <gt:SearchSelect id="statusFilter" selectionChange=".onFilterChange" width="100%"
+                        placeholder="{i18n>filterAll}" showClearIcon="true">
+                        <core:Item key="NotStarted" text="{i18n>statusNotStarted}"/>
+                        <core:Item key="InProgress" text="{i18n>statusInProgress}"/>
+                        <core:Item key="OnHold" text="{i18n>statusOnHold}"/>
+                        <core:Item key="Replanning" text="{i18n>statusReplanning}"/>
+                        <core:Item key="Closing" text="{i18n>statusClosing}"/>
+                        <core:Item key="Closed" text="{i18n>statusClosed}"/>
+                        <core:Item key="Cancelled" text="{i18n>statusCancelled}"/>
+                    </gt:SearchSelect>
+                </VBox>
+                <VBox class="gtFilterField" renderType="Bare">
+                    <Label text="{i18n>colClient}" labelFor="clientFilter" class="gtFilterLabel"/>
+                    <gt:SearchSelect id="clientFilter" selectionChange=".onFilterChange" width="100%"
+                        placeholder="{i18n>filterAll}" showClearIcon="true"
+                        items="{path: 'options>/clients', length: 1000}">
+                        <core:Item key="{options>key}" text="{options>text}"/>
+                    </gt:SearchSelect>
+                </VBox>
+                <VBox class="gtFilterField" renderType="Bare">
+                    <Label text="{i18n>colPm}" labelFor="pmFilter" class="gtFilterLabel"/>
+                    <gt:SearchSelect id="pmFilter" selectionChange=".onFilterChange" width="100%"
+                        placeholder="{i18n>filterAll}" showClearIcon="true"
+                        items="{path: 'options>/people', length: 1000}">
+                        <core:Item key="{options>key}" text="{options>text}"/>
+                    </gt:SearchSelect>
+                </VBox>
+            </HBox>
+
+            <VBox class="gtCard gtTableCard" renderType="Bare">
+                <Table
+                    id="projectsTable"
+                    class="gtTable"
+                    fixedLayout="false"
+                    busy="{list>/busy}"
+                    busyIndicatorDelay="0"
+                    noDataText="{i18n>projectsNoData}"
+                    items="{list>/rows}">
+                    <columns>
+                        <Column>
+                            <Button text="{i18n>colCode}" icon="{= ${list>/sort/path} === 'code' ? (${list>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="code"/></customData>
+                            </Button>
+                        </Column>
+                        <Column>
+                            <Button text="{i18n>colName}" icon="{= ${list>/sort/path} === 'name' ? (${list>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="name"/></customData>
+                            </Button>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true">
+                            <Button text="{i18n>colClient}" icon="{= ${list>/sort/path} === 'client/name' ? (${list>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="client/name"/></customData>
+                            </Button>
+                        </Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true">
+                            <Button text="{i18n>colPm}" icon="{= ${list>/sort/path} === 'pm/person/name' ? (${list>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="pm/person/name"/></customData>
+                            </Button>
+                        </Column>
+                        <Column>
+                            <Button text="{i18n>colStatus}" icon="{= ${list>/sort/path} === 'status' ? (${list>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="status"/></customData>
+                            </Button>
+                        </Column>
+                        <Column minScreenWidth="Desktop" demandPopin="true">
+                            <Button text="{i18n>colLastUpdate}" icon="{= ${list>/sort/path} === 'lastUpdateAt' ? (${list>/sort/desc} ? 'sap-icon://sort-descending' : 'sap-icon://sort-ascending') : 'sap-icon://sort' }" iconFirst="false" type="Transparent" press=".onSort" class="gtSortHeader">
+                                <customData><core:CustomData key="sortPath" value="lastUpdateAt"/></customData>
+                            </Button>
+                        </Column>
+                        <Column width="4rem" hAlign="End"/>
+                    </columns>
+                    <items>
+                        <ColumnListItem type="Active" press=".onProjectPress">
+                            <cells>
+                                <Link text="{list>code}" press=".onProjectPress" class="gtCodeLink"/>
+                                <Text text="{list>name}"/>
+                                <Text text="{list>client/name}"/>
+                                <Text text="{list>pm/person/name}"/>
+                                <HBox renderType="Bare" class="gtChips">
+                                    <ObjectStatus
+                                        text="{path: 'list>status', formatter: '.formatter.projectStatusText'}"
+                                        state="{path: 'list>status', formatter: '.formatter.projectStatusState'}"
+                                        inverted="true"
+                                        class="gtChip"/>
+                                    <ObjectStatus
+                                        text="{i18n>chipToReview}"
+                                        state="Warning"
+                                        inverted="true"
+                                        visible="{= !!${list>needsReview} }"
+                                        tooltip="{list>reviewReason}"
+                                        class="gtChip"/>
+                                </HBox>
+                                <Text text="{path: 'list>lastUpdateAt', formatter: '.formatter.timestampDate'}"/>
+                                <Button
+                                    icon="sap-icon://overflow"
+                                    type="Transparent"
+                                    tooltip="{i18n>openProject}"
+                                    press=".onProjectPress"
+                                    class="gtRowAction"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+
+                <HBox class="gtTableFooter" justifyContent="SpaceBetween" alignItems="Center" renderType="Bare">
+                    <Text text="{list>/rangeText}" class="gtSubtle"/>
+                    <HBox class="gtPager" alignItems="Center" renderType="Bare" visible="{= ${list>/pageCount} > 1 }">
+                        <Button
+                            icon="sap-icon://slim-arrow-left"
+                            tooltip="{i18n>pagePrevious}"
+                            enabled="{= ${list>/page} > 1 }"
+                            press=".onPagePrevious"
+                            class="gtPagerButton"/>
+                        <HBox items="{list>/pages}" renderType="Bare" class="gtPagerPages">
+                            <Button
+                                text="{list>n}"
+                                type="{= ${list>current} ? 'Emphasized' : 'Default' }"
+                                press=".onPagePress"
+                                class="gtPagerButton"/>
+                        </HBox>
+                        <Button
+                            icon="sap-icon://slim-arrow-right"
+                            tooltip="{i18n>pageNext}"
+                            enabled="{= ${list>/page} &lt; ${list>/pageCount} }"
+                            press=".onPageNext"
+                            class="gtPagerButton"/>
+                    </HBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </Page>
+
+</mvc:View>

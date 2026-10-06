@@ -1,0 +1,35 @@
+# golive-tracker-api (github.com/NelsonTeixeira09/golive-tracker-api) deployed
+# in the DevOps space next to this app, with no change to its repo. From the
+# API's folder:
+#   npx mbt build
+#   cf deploy mta_archives/golive-tracker-api_1.0.0.mtar -e <this file>
+# Changes: a short, fixed host (the app's destination points at it), and an
+# own role collection, because the Sandbox deployment already made the
+# subaccount's GoLiveTracker_Administrator. Needs the subaccount's HANA Cloud
+# mapped to the DevOps space (HANA Cloud Central > instance > Instance Mapping).
+_schema-version: "3.3"
+ID: golive-tracker-api-devops
+extends: golive-tracker-api
+
+modules:
+  - name: golive-tracker-api-srv
+    parameters:
+      host: h2h-sandbox-lwsjexg2-golive-tracker-api
+
+resources:
+  - name: golive-tracker-api-auth
+    parameters:
+      config:
+        xsappname: golive-tracker-api-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          credential-types:
+            - "binding-secret"
+            - "x509"
+          redirect-uris:
+            - https://*.${default-domain}/**
+        role-collections:
+          - name: GoLiveTracker_Administrator_DevOps
+            description: GoLive Tracker (DevOps) — Administrator (bootstrap)
+            role-template-references:
+              - $XSAPPNAME.Administrator
