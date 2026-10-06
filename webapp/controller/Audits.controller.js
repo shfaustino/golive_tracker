@@ -106,7 +106,8 @@ sap.ui.define([
                 aFilters.push(new Filter("milestone/project_ID", FilterOperator.EQ, sProject));
             }
             if (sResult) {
-                aFilters.push(new Filter("result", FilterOperator.EQ, sResult));
+                // "Por iniciar" (NotStarted) is an audit with no result yet (model/auditRules.js)
+                aFilters.push(new Filter("result", FilterOperator.EQ, sResult === "NotStarted" ? null : sResult));
             }
             oBinding = this.getOwnerComponent().getModel().bindList("/Audits", undefined, [], aFilters,
                 Object.assign({ $count: true }, auditRows.QUERY, {

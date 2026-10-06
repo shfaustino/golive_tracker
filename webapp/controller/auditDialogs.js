@@ -50,7 +50,8 @@ sap.ui.define([
                 milestones: [],
                 values: {
                     project_ID: sProjectId || null, milestone_ID: null, code: "", date: memberRules.today(),
-                    auditor_ID: this.getOwnerComponent().getModel("user").getProperty("/id"), result: "Approved", notes: ""
+                    auditor_ID: this.getOwnerComponent().getModel("user").getProperty("/id"),
+                    result: auditRules.NOT_STARTED, notes: ""
                 }
             }));
             this._loadAuditChoices();
@@ -195,7 +196,7 @@ sap.ui.define([
                 errors: {},
                 values: {
                     project_ID: oRow.project_ID, milestone_ID: oRow.milestone_ID, code: oRow.code, date: oRow.date,
-                    auditor_ID: oRow.auditor_ID, result: oRow.result, notes: oRow.notes || ""
+                    auditor_ID: oRow.auditor_ID, result: auditRules.fromApi(oRow.result), notes: oRow.notes || ""
                 }
             }));
             this._loadAuditChoices();
@@ -216,7 +217,7 @@ sap.ui.define([
                 oBinding = oModel.bindList("/Audits", undefined, [], [], { $$updateGroupId: AUDIT_GROUP }),
                 oBody = {
                     milestone_ID: oValues.milestone_ID, date: oValues.date, auditor_ID: oValues.auditor_ID,
-                    result: oValues.result
+                    result: auditRules.toApi(oValues.result)
                 },
                 oContext;
 

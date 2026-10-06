@@ -25,3 +25,18 @@ test("changes sends only what changed", () => {
 
     assert.deepEqual(auditRules.changes(oBefore, Object.assign({}, oBefore, { result: "Rejected", notes: "" })), { result: "Rejected" });
 });
+
+test("Por iniciar is no result in the API, both ways", () => {
+    assert.equal(auditRules.toApi("NotStarted"), null);
+    assert.equal(auditRules.toApi("Approved"), "Approved");
+    assert.equal(auditRules.fromApi(null), "NotStarted");
+    assert.equal(auditRules.fromApi("Rejected"), "Rejected");
+});
+
+test("changes compares Por iniciar with the API's null", () => {
+    const oBefore = { code: "1_GOP_01012026", date: "2026-01-01", auditor_ID: "a", result: null, notes: null };
+
+    assert.deepEqual(auditRules.changes(oBefore, Object.assign({}, oBefore, { result: "NotStarted" })), {});
+    assert.deepEqual(auditRules.changes(oBefore, Object.assign({}, oBefore, { result: "Approved" })), { result: "Approved" });
+    assert.deepEqual(auditRules.changes({ result: "Approved" }, { result: "NotStarted" }), { result: null });
+});

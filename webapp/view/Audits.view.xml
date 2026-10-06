@@ -51,6 +51,7 @@
                         <Label text="{i18n>auditResult}" labelFor="auditResultFilter" class="gtFilterLabel"/>
                         <gt:SearchSelect id="auditResultFilter" width="100%" selectionChange=".onFilterChange"
                             placeholder="{i18n>filterAll}" showClearIcon="true">
+                            <core:Item key="NotStarted" text="{i18n>resultNotStarted}"/>
                             <core:Item key="Approved" text="{i18n>resultApproved}"/>
                             <core:Item key="ApprovedWithReservations" text="{i18n>resultApprovedWithReservations}"/>
                             <core:Item key="Rejected" text="{i18n>resultRejected}"/>

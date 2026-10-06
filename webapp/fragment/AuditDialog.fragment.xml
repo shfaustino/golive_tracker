@@ -68,13 +68,17 @@
             </gt:SearchSelect>
 
             <Label text="{i18n>auditResult}" labelFor="auditResult" required="true"/>
-            <SegmentedButton id="auditResult" selectedKey="{audit>/values/result}" width="100%">
-                <items>
-                    <SegmentedButtonItem key="Approved" text="{i18n>resultApproved}"/>
-                    <SegmentedButtonItem key="ApprovedWithReservations" text="{i18n>resultApprovedWithReservations}"/>
-                    <SegmentedButtonItem key="Rejected" text="{i18n>resultRejected}"/>
-                </items>
-            </SegmentedButton>
+            <!-- "Por iniciar" (NotStarted) is an audit with no result yet: the API keeps null -->
+            <gt:SearchSelect
+                id="auditResult"
+                selectedKey="{audit>/values/result}"
+                valueState="{= ${audit>/errors/result} ? 'Error' : 'None' }"
+                valueStateText="{audit>/errors/result}">
+                <core:Item key="NotStarted" text="{i18n>resultNotStarted}"/>
+                <core:Item key="Approved" text="{i18n>resultApproved}"/>
+                <core:Item key="ApprovedWithReservations" text="{i18n>resultApprovedWithReservations}"/>
+                <core:Item key="Rejected" text="{i18n>resultRejected}"/>
+            </gt:SearchSelect>
 
             <Label text="{i18n>auditNotes}" labelFor="auditNotes"/>
             <TextArea id="auditNotes" value="{audit>/values/notes}" rows="3" growing="true" width="100%"/>

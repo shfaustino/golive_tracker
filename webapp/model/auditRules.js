@@ -3,9 +3,34 @@ sap.ui.define([], function () {
 
     var OPEN = ["ToDo", "InProgress"];
 
+    /** "Por iniciar": an audit with no result yet, which the API keeps as null. */
+    var NOT_STARTED = "NotStarted";
+
+    /**
+     * The API's result for the form's: "Por iniciar" is none.
+     * @param {string} sResult the form's result
+     * @returns {string|null} the API's
+     */
+    function toApi(sResult) {
+        return sResult && sResult !== NOT_STARTED ? sResult : null;
+    }
+
     return {
 
-        RESULTS: ["Approved", "ApprovedWithReservations", "Rejected"],
+        NOT_STARTED: NOT_STARTED,
+
+        RESULTS: [NOT_STARTED, "Approved", "ApprovedWithReservations", "Rejected"],
+
+        toApi: toApi,
+
+        /**
+         * The form's result for the API's: none is "Por iniciar".
+         * @param {string|null} sResult the API's result
+         * @returns {string} the form's
+         */
+        fromApi: function (sResult) {
+            return sResult || NOT_STARTED;
+        },
 
         /**
          * Checks an audit before it is sent. The code may stay empty: the API
@@ -71,8 +96,11 @@ sap.ui.define([], function () {
             var oChanges = {};
 
             ["code", "date", "auditor_ID", "result", "notes"].forEach(function (sField) {
-                if ((oBefore[sField] || null) !== (oAfter[sField] || null)) {
-                    oChanges[sField] = oAfter[sField] || null;
+                var vBefore = sField === "result" ? toApi(oBefore[sField]) : oBefore[sField] || null,
+                    vAfter = sField === "result" ? toApi(oAfter[sField]) : oAfter[sField] || null;
+
+                if (vBefore !== vAfter) {
+                    oChanges[sField] = vAfter;
                 }
             });
             return oChanges;

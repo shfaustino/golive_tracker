@@ -323,12 +323,12 @@ sap.ui.define([
         },
 
         /**
-         * The label of an audit result.
-         * @param {string} sResult Approved, ApprovedWithReservations or Rejected
+         * The label of an audit result; none yet is "Por iniciar".
+         * @param {string|null} sResult Approved, ApprovedWithReservations, Rejected or null
          * @returns {string} the label
          */
         auditResultText: function (sResult) {
-            return sResult ? this.getResourceBundle().getText("result" + sResult) : "";
+            return this.getResourceBundle().getText("result" + (sResult || "NotStarted"));
         },
 
         /**
