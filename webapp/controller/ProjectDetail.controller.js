@@ -5,8 +5,9 @@ sap.ui.define([
     "sap/m/MessageToast",
     "../model/milestoneSummary",
     "../formatter/formatter",
-    "./projectTeam"
-], function (BaseController, Fragment, JSONModel, MessageToast, milestoneSummary, formatter, projectTeam) {
+    "./projectTeam",
+    "./projectHeader"
+], function (BaseController, Fragment, JSONModel, MessageToast, milestoneSummary, formatter, projectTeam, projectHeader) {
     "use strict";
 
     /** The tab a project opens on when the route names none. */
@@ -15,8 +16,10 @@ sap.ui.define([
     /** The batch group a milestone edit is sent in, as one PATCH. */
     var EDIT_GROUP = "milestoneEdit";
 
-    // The Equipa tab's handlers live in ./projectTeam and are mixed in here.
-    return BaseController.extend("com.amt.golivetracker.controller.ProjectDetail", Object.assign({}, projectTeam, {
+    // The Equipa tab's handlers live in ./projectTeam, and the header's
+    // actions, Visão geral, Módulos and Updates in ./projectHeader; both are
+    // mixed in here.
+    return BaseController.extend("com.amt.golivetracker.controller.ProjectDetail", Object.assign({}, projectTeam, projectHeader, {
 
         formatter: formatter,
 
@@ -28,6 +31,8 @@ sap.ui.define([
             }), "detail");
             this.setModel(new JSONModel({ busy: false, values: {}, errors: {} }), "msEdit");
             this.setModel(new JSONModel({ busy: false, values: {}, errors: {}, people: [], roles: [] }), "member");
+            this.setModel(new JSONModel({ busy: false, values: {}, errors: {}, statuses: [] }), "action");
+            this.setModel(new JSONModel(this._emptyOverview()), "overview");
             this.getRouter().getRoute("projectDetail").attachPatternMatched(this._onRouteMatched, this);
         },
 
@@ -168,6 +173,7 @@ sap.ui.define([
                 // isOverdue, itemsCompletion and the history are the API's to
                 // work out again.
                 this.byId("milestonesTable").getBinding("items").refresh();
+                this._loadOverview();
             }.bind(this));
         },
 
@@ -209,7 +215,27 @@ sap.ui.define([
                 this.onCancelMilestone();
                 // sortOrder, status and the rest are the API's to fill in.
                 this.byId("milestonesTable").getBinding("items").refresh();
+                this._loadOverview();
             }.bind(this));
+        },
+
+        /**
+         * What Visão geral and Módulos show before their reads answer.
+         * @returns {object} the "overview" model's data
+         * @private
+         */
+        _emptyOverview: function () {
+            return {
+                progress: { total: 0, done: 0, pct: 0, steps: [], next: null },
+                progressBarHtml: "",
+                progressText: "",
+                nextDaysText: "",
+                team: [],
+                modules: [],
+                updates: [],
+                draft: "",
+                posting: false
+            };
         },
 
         /**
@@ -229,6 +255,8 @@ sap.ui.define([
                 return;
             }
             this._sProjectId = oArgs.projectId;
+            this.getModel("overview").setData(this._emptyOverview());
+            this._loadOverview();
             oDetailModel.setProperty("/summary", milestoneSummary.summarise([]));
             oDetailModel.setProperty("/busy", true);
             this.getView().bindElement(sPath);

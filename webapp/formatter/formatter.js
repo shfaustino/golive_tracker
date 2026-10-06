@@ -49,6 +49,25 @@ sap.ui.define([
     };
 
     /**
+     * What each module code stands for. Product names, the same in every
+     * language, so not in i18n.
+     */
+    var MODULE_NAMES = {
+        "EC": "Employee Central",
+        "ECP": "Employee Central Payroll",
+        "TT": "Time Tracking",
+        "P&G": "Performance & Goals",
+        "REC": "Recruiting",
+        "ONB": "Onboarding",
+        "LMS": "Learning",
+        "Compensation": "Compensation",
+        "Workzone": "SAP Build Work Zone",
+        "FI": "Financial Accounting",
+        "SD": "Sales and Distribution",
+        "EWM": "Extended Warehouse Management"
+    };
+
+    /**
      * The i18n key of each member role's label. The API's values carry
      * spaces ("Functional lead"), so they cannot be i18n keys themselves.
      */
@@ -168,6 +187,81 @@ sap.ui.define([
          */
         percent: function (fPct) {
             return typeof fPct === "number" ? String(fPct).replace(".", ",") + "%" : "";
+        },
+
+        /**
+         * An amount with its currency, as Portugal writes it ("148 549,00 €").
+         * @param {number|string} vValue the value (Edm.Decimal comes as a string)
+         * @param {string} sCurrency ISO code, e.g. EUR
+         * @returns {string} the text, or "—"
+         */
+        money: function (vValue, sCurrency) {
+            var fValue = parseFloat(vValue);
+
+            if (isNaN(fValue)) {
+                return "—";
+            }
+            // Intl throws on anything that is not a three-letter code
+            if (!/^[A-Z]{3}$/.test(sCurrency || "")) {
+                return fValue.toFixed(2) + " " + (sCurrency || "");
+            }
+            return new Intl.NumberFormat("pt-PT", { style: "currency", currency: sCurrency }).format(fValue);
+        },
+
+        /**
+         * How long a project runs, in months when it is long ("13 meses").
+         * @param {string} sStart YYYY-MM-DD
+         * @param {string} sEnd YYYY-MM-DD
+         * @returns {string} the text, or "—"
+         */
+        duration: function (sStart, sEnd) {
+            var iDays;
+
+            if (!sStart || !sEnd) {
+                return "—";
+            }
+            iDays = Math.round((Date.parse(sEnd) - Date.parse(sStart)) / 86400000);
+            if (iDays >= 60) {
+                return this.getResourceBundle().getText("durationMonths", [Math.round(iDays / 30.44)]);
+            }
+            return this.getResourceBundle().getText("durationDays", [iDays]);
+        },
+
+        /**
+         * A timestamp with the time ("02/10/2026 09:15"), in the browser's time zone.
+         * @param {string} sTimestamp ISO 8601
+         * @returns {string} the text, or "—"
+         */
+        timestampDateTime: function (sTimestamp) {
+            var oDate = sTimestamp ? new Date(sTimestamp) : null;
+
+            if (!oDate || isNaN(oDate.getTime())) {
+                return "—";
+            }
+            return String(oDate.getDate()).padStart(2, "0") + "/" + String(oDate.getMonth() + 1).padStart(2, "0") + "/" +
+                oDate.getFullYear() + " " + String(oDate.getHours()).padStart(2, "0") + ":" +
+                String(oDate.getMinutes()).padStart(2, "0");
+        },
+
+        /**
+         * Who wrote something, and when ("Ana Silva · 02/10/2026").
+         * @param {string} sName the author's name
+         * @param {string} sTimestamp ISO 8601
+         * @returns {string} the text
+         */
+        byline: function (sName, sTimestamp) {
+            var sWhen = sTimestamp ? this.formatter.timestampDate(sTimestamp) : "";
+
+            return [sName, sWhen].filter(Boolean).join(" · ");
+        },
+
+        /**
+         * The full name of an SAP module code ("EC" -> "Employee Central").
+         * @param {string} sModule the API's module
+         * @returns {string} the name, or "" when it is already a name
+         */
+        moduleName: function (sModule) {
+            return MODULE_NAMES[sModule] || "";
         },
 
         /**

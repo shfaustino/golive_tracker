@@ -13,6 +13,11 @@
           <NavigationPropertyBinding Path="members" Target="Members"/>
           <NavigationPropertyBinding Path="milestones" Target="Milestones"/>
           <NavigationPropertyBinding Path="modules" Target="ProjectModules"/>
+          <NavigationPropertyBinding Path="updates" Target="Updates"/>
+        </EntitySet>
+        <EntitySet Name="Updates" EntityType="ProjectService.Updates">
+          <NavigationPropertyBinding Path="project" Target="Projects"/>
+          <NavigationPropertyBinding Path="author" Target="People"/>
         </EntitySet>
         <EntitySet Name="Members" EntityType="ProjectService.Members">
           <NavigationPropertyBinding Path="person" Target="People"/>
@@ -62,6 +67,27 @@
         <NavigationProperty Name="members" Type="Collection(ProjectService.Members)" Partner="project"/>
         <NavigationProperty Name="milestones" Type="Collection(ProjectService.Milestones)" Partner="project"/>
         <NavigationProperty Name="modules" Type="Collection(ProjectService.ProjectModules)" Partner="project"/>
+        <NavigationProperty Name="updates" Type="Collection(ProjectService.Updates)" Partner="project"/>
+      </EntityType>
+
+      <!-- Status updates (US-27). The guide names text, milestone_ID and
+           isAutomatic; author and createdAt are assumed (CAP's managed
+           aspect and an association to People). -->
+      <EntityType Name="Updates">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="project_ID" Type="Edm.Guid"/>
+        <Property Name="text" Type="Edm.String" MaxLength="2000"/>
+        <Property Name="milestone_ID" Type="Edm.Guid"/>
+        <Property Name="isAutomatic" Type="Edm.Boolean"/>
+        <Property Name="author_ID" Type="Edm.Guid"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <NavigationProperty Name="project" Type="ProjectService.Projects" Partner="updates">
+          <ReferentialConstraint Property="project_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <NavigationProperty Name="author" Type="ProjectService.People">
+          <ReferentialConstraint Property="author_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
       </EntityType>
 
       <EntityType Name="Members">
@@ -193,6 +219,15 @@
         <Parameter Name="in" Type="ProjectService.Projects"/>
         <Parameter Name="person_ID" Type="Edm.Guid"/>
         <Parameter Name="startDate" Type="Edm.Date"/>
+      </Action>
+      <Action Name="changeStatus" IsBound="true">
+        <Parameter Name="in" Type="ProjectService.Projects"/>
+        <Parameter Name="status" Type="Edm.String"/>
+        <Parameter Name="reason" Type="Edm.String"/>
+      </Action>
+      <Action Name="setBaseline" IsBound="true">
+        <Parameter Name="in" Type="ProjectService.Projects"/>
+        <Parameter Name="reason" Type="Edm.String"/>
       </Action>
       <Function Name="me" IsBound="false">
         <ReturnType Type="ProjectService.Me"/>

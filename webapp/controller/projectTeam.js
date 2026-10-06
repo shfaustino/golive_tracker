@@ -247,6 +247,7 @@ sap.ui.define([
             return oAction.execute().then(function () {
                 MessageToast.show(this.getResourceBundle().getText("teamHandedOver", [oPerson ? oPerson.name : ""]));
                 this.getView().getElementBinding().refresh();
+                this._loadOverview();
                 return true;
             }.bind(this)).catch(function () {
                 // the ErrorHandler shows the API's reason; the dialog stays open
@@ -274,6 +275,7 @@ sap.ui.define([
                 MessageToast.show(sDoneText);
                 // "Ativo"/"Inativo" and the PM in the header may have moved.
                 this.getView().getElementBinding().refresh();
+                this._loadOverview();
                 return true;
             }.bind(this));
         },

@@ -26,40 +26,55 @@
                         state="{path: 'status', formatter: '.formatter.projectStatusState'}"
                         inverted="true"
                         class="gtProjectStatus"/>
+                    <!-- Mudar estado (changeStatus) and Gravar baseline
+                         (setBaseline); controller/projectHeader.js. -->
+                    <Button
+                        id="projectActionsButton"
+                        icon="sap-icon://overflow"
+                        tooltip="{i18n>projectActions}"
+                        press=".onProjectActions"
+                        class="gtSquareButton"/>
                 </HBox>
             </HBox>
 
-            <HBox class="gtProjectFacts" renderType="Bare">
+            <MessageStrip
+                text="{reviewReason}"
+                type="Warning"
+                showIcon="true"
+                visible="{= !!${needsReview} }"
+                class="gtReviewStrip"/>
+
+            <HBox class="gtCard gtProjectFacts" renderType="Bare">
                 <HBox class="gtProjectFact" renderType="Bare">
-                    <core:Icon src="sap-icon://customer"/>
+                    <HBox class="gtFactIcon" renderType="Bare"><core:Icon src="sap-icon://building"/></HBox>
                     <VBox renderType="Bare">
                         <Label text="{i18n>colClient}"/>
                         <Text text="{client/name}"/>
                     </VBox>
                 </HBox>
                 <HBox class="gtProjectFact" renderType="Bare">
-                    <core:Icon src="sap-icon://lead"/>
+                    <HBox class="gtFactIcon" renderType="Bare"><core:Icon src="sap-icon://money-bills"/></HBox>
                     <VBox renderType="Bare">
                         <Label text="{i18n>projectCurrency}"/>
                         <Text text="{currency_code}"/>
                     </VBox>
                 </HBox>
                 <HBox class="gtProjectFact" renderType="Bare">
-                    <core:Icon src="sap-icon://calendar"/>
+                    <HBox class="gtFactIcon" renderType="Bare"><core:Icon src="sap-icon://calendar"/></HBox>
                     <VBox renderType="Bare">
                         <Label text="{i18n>projectStartDate}"/>
                         <Text text="{path: 'startDate', targetType: 'any', formatter: '.formatter.dateOrDash'}"/>
                     </VBox>
                 </HBox>
                 <HBox class="gtProjectFact" renderType="Bare">
-                    <core:Icon src="sap-icon://calendar"/>
+                    <HBox class="gtFactIcon" renderType="Bare"><core:Icon src="sap-icon://appointment"/></HBox>
                     <VBox renderType="Bare">
                         <Label text="{i18n>projectEndDate}"/>
                         <Text text="{path: 'endDate', targetType: 'any', formatter: '.formatter.dateOrDash'}"/>
                     </VBox>
                 </HBox>
                 <HBox class="gtProjectFact" renderType="Bare">
-                    <core:Icon src="sap-icon://group"/>
+                    <HBox class="gtFactIcon" renderType="Bare"><core:Icon src="sap-icon://manager"/></HBox>
                     <VBox renderType="Bare">
                         <Label text="{i18n>projectPm}"/>
                         <Text text="{pm/person/name}"/>
@@ -78,27 +93,137 @@
                 applyContentPadding="false"
                 class="gtProjectTabs">
                 <items>
+                    <!-- Visão geral: how far the project is, its details, and
+                         what comes next. Read into the "overview" model by
+                         controller/projectHeader.js#_loadOverview. -->
                     <IconTabFilter key="visao-geral" text="{i18n>tabOverview}">
-                        <VBox class="gtCard" renderType="Bare">
-                            <form:SimpleForm
-                                editable="false"
-                                layout="ColumnLayout"
-                                columnsM="2"
-                                columnsL="2"
-                                columnsXL="2"
-                                class="gtOverviewForm">
-                                <Label text="{i18n>projectType}"/>
-                                <Text text="{projectType}"/>
-                                <Label text="{i18n>projectExternalCode}"/>
-                                <Text text="{externalCode}"/>
-                                <Label text="{i18n>projectValue}"/>
-                                <Text text="{value} {currency_code}"/>
-                                <Label text="{i18n>projectLastUpdate}"/>
-                                <Text text="{path: 'lastUpdateAt', targetType: 'any', formatter: '.formatter.timestampDate'}"/>
-                                <Label text="{i18n>projectReviewReason}" visible="{= !!${needsReview} }"/>
-                                <ObjectStatus text="{reviewReason}" state="Warning" inverted="true" visible="{= !!${needsReview} }"/>
-                            </form:SimpleForm>
-                        </VBox>
+                        <HBox class="gtOverviewGrid" renderType="Bare">
+                            <VBox class="gtOverviewMain" renderType="Bare">
+                                <VBox class="gtCard gtCardBody" renderType="Bare">
+                                    <HBox class="gtCardHeaderPlain" renderType="Bare">
+                                        <Title text="{i18n>ovProgress}" level="H2" class="gtSectionTitle"/>
+                                        <Text text="{overview>/progressText}" class="gtSubtle"/>
+                                    </HBox>
+                                    <HBox class="gtProgress" alignItems="Center" renderType="Bare">
+                                        <HBox class="gtProgressTrack" renderType="Bare">
+                                            <core:HTML content="{overview>/progressBarHtml}"/>
+                                        </HBox>
+                                        <Text text="{overview>/progress/pct}%" class="gtProgressPct"/>
+                                    </HBox>
+                                    <HBox class="gtTimeline" items="{overview>/progress/steps}" renderType="Bare">
+                                        <VBox class="gtStep" renderType="Bare">
+                                            <customData>
+                                                <core:CustomData key="step" value="{overview>step}" writeToDom="true"/>
+                                            </customData>
+                                            <HBox class="gtStepDot" renderType="Bare">
+                                                <core:Icon src="{= ${overview>step} === 'done' ? 'sap-icon://accept' : (${overview>step} === 'late' ? 'sap-icon://alert' : '') }"/>
+                                            </HBox>
+                                            <Text text="{path: 'overview>milestoneType', formatter: '.formatter.milestoneTypeText'}" class="gtStepLabel"/>
+                                            <Text text="{path: 'overview>date', formatter: '.formatter.dateOrDash'}" class="gtStepDate"/>
+                                        </VBox>
+                                    </HBox>
+                                    <Text text="{i18n>ovNoMilestones}" visible="{= ${overview>/progress/total} === 0 }" class="gtSubtle"/>
+                                </VBox>
+
+                                <VBox class="gtCard gtCardBody" renderType="Bare">
+                                    <HBox class="gtCardHeaderPlain" renderType="Bare">
+                                        <Title text="{i18n>ovDetails}" level="H2" class="gtSectionTitle"/>
+                                    </HBox>
+                                    <HBox class="gtDetails" renderType="Bare">
+                                        <VBox class="gtDetail" renderType="Bare">
+                                            <Label text="{i18n>projectType}"/>
+                                            <Text text="{projectType}"/>
+                                        </VBox>
+                                        <VBox class="gtDetail" renderType="Bare">
+                                            <Label text="{i18n>projectExternalCode}"/>
+                                            <Text text="{= ${externalCode} || '—' }"/>
+                                        </VBox>
+                                        <VBox class="gtDetail" renderType="Bare">
+                                            <Label text="{i18n>projectValue}"/>
+                                            <Text text="{parts: [{path: 'value', targetType: 'any'}, {path: 'currency_code', targetType: 'any'}], formatter: '.formatter.money'}"/>
+                                        </VBox>
+                                        <VBox class="gtDetail" renderType="Bare">
+                                            <Label text="{i18n>ovDuration}"/>
+                                            <Text text="{parts: [{path: 'startDate', targetType: 'any'}, {path: 'endDate', targetType: 'any'}], formatter: '.formatter.duration'}"/>
+                                        </VBox>
+                                        <VBox class="gtDetail" renderType="Bare">
+                                            <Label text="{i18n>projectLastUpdate}"/>
+                                            <Text text="{path: 'lastUpdateAt', targetType: 'any', formatter: '.formatter.timestampDate'}"/>
+                                        </VBox>
+                                        <VBox class="gtDetail" renderType="Bare">
+                                            <Label text="{i18n>tabModules}"/>
+                                            <HBox items="{overview>/modules}" renderType="Bare" class="gtChips gtChipsWrap">
+                                                <ObjectStatus text="{overview>module}" state="Information" inverted="true"/>
+                                            </HBox>
+                                        </VBox>
+                                    </HBox>
+                                </VBox>
+                            </VBox>
+
+                            <VBox class="gtOverviewSide" renderType="Bare">
+                                <VBox class="gtCard gtCardBody" renderType="Bare">
+                                    <HBox class="gtCardHeaderPlain" renderType="Bare">
+                                        <Title text="{i18n>ovNext}" level="H2" class="gtSectionTitle"/>
+                                        <Link text="{i18n>ovSeeMilestones}" press=".onGoToTab" class="gtSeeAll">
+                                            <customData><core:CustomData key="tab" value="marcos"/></customData>
+                                        </Link>
+                                    </HBox>
+                                    <HBox class="gtNext" alignItems="Center" renderType="Bare" visible="{= !!${overview>/progress/next} }">
+                                        <!-- class cannot be bound: the tint follows data-late (css/style.css) -->
+                                        <HBox class="gtKpiIcon gtNextIcon" renderType="Bare">
+                                            <customData>
+                                                <core:CustomData key="late" value="{= ${overview>/progress/next/overdue} ? 'yes' : 'no' }" writeToDom="true"/>
+                                            </customData>
+                                            <core:Icon src="sap-icon://flag"/>
+                                        </HBox>
+                                        <VBox renderType="Bare" class="gtNextText">
+                                            <Text text="{path: 'overview>/progress/next/milestoneType', formatter: '.formatter.milestoneTypeText'}" class="gtNextTitle"/>
+                                            <Text text="{path: 'overview>/progress/next/date', formatter: '.formatter.dateOrDash'}" class="gtSubtle"/>
+                                        </VBox>
+                                        <ObjectStatus
+                                            text="{overview>/nextDaysText}"
+                                            state="{= ${overview>/progress/next/overdue} ? 'Error' : 'Information' }"
+                                            inverted="true"/>
+                                    </HBox>
+                                    <Text text="{i18n>ovAllDone}" visible="{= !${overview>/progress/next} }" class="gtSubtle"/>
+                                </VBox>
+
+                                <VBox class="gtCard gtCardBody" renderType="Bare">
+                                    <HBox class="gtCardHeaderPlain" renderType="Bare">
+                                        <Title text="{i18n>ovTeam}" level="H2" class="gtSectionTitle"/>
+                                        <Link text="{i18n>ovSeeTeam}" press=".onGoToTab" class="gtSeeAll">
+                                            <customData><core:CustomData key="tab" value="equipa"/></customData>
+                                        </Link>
+                                    </HBox>
+                                    <VBox items="{path: 'overview>/team', length: 5}" renderType="Bare" class="gtMiniList">
+                                        <HBox class="gtMiniRow" alignItems="Center" renderType="Bare">
+                                            <Avatar displaySize="XS" initials="{path: 'overview>person/name', formatter: '.formatter.initials'}" class="gtPersonAvatar"/>
+                                            <VBox renderType="Bare" class="gtMiniText">
+                                                <Text text="{overview>person/name}" class="gtMiniTitle"/>
+                                                <Text text="{path: 'overview>role', formatter: '.formatter.roleText'}" class="gtSubtle"/>
+                                            </VBox>
+                                        </HBox>
+                                    </VBox>
+                                    <Text text="{i18n>teamNoData}" visible="{= ${overview>/team}.length === 0 }" class="gtSubtle"/>
+                                </VBox>
+
+                                <VBox class="gtCard gtCardBody" renderType="Bare">
+                                    <HBox class="gtCardHeaderPlain" renderType="Bare">
+                                        <Title text="{i18n>ovLatestUpdates}" level="H2" class="gtSectionTitle"/>
+                                        <Link text="{i18n>seeAll}" press=".onGoToTab" class="gtSeeAll">
+                                            <customData><core:CustomData key="tab" value="updates"/></customData>
+                                        </Link>
+                                    </HBox>
+                                    <VBox items="{path: 'overview>/updates', length: 3}" renderType="Bare" class="gtMiniList">
+                                        <VBox class="gtMiniUpdate" renderType="Bare">
+                                            <Text text="{overview>text}" maxLines="2"/>
+                                            <Text text="{parts: ['overview>author/name', 'overview>createdAt'], formatter: '.formatter.byline'}" class="gtSubtle"/>
+                                        </VBox>
+                                    </VBox>
+                                    <Text text="{i18n>updNoData}" visible="{= ${overview>/updates}.length === 0 }" class="gtSubtle"/>
+                                </VBox>
+                            </VBox>
+                        </HBox>
                     </IconTabFilter>
 
                     <IconTabFilter key="marcos" text="{i18n>tabMilestones}">
@@ -277,8 +402,24 @@
                             </Table>
                         </VBox>
                     </IconTabFilter>
+                    <!-- Módulos: the SAP modules the project covers, set when
+                         the project is created (deep insert). Read only here. -->
                     <IconTabFilter key="modulos" text="{i18n>tabModules}">
-                        <IllustratedMessage illustrationType="sapIllus-SimpleConstruction" title="{i18n>placeholderTitle}" description="{i18n>placeholderDescription}"/>
+                        <VBox class="gtCard gtCardBody" renderType="Bare">
+                            <HBox class="gtCardHeaderPlain" renderType="Bare">
+                                <Title text="{i18n>modTitle}" level="H2" class="gtSectionTitle"/>
+                            </HBox>
+                            <HBox items="{overview>/modules}" class="gtModuleGrid" renderType="Bare">
+                                <HBox class="gtModule" alignItems="Center" renderType="Bare">
+                                    <HBox class="gtKpiIcon gtTintBlue" renderType="Bare"><core:Icon src="sap-icon://puzzle"/></HBox>
+                                    <VBox renderType="Bare">
+                                        <Text text="{overview>module}" class="gtModuleCode"/>
+                                        <Text text="{path: 'overview>module', formatter: '.formatter.moduleName'}" class="gtSubtle"/>
+                                    </VBox>
+                                </HBox>
+                            </HBox>
+                            <Text text="{i18n>modNoData}" visible="{= ${overview>/modules}.length === 0 }" class="gtSubtle"/>
+                        </VBox>
                     </IconTabFilter>
                     <IconTabFilter key="auditorias" text="{i18n>navAudits}">
                         <IllustratedMessage illustrationType="sapIllus-SimpleConstruction" title="{i18n>placeholderTitle}" description="{i18n>placeholderDescription}"/>
@@ -286,8 +427,62 @@
                     <IconTabFilter key="anexos" text="{i18n>navAttachments}">
                         <IllustratedMessage illustrationType="sapIllus-SimpleConstruction" title="{i18n>placeholderTitle}" description="{i18n>placeholderDescription}"/>
                     </IconTabFilter>
+
+                    <!-- Updates (US-27): what happened on the project, newest
+                         first, and a box to post one. Automatic ones (each
+                         status change) are marked. -->
                     <IconTabFilter key="updates" text="{i18n>tabUpdates}">
-                        <IllustratedMessage illustrationType="sapIllus-SimpleConstruction" title="{i18n>placeholderTitle}" description="{i18n>placeholderDescription}"/>
+                        <VBox class="gtCard gtCardBody" renderType="Bare">
+                            <HBox class="gtCardHeaderPlain" renderType="Bare">
+                                <Title text="{i18n>updTitle}" level="H2" class="gtSectionTitle"/>
+                            </HBox>
+                            <HBox class="gtComposer" alignItems="Start" renderType="Bare">
+                                <Avatar displaySize="XS" initials="{path: 'user>/name', formatter: '.formatter.initials'}" class="gtPersonAvatar"/>
+                                <TextArea
+                                    id="updateText"
+                                    value="{overview>/draft}"
+                                    rows="2"
+                                    growing="true"
+                                    growingMaxLines="8"
+                                    width="100%"
+                                    placeholder="{i18n>updPlaceholder}"
+                                    valueLiveUpdate="true"
+                                    class="gtComposerText"/>
+                                <Button
+                                    id="postUpdateButton"
+                                    text="{i18n>updPost}"
+                                    type="Emphasized"
+                                    enabled="{= !!${overview>/draft} &amp;&amp; ${overview>/draft}.trim().length > 0 &amp;&amp; !${overview>/posting} }"
+                                    press=".onPostUpdate"/>
+                            </HBox>
+                            <List
+                                id="updatesList"
+                                class="gtFeed gtUpdates"
+                                showSeparators="Inner"
+                                noDataText="{i18n>updNoData}"
+                                items="{
+                                    path: 'updates',
+                                    parameters: {
+                                        $expand: 'author($select=name)',
+                                        $orderby: 'createdAt desc',
+                                        $$updateGroupId: 'updateEdit'
+                                    }
+                                }">
+                                <CustomListItem>
+                                    <HBox class="gtFeedRow" alignItems="Start" renderType="Bare">
+                                        <Avatar displaySize="XS" initials="{path: 'author/name', formatter: '.formatter.initials'}" class="gtPersonAvatar"/>
+                                        <VBox class="gtFeedText" renderType="Bare">
+                                            <HBox alignItems="Center" renderType="Bare" class="gtUpdateHead">
+                                                <Text text="{author/name}" class="gtFeedTitle gtStrong"/>
+                                                <Text text="{path: 'createdAt', targetType: 'any', formatter: '.formatter.timestampDateTime'}" class="gtSubtle"/>
+                                                <ObjectStatus text="{i18n>updAutomatic}" state="None" inverted="true" visible="{= !!${isAutomatic} }"/>
+                                            </HBox>
+                                            <Text text="{text}" class="gtUpdateText"/>
+                                        </VBox>
+                                    </HBox>
+                                </CustomListItem>
+                            </List>
+                        </VBox>
                     </IconTabFilter>
                 </items>
             </IconTabBar>

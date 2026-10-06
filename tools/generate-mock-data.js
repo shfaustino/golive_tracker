@@ -171,7 +171,37 @@ PROJECT_NAMES.forEach(function (name, i) {
     });
 });
 
+// Status updates, generated last so that adding them left every earlier id
+// as it was: two to four per project, newest first, one in four automatic.
+const UPDATE_TEXTS = [
+    "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "Documentação funcional revista e enviada para validação.",
+    "Ambiente de testes disponível; testes de integração a decorrer.",
+    "Cliente pediu para adiar a formação uma semana.",
+    "Configuração concluída no ambiente de qualidade.",
+    "Riscos revistos: dependência de dados mestre do cliente."
+];
+const updates = [];
+projects.forEach(function (project) {
+    const n = 2 + Math.floor(random() * 3);
+
+    for (let k = 0; k < n; k += 1) {
+        const automatic = random() < 0.25;
+
+        updates.push({
+            ID: uuid("h"),
+            project_ID: project.ID,
+            text: automatic ? "Status changed from NotStarted to " + project.status + "." : pick(UPDATE_TEXTS),
+            milestone_ID: null,
+            isAutomatic: automatic,
+            author_ID: pick(PEOPLE).ID,
+            createdAt: addDays(new Date(project.lastUpdateAt), -k * (3 + Math.floor(random() * 6))).toISOString().replace(".000Z", "Z")
+        });
+    }
+});
+
 const files = {
+    Updates: updates,
     Projects: projects,
     Members: members,
     Milestones: milestones,

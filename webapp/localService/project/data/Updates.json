@@ -1,0 +1,632 @@
+[
+  {
+    "ID": "00000000-0000-4000-8000-00000000h220",
+    "project_ID": "00000000-0000-4000-8000-000000000b1c",
+    "text": "Status changed from NotStarted to InProgress.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000ab",
+    "createdAt": "2026-09-07T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h221",
+    "project_ID": "00000000-0000-4000-8000-000000000b1c",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a5",
+    "createdAt": "2026-08-30T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h222",
+    "project_ID": "00000000-0000-4000-8000-000000000b36",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a2",
+    "createdAt": "2026-08-23T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h223",
+    "project_ID": "00000000-0000-4000-8000-000000000b36",
+    "text": "Status changed from NotStarted to Closing.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000a2",
+    "createdAt": "2026-08-18T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h224",
+    "project_ID": "00000000-0000-4000-8000-000000000b36",
+    "text": "Status changed from NotStarted to Closing.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-000000000a12",
+    "createdAt": "2026-08-17T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h225",
+    "project_ID": "00000000-0000-4000-8000-000000000b4b",
+    "text": "Status changed from NotStarted to NotStarted.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000a6",
+    "createdAt": "2026-09-21T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h226",
+    "project_ID": "00000000-0000-4000-8000-000000000b4b",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a1",
+    "createdAt": "2026-09-15T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h227",
+    "project_ID": "00000000-0000-4000-8000-000000000b4b",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a7",
+    "createdAt": "2026-09-05T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h228",
+    "project_ID": "00000000-0000-4000-8000-000000000b66",
+    "text": "Status changed from NotStarted to InProgress.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000a8",
+    "createdAt": "2026-09-08T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h229",
+    "project_ID": "00000000-0000-4000-8000-000000000b66",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-000000000a11",
+    "createdAt": "2026-08-31T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h22a",
+    "project_ID": "00000000-0000-4000-8000-000000000b66",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a2",
+    "createdAt": "2026-08-25T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h22b",
+    "project_ID": "00000000-0000-4000-8000-000000000b77",
+    "text": "Status changed from NotStarted to InProgress.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000ab",
+    "createdAt": "2026-09-11T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h22c",
+    "project_ID": "00000000-0000-4000-8000-000000000b77",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a5",
+    "createdAt": "2026-09-08T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h22d",
+    "project_ID": "00000000-0000-4000-8000-000000000b77",
+    "text": "Riscos revistos: dependência de dados mestre do cliente.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-000000000a12",
+    "createdAt": "2026-09-03T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h22e",
+    "project_ID": "00000000-0000-4000-8000-000000000b77",
+    "text": "Status changed from NotStarted to InProgress.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000a5",
+    "createdAt": "2026-08-30T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h22f",
+    "project_ID": "00000000-0000-4000-8000-000000000b92",
+    "text": "Status changed from NotStarted to Replanning.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-000000000a10",
+    "createdAt": "2026-08-30T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h230",
+    "project_ID": "00000000-0000-4000-8000-000000000b92",
+    "text": "Status changed from NotStarted to Replanning.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000ae",
+    "createdAt": "2026-08-25T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h231",
+    "project_ID": "00000000-0000-4000-8000-000000000baa",
+    "text": "Status changed from NotStarted to Replanning.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-000000000a13",
+    "createdAt": "2026-09-21T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h232",
+    "project_ID": "00000000-0000-4000-8000-000000000baa",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a7",
+    "createdAt": "2026-09-14T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h233",
+    "project_ID": "00000000-0000-4000-8000-000000000baa",
+    "text": "Status changed from NotStarted to Replanning.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-000000000a11",
+    "createdAt": "2026-09-07T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h234",
+    "project_ID": "00000000-0000-4000-8000-000000000baa",
+    "text": "Ambiente de testes disponível; testes de integração a decorrer.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000af",
+    "createdAt": "2026-09-03T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h235",
+    "project_ID": "00000000-0000-4000-8000-000000000bc0",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a1",
+    "createdAt": "2026-08-24T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h236",
+    "project_ID": "00000000-0000-4000-8000-000000000bc0",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a2",
+    "createdAt": "2026-08-19T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h237",
+    "project_ID": "00000000-0000-4000-8000-000000000bd0",
+    "text": "Cliente pediu para adiar a formação uma semana.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-000000000a10",
+    "createdAt": "2026-09-28T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h238",
+    "project_ID": "00000000-0000-4000-8000-000000000bd0",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000ac",
+    "createdAt": "2026-09-24T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h239",
+    "project_ID": "00000000-0000-4000-8000-000000000beb",
+    "text": "Cliente pediu para adiar a formação uma semana.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a6",
+    "createdAt": "2026-09-03T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h23a",
+    "project_ID": "00000000-0000-4000-8000-000000000beb",
+    "text": "Riscos revistos: dependência de dados mestre do cliente.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000ac",
+    "createdAt": "2026-08-30T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h23b",
+    "project_ID": "00000000-0000-4000-8000-000000000beb",
+    "text": "Cliente pediu para adiar a formação uma semana.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a4",
+    "createdAt": "2026-08-28T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h23c",
+    "project_ID": "00000000-0000-4000-8000-00000000b104",
+    "text": "Status changed from NotStarted to NotStarted.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000a6",
+    "createdAt": "2026-09-04T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h23d",
+    "project_ID": "00000000-0000-4000-8000-00000000b104",
+    "text": "Status changed from NotStarted to NotStarted.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-000000000a12",
+    "createdAt": "2026-08-31T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h23e",
+    "project_ID": "00000000-0000-4000-8000-00000000b104",
+    "text": "Cliente pediu para adiar a formação uma semana.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-000000000a13",
+    "createdAt": "2026-08-21T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h23f",
+    "project_ID": "00000000-0000-4000-8000-00000000b104",
+    "text": "Riscos revistos: dependência de dados mestre do cliente.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a1",
+    "createdAt": "2026-08-26T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h240",
+    "project_ID": "00000000-0000-4000-8000-00000000b11c",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a7",
+    "createdAt": "2026-09-14T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h241",
+    "project_ID": "00000000-0000-4000-8000-00000000b11c",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000ae",
+    "createdAt": "2026-09-08T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h242",
+    "project_ID": "00000000-0000-4000-8000-00000000b135",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000ac",
+    "createdAt": "2026-08-30T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h243",
+    "project_ID": "00000000-0000-4000-8000-00000000b135",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000ab",
+    "createdAt": "2026-08-27T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h244",
+    "project_ID": "00000000-0000-4000-8000-00000000b135",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a4",
+    "createdAt": "2026-08-18T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h245",
+    "project_ID": "00000000-0000-4000-8000-00000000b14c",
+    "text": "Riscos revistos: dependência de dados mestre do cliente.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000aa",
+    "createdAt": "2026-08-29T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h246",
+    "project_ID": "00000000-0000-4000-8000-00000000b14c",
+    "text": "Ambiente de testes disponível; testes de integração a decorrer.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-000000000a10",
+    "createdAt": "2026-08-21T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h247",
+    "project_ID": "00000000-0000-4000-8000-00000000b161",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a7",
+    "createdAt": "2026-09-27T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h248",
+    "project_ID": "00000000-0000-4000-8000-00000000b161",
+    "text": "Status changed from NotStarted to Closing.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000af",
+    "createdAt": "2026-09-24T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h249",
+    "project_ID": "00000000-0000-4000-8000-00000000b161",
+    "text": "Cliente pediu para adiar a formação uma semana.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000ab",
+    "createdAt": "2026-09-17T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h24a",
+    "project_ID": "00000000-0000-4000-8000-00000000b170",
+    "text": "Status changed from NotStarted to InProgress.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000af",
+    "createdAt": "2026-08-27T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h24b",
+    "project_ID": "00000000-0000-4000-8000-00000000b170",
+    "text": "Status changed from NotStarted to InProgress.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000a6",
+    "createdAt": "2026-08-22T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h24c",
+    "project_ID": "00000000-0000-4000-8000-00000000b170",
+    "text": "Ambiente de testes disponível; testes de integração a decorrer.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a8",
+    "createdAt": "2026-08-15T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h24d",
+    "project_ID": "00000000-0000-4000-8000-00000000b170",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-000000000a12",
+    "createdAt": "2026-08-09T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h24e",
+    "project_ID": "00000000-0000-4000-8000-00000000b183",
+    "text": "Status changed from NotStarted to Cancelled.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-000000000a11",
+    "createdAt": "2026-08-30T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h24f",
+    "project_ID": "00000000-0000-4000-8000-00000000b183",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a3",
+    "createdAt": "2026-08-25T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h250",
+    "project_ID": "00000000-0000-4000-8000-00000000b183",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a1",
+    "createdAt": "2026-08-22T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h251",
+    "project_ID": "00000000-0000-4000-8000-00000000b198",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-000000000a10",
+    "createdAt": "2026-09-16T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h252",
+    "project_ID": "00000000-0000-4000-8000-00000000b198",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a9",
+    "createdAt": "2026-09-09T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h253",
+    "project_ID": "00000000-0000-4000-8000-00000000b198",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a6",
+    "createdAt": "2026-08-31T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h254",
+    "project_ID": "00000000-0000-4000-8000-00000000b1b1",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000ab",
+    "createdAt": "2026-09-09T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h255",
+    "project_ID": "00000000-0000-4000-8000-00000000b1b1",
+    "text": "Cliente pediu para adiar a formação uma semana.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a3",
+    "createdAt": "2026-09-05T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h256",
+    "project_ID": "00000000-0000-4000-8000-00000000b1c8",
+    "text": "Status changed from NotStarted to InProgress.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000a9",
+    "createdAt": "2026-08-31T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h257",
+    "project_ID": "00000000-0000-4000-8000-00000000b1c8",
+    "text": "Status changed from NotStarted to InProgress.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000ae",
+    "createdAt": "2026-08-28T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h258",
+    "project_ID": "00000000-0000-4000-8000-00000000b1c8",
+    "text": "Status changed from NotStarted to InProgress.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000aa",
+    "createdAt": "2026-08-19T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h259",
+    "project_ID": "00000000-0000-4000-8000-00000000b1c8",
+    "text": "Status changed from NotStarted to InProgress.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-000000000a12",
+    "createdAt": "2026-08-16T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h25a",
+    "project_ID": "00000000-0000-4000-8000-00000000b1d6",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a6",
+    "createdAt": "2026-10-02T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h25b",
+    "project_ID": "00000000-0000-4000-8000-00000000b1d6",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a7",
+    "createdAt": "2026-09-24T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h25c",
+    "project_ID": "00000000-0000-4000-8000-00000000b1d6",
+    "text": "Status changed from NotStarted to NotStarted.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000a4",
+    "createdAt": "2026-09-18T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h25d",
+    "project_ID": "00000000-0000-4000-8000-00000000b1d6",
+    "text": "Status changed from NotStarted to NotStarted.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000a7",
+    "createdAt": "2026-09-20T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h25e",
+    "project_ID": "00000000-0000-4000-8000-00000000b1f3",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a2",
+    "createdAt": "2026-09-11T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h25f",
+    "project_ID": "00000000-0000-4000-8000-00000000b1f3",
+    "text": "Riscos revistos: dependência de dados mestre do cliente.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a4",
+    "createdAt": "2026-09-06T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h260",
+    "project_ID": "00000000-0000-4000-8000-00000000b1f3",
+    "text": "Riscos revistos: dependência de dados mestre do cliente.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000ad",
+    "createdAt": "2026-08-26T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h261",
+    "project_ID": "00000000-0000-4000-8000-00000000b1ff",
+    "text": "Status changed from NotStarted to OnHold.",
+    "milestone_ID": null,
+    "isAutomatic": true,
+    "author_ID": "00000000-0000-4000-8000-0000000000a2",
+    "createdAt": "2026-08-25T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h262",
+    "project_ID": "00000000-0000-4000-8000-00000000b1ff",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a3",
+    "createdAt": "2026-08-19T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h263",
+    "project_ID": "00000000-0000-4000-8000-00000000b1ff",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000ad",
+    "createdAt": "2026-08-17T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h264",
+    "project_ID": "00000000-0000-4000-8000-00000000b205",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a3",
+    "createdAt": "2026-09-30T00:00:00Z"
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000h265",
+    "project_ID": "00000000-0000-4000-8000-00000000b205",
+    "text": "Ambiente de testes disponível; testes de integração a decorrer.",
+    "milestone_ID": null,
+    "isAutomatic": false,
+    "author_ID": "00000000-0000-4000-8000-0000000000a6",
+    "createdAt": "2026-09-22T00:00:00Z"
+  }
+]
