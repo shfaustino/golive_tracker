@@ -48,7 +48,7 @@ approuter that signs the user in through XSUAA and forwards the token.
 - [x] Shell (side navigation, top bar, signed-in person)
 - [x] 03 Projetos — list, search, filters
 - [ ] 02 Dashboard — KPIs and lists done; charts to do
-- [ ] 04 Projeto — marcos
+- [x] 04 Projeto — header, tabs, marcos (KPIs, table, edit dialog); "Novo marco" to do
 - [ ] 05 Projeto — equipa
 - [ ] 06 Novo projeto
 - [ ] 07 O meu trabalho

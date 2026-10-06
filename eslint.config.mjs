@@ -16,5 +16,14 @@ export default [
         // promises back from its own APIs (OData V4 model, Fragment.load).
         files: ['webapp/**/*.js'],
         languageOptions: { globals: { Promise: 'readonly' } }
+    },
+    {
+        // Unit tests run in Node, not in the browser.
+        files: ['test/**/*.js'],
+        languageOptions: {
+            ecmaVersion: 2022,
+            sourceType: 'commonjs',
+            globals: { module: 'writable', require: 'readonly', __dirname: 'readonly' }
+        }
     }
 ];

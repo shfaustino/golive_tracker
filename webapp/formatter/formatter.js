@@ -19,6 +19,34 @@ sap.ui.define([
         Cancelled: { text: "statusCancelled", state: ValueState.Error }
     };
 
+    /**
+     * How each milestone status looks (docs/mockups/04-projeto-marcos.png).
+     */
+    var MILESTONE_STATUS = {
+        Planned: { text: "msStatusPlanned", state: ValueState.None },
+        InProgress: { text: "msStatusInProgress", state: ValueState.Information },
+        Completed: { text: "msStatusCompleted", state: ValueState.Success },
+        Postponed: { text: "msStatusPostponed", state: ValueState.Warning },
+        NotApplicable: { text: "msStatusNotApplicable", state: ValueState.None },
+        Cancelled: { text: "msStatusCancelled", state: ValueState.Error }
+    };
+
+    /**
+     * The i18n key of each milestone type's label. The API's values carry
+     * spaces and dashes ("Go-live", "Report delivery"), so they cannot be
+     * i18n keys themselves.
+     */
+    var MILESTONE_TYPE = {
+        "KO": "msTypeKO",
+        "PTO": "msTypePTO",
+        "GOP": "msTypeGOP",
+        "Training": "msTypeTraining",
+        "Testing": "msTypeTesting",
+        "Go-live": "msTypeGoLive",
+        "Report delivery": "msTypeReportDelivery",
+        "Closure": "msTypeClosure"
+    };
+
     return {
 
         /**
@@ -40,6 +68,52 @@ sap.ui.define([
          */
         projectStatusState: function (sStatus) {
             return PROJECT_STATUS[sStatus] ? PROJECT_STATUS[sStatus].state : ValueState.None;
+        },
+
+        /**
+         * The label of a milestone status.
+         * @param {string} sStatus the API's value, e.g. "Completed"
+         * @returns {string} the label, or the raw value when unknown
+         */
+        milestoneStatusText: function (sStatus) {
+            var oEntry = MILESTONE_STATUS[sStatus];
+
+            return oEntry ? this.getResourceBundle().getText(oEntry.text) : (sStatus || "");
+        },
+
+        /**
+         * The chip colour of a milestone status; an overdue milestone is red
+         * whatever its status (isOverdue, BR-07).
+         * @param {string} sStatus the API's value
+         * @param {boolean} [bOverdue] the milestone's isOverdue
+         * @returns {sap.ui.core.ValueState} the state
+         */
+        milestoneStatusState: function (sStatus, bOverdue) {
+            if (bOverdue) {
+                return ValueState.Error;
+            }
+            return MILESTONE_STATUS[sStatus] ? MILESTONE_STATUS[sStatus].state : ValueState.None;
+        },
+
+        /**
+         * The label of a milestone type ("KO" -> "Kick-off").
+         * @param {string} sType the API's milestoneType
+         * @returns {string} the label, or the raw value when unknown
+         */
+        milestoneTypeText: function (sType) {
+            return MILESTONE_TYPE[sType] ? this.getResourceBundle().getText(MILESTONE_TYPE[sType]) : (sType || "");
+        },
+
+        /**
+         * An Edm.Date as the app shows dates, or a dash for none ("—" in the
+         * mockup's empty "Data real").
+         * @param {string} sDate YYYY-MM-DD, as the API sends it
+         * @returns {string} DD/MM/YYYY, or "—"
+         */
+        dateOrDash: function (sDate) {
+            var aParts = /^(\d{4})-(\d{2})-(\d{2})$/.exec(sDate || "");
+
+            return aParts ? aParts[3] + "/" + aParts[2] + "/" + aParts[1] : "—";
         },
 
         /**

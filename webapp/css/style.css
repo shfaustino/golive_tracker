@@ -124,3 +124,34 @@
         padding: 1rem;
     }
 }
+
+/* Project detail (docs/mockups/04-projeto-marcos.png) */
+.gtApp .gtProjectName {
+    font-size: 1.25rem;
+    margin-top: 0.25rem;
+}
+
+.gtApp .gtProjectStatus .sapMObjStatusText {
+    font-size: 1rem;
+}
+
+.gtApp .gtProjectFacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 3rem;
+    margin-bottom: 1rem;
+}
+
+.gtApp .gtProjectTabs .sapMITBContent {
+    padding: 1rem 0 0;
+}
+
+.gtApp .gtOwners {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.gtApp .gtSubtle {
+    font-size: 0.75rem;
+    color: var(--sapContent_LabelColor);
+}
