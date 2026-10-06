@@ -51,6 +51,24 @@ sap.ui.define([], function () {
         },
 
         /**
+         * A member's modules as the API takes them ({module}[]), when the
+         * dialog's differ from those read; the API replaces the whole list.
+         * @param {{module: string}[]} aBefore the member's modules as read
+         * @param {string[]} aAfter the modules chosen
+         * @returns {{module: string}[]|null} the new list, or null when unchanged
+         */
+        modulesChange: function (aBefore, aAfter) {
+            var sBefore = (aBefore || []).map(function (oModule) {
+                    return oModule.module;
+                }).sort().join(),
+                aSorted = (aAfter || []).slice().sort();
+
+            return sBefore === aSorted.join() ? null : aSorted.map(function (sModule) {
+                return { module: sModule };
+            });
+        },
+
+        /**
          * Checks a membership before it is sent, so the user sees the problem
          * next to the field rather than as a refusal from the API.
          * @param {{mode: string, person_ID: string, role: string, startDate: string, endDate: string}} oValues

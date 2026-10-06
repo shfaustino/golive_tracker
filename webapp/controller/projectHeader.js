@@ -180,7 +180,7 @@ sap.ui.define([
 
             Promise.all([
                 read("milestones", { $orderby: "sortOrder" }),
-                read("members", { $expand: "person($select=name)", $orderby: "startDate" }),
+                read("members", { $expand: "person($select=name),modules", $orderby: "startDate" }),
                 read("modules", { $select: "module" }),
                 read("updates", { $expand: "author($select=name)", $orderby: "postedAt desc" }, 3)
             ]).then(function (aResults) {

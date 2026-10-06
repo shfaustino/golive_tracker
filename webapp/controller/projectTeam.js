@@ -10,17 +10,16 @@ sap.ui.define([
 ], function (Fragment, Sorter, ActionSheet, Button, MessageBox, MessageToast, memberRules, formatter) {
     "use strict";
 
-    /** The batch group team changes are sent in (membersTable's $$updateGroupId). */
-    var TEAM_GROUP = "memberEdit";
-
     /**
      * The Equipa tab of a project (docs/mockups/05-projeto-equipa.png),
      * US-10, US-11, BR-03. Mixed into ProjectDetail.controller.js, so `this`
      * is that controller: these are its handlers for the tab, kept apart
      * only to keep the file readable.
      *
-     * - Adicionar membro: POST .../members (any role but PM).
-     * - Editar: PATCH .../members(<id>) with what changed.
+     * - Adicionar membro: POST .../members (any role but PM), with the
+     *   modules the member works on (none = the whole project).
+     * - Editar: PATCH .../members(<id>) with what changed; the modules go
+     *   as the whole new list.
      * - Terminar hoje: PATCH endDate = today, which keeps the history.
      * - Remover: DELETE .../members(<id>).
      * - Passar testemunho (on the active PM): ProjectService.handOverPM, which
@@ -32,7 +31,7 @@ sap.ui.define([
             this._openMemberDialog({
                 mode: "add",
                 title: this.getResourceBundle().getText("teamAddTitle"),
-                values: { person_ID: null, role: null, startDate: memberRules.today(), endDate: null }
+                values: { person_ID: null, role: null, modules: [], startDate: memberRules.today(), endDate: null }
             });
         },
 
@@ -125,7 +124,14 @@ sap.ui.define([
                 mode: "edit",
                 title: this.getResourceBundle().getText("teamEditTitle"),
                 personName: oMember.person && oMember.person.name,
-                values: { role: oMember.role, startDate: oMember.startDate, endDate: oMember.endDate || null }
+                values: {
+                    role: oMember.role,
+                    modules: (oMember.modules || []).map(function (oModule) {
+                        return oModule.module;
+                    }),
+                    startDate: oMember.startDate,
+                    endDate: oMember.endDate || null
+                }
             });
         },
 
@@ -201,19 +207,27 @@ sap.ui.define([
         },
 
         /**
-         * POST .../members.
+         * POST .../members, with the member's modules in it (a deep insert).
          * @param {object} oValues the dialog's values
          * @returns {Promise<boolean>} whether the API took it
          * @private
          */
         _sendNewMember: function (oValues) {
-            this.byId("membersTable").getBinding("items").create({
+            return this.writeUnderParent("POST", "/Projects(" + this._sProjectId + ")/members", {
                 person_ID: oValues.person_ID,
                 role: oValues.role,
                 startDate: oValues.startDate,
-                endDate: oValues.endDate || null
-            }, true);
-            return this._submitTeam(this.getResourceBundle().getText("teamSaved"));
+                endDate: oValues.endDate || null,
+                modules: (oValues.modules || []).map(function (sModule) {
+                    return { module: sModule };
+                })
+            }).then(function (bDone) {
+                if (bDone) {
+                    MessageToast.show(this.getResourceBundle().getText("teamSaved"));
+                    this._afterTeamChange();
+                }
+                return bDone;
+            }.bind(this));
         },
 
         /**
@@ -225,13 +239,17 @@ sap.ui.define([
          */
         _sendMemberChanges: function (oValues, bAll) {
             var oBefore = this._oMemberContext.getObject(),
-                oChanges = {};
+                oChanges = {},
+                aModules = "modules" in oValues ? memberRules.modulesChange(oBefore.modules, oValues.modules) : null;
 
             ["role", "startDate", "endDate"].filter(function (sField) {
                 return sField in oValues && (bAll || (oValues[sField] || null) !== (oBefore[sField] || null));
             }).forEach(function (sField) {
                 oChanges[sField] = oValues[sField] || null;
             });
+            if (aModules) {
+                oChanges.modules = aModules;
+            }
             if (!Object.keys(oChanges).length) {
                 return Promise.resolve(true);
             }
@@ -274,30 +292,9 @@ sap.ui.define([
         },
 
         /**
-         * Sends the team group and tells whether it all went through. A
-         * refusal is taken back whole, so the table shows what the API holds.
-         * @param {string} sDoneText the toast on success
-         * @returns {Promise<boolean>} whether the API took it
-         * @private
-         */
-        _submitTeam: function (sDoneText) {
-            var oModel = this.getOwnerComponent().getModel();
-
-            return oModel.submitBatch(TEAM_GROUP).then(function () {
-                if (oModel.hasPendingChanges(TEAM_GROUP)) {
-                    oModel.resetChanges(TEAM_GROUP);
-                    return false;
-                }
-                MessageToast.show(sDoneText);
-                // "Ativo"/"Inativo" and the PM in the header may have moved.
-                this._refreshProject();
-                return true;
-            }.bind(this));
-        },
-
-        /**
          * Opens the team dialog with the given state, after making sure the
-         * people to choose from are there.
+         * people to choose from are there. The modules offered are the
+         * project's own (the API takes no other).
          * @param {object} oState mode, title and values
          * @private
          */
@@ -310,7 +307,10 @@ sap.ui.define([
                 people: oMemberModel.getProperty("/people") || [],
                 roles: memberRules.assignableRoles(oState.values.role).map(function (sRole) {
                     return { key: sRole, text: formatter.roleText.call(this, sRole) };
-                }, this)
+                }, this),
+                modules: (this.getModel("overview").getProperty("/modules") || []).map(function (oModule) {
+                    return { key: oModule.module, name: formatter.moduleName(oModule.module) };
+                })
             }, oState));
             this._loadPeople();
             this._getMemberDialog().then(function (oDialog) {

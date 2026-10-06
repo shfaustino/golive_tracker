@@ -41,3 +41,10 @@ test("validate a handover needs only the new PM and the start", () => {
 test("today is YYYY-MM-DD", () => {
     assert.equal(memberRules.today(NOW), "2026-10-06");
 });
+
+test("modulesChange gives the new list only when it differs", () => {
+    assert.equal(memberRules.modulesChange([{ module: "EC" }, { module: "LMS" }], ["LMS", "EC"]), null);
+    assert.deepEqual(memberRules.modulesChange([{ module: "EC" }], ["EC", "ECP"]), [{ module: "EC" }, { module: "ECP" }]);
+    assert.deepEqual(memberRules.modulesChange([{ module: "EC" }], []), []);
+    assert.equal(memberRules.modulesChange(undefined, []), null);
+});

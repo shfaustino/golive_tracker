@@ -49,6 +49,20 @@
                 <core:Item key="{member>key}" text="{member>text}"/>
             </gt:SearchSelect>
 
+            <!-- none: the member works on the whole project -->
+            <Label text="{i18n>teamColModules}" labelFor="memberModules" visible="{= ${member>/mode} !== 'handover' }"/>
+            <MultiComboBox
+                id="memberModules"
+                width="100%"
+                visible="{= ${member>/mode} !== 'handover' }"
+                selectedKeys="{member>/values/modules}"
+                placeholder="{i18n>msWholeProject}"
+                showClearIcon="true"
+                showSecondaryValues="true"
+                items="{path: 'member>/modules', templateShareable: false}">
+                <core:ListItem key="{member>key}" text="{member>key}" additionalText="{member>name}"/>
+            </MultiComboBox>
+
             <Label text="{i18n>teamColFrom}" labelFor="memberStart" required="true"/>
             <DatePicker
                 id="memberStart"

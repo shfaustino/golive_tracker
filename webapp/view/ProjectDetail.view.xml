@@ -365,15 +365,15 @@
                                 items="{
                                     path: 'members',
                                     parameters: {
-                                        $expand: 'person($select=name,profile)',
-                                        $orderby: 'startDate',
-                                        $$updateGroupId: 'memberEdit'
+                                        $expand: 'person($select=name,profile),modules',
+                                        $orderby: 'startDate'
                                     }
                                 }">
                                 <columns>
                                     <Column><Text text="{i18n>teamColPerson}"/></Column>
                                     <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>teamColProfile}"/></Column>
                                     <Column><Text text="{i18n>teamColRole}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>teamColModules}"/></Column>
                                     <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>teamColFrom}"/></Column>
                                     <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>teamColTo}"/></Column>
                                     <Column><Text text="{i18n>colStatus}"/></Column>
@@ -393,6 +393,10 @@
                                             </HBox>
                                             <Text text="{path: 'person/profile', formatter: '.formatter.profileText'}"/>
                                             <Text text="{path: 'role', formatter: '.formatter.roleText'}"/>
+                                            <!-- none: the whole project -->
+                                            <HBox items="{path: 'modules', templateShareable: false}" renderType="Bare" class="gtInlineChips gtChipsWrap">
+                                                <ObjectStatus text="{module}" state="Information" inverted="true" class="gtMiniChip"/>
+                                            </HBox>
                                             <Text text="{path: 'startDate', targetType: 'any', formatter: '.formatter.dateOrDash'}"/>
                                             <Text text="{path: 'endDate', targetType: 'any', formatter: '.formatter.dateOrDash'}"/>
                                             <ObjectStatus
