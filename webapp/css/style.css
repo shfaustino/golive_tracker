@@ -1672,6 +1672,111 @@
     color: var(--gtMuted);
 }
 
+/* ------------------------------------------------------------------ */
+/* Dialogs: they open outside the shell (UI5's static area), so each   */
+/* carries "gtApp gtDialog" to take the app's look                     */
+/* ------------------------------------------------------------------ */
+
+.gtApp.gtDialog {
+    background: #ffffff;
+    border-radius: var(--gtRadius);
+    overflow: hidden;
+}
+
+.gtApp.gtDialog .sapMDialogTitleGroup,
+.gtApp.gtDialog .sapMIBar.sapMHeader-CTX {
+    padding: 0 0.5rem;
+}
+
+.gtApp.gtDialog .sapMDialogTitleGroup .sapMTitle,
+.gtApp.gtDialog .sapMIBar.sapMHeader-CTX .sapMTitle {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--gtInk);
+}
+
+.gtApp.gtDialog .sapMDialogFooter .sapMIBar {
+    padding: 0 0.5rem;
+}
+
+.gtDialogBody {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.gtFieldRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Choice cards (a person's profile): a list in SingleSelectLeft mode,
+   each item a bordered card, the chosen one outlined in blue */
+.gtApp .gtChoiceList.sapMList,
+.gtApp .gtChoiceList .sapMListUl {
+    background: transparent;
+}
+
+.gtApp .gtChoiceList .sapMListUl {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.gtApp .gtChoiceList .sapMLIB {
+    border: 1px solid var(--gtLine);
+    border-radius: 0.75rem;
+    background: #ffffff;
+    padding: 0.25rem 1rem 0.25rem 0.5rem;
+    height: auto;
+}
+
+.gtApp .gtChoiceList .sapMLIB.sapMLIBSelected {
+    border-color: var(--gtBlue);
+    background: var(--gtBlueSoft);
+    box-shadow: 0 0 0 1px var(--gtBlue);
+}
+
+.gtApp .gtChoiceList .sapMLIBSelected .gtKpiIcon {
+    background: #ffffff;
+}
+
+.gtApp .gtChoiceList .sapMLIBFocusable:focus {
+    outline-offset: -2px;
+}
+
+.gtChoice {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.625rem 0;
+}
+
+.gtChoice .gtKpiIcon {
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
+.gtApp .gtChoiceTitle,
+.gtApp .gtChoiceTitle.sapMLabel {
+    font-weight: 600;
+    color: var(--gtInk);
+}
+
+/* Ativo: a row with what it means, and the switch at its end */
+.gtToggleRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--gtLine);
+    border-radius: 0.75rem;
+    background: #f9fafc;
+}
+
 .gtApp .gtTableNote {
     display: block;
     padding: 0 1.5rem 1.25rem;

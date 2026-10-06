@@ -1,59 +1,108 @@
 <core:FragmentDefinition
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
-    xmlns:f="sap.ui.layout.form">
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 
     <!-- Nova pessoa / Editar pessoa, Novo cliente / Editar cliente, in the
-         "record" model (Admin.controller.js), kind "person" or "client". -->
+         "record" model (Admin.controller.js), kind "person" or "client".
+         The profile is one of three cards, each saying what it lets one do
+         (onProfileSelect in adminActions.js); Ativo is a row with a switch. -->
     <Dialog
         id="recordDialog"
         title="{record>/title}"
-        contentWidth="30rem"
-        class="sapUiContentPadding">
-        <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
-            <Label text="{i18n>admName}" labelFor="recName" required="true"/>
-            <Input
-                id="recName"
-                value="{record>/values/name}"
-                maxLength="200"
-                valueState="{= ${record>/errors/name} ? 'Error' : 'None' }"
-                valueStateText="{record>/errors/name}"/>
+        contentWidth="34rem"
+        class="gtApp gtDialog">
+        <VBox class="gtDialogBody" renderType="Bare">
 
-            <Label text="{i18n>admEmail}" labelFor="recEmail" required="true" visible="{= ${record>/kind} === 'person' }"/>
-            <Input
-                id="recEmail"
-                type="Email"
-                visible="{= ${record>/kind} === 'person' }"
-                value="{record>/values/email}"
-                maxLength="200"
-                valueState="{= ${record>/errors/email} ? 'Error' : 'None' }"
-                valueStateText="{record>/errors/email}"/>
+            <VBox class="gtField" renderType="Bare">
+                <Label text="{i18n>admName}" labelFor="recName" required="true"/>
+                <Input
+                    id="recName"
+                    value="{record>/values/name}"
+                    maxLength="200"
+                    placeholder="{= ${record>/kind} === 'person' ? ${i18n>admNamePlaceholder} : ${i18n>admClientNamePlaceholder} }"
+                    valueState="{= ${record>/errors/name} ? 'Error' : 'None' }"
+                    valueStateText="{record>/errors/name}"/>
+            </VBox>
 
-            <Label text="{i18n>teamColProfile}" labelFor="recProfile" required="true" visible="{= ${record>/kind} === 'person' }"/>
-            <SegmentedButton id="recProfile" visible="{= ${record>/kind} === 'person' }" selectedKey="{record>/values/profile}" width="100%">
-                <items>
-                    <SegmentedButtonItem key="User" text="{i18n>profileUser}"/>
-                    <SegmentedButtonItem key="Architect" text="{i18n>profileArchitect}"/>
-                    <SegmentedButtonItem key="Administrator" text="{i18n>profileAdministrator}"/>
-                </items>
-            </SegmentedButton>
-            <Text text="{i18n>admProfileHint}" visible="{= ${record>/kind} === 'person' }" class="gtHint"/>
+            <VBox class="gtField" renderType="Bare" visible="{= ${record>/kind} === 'person' }">
+                <Label text="{i18n>admEmail}" labelFor="recEmail" required="true"/>
+                <Input
+                    id="recEmail"
+                    type="Email"
+                    value="{record>/values/email}"
+                    maxLength="200"
+                    placeholder="{i18n>admEmailPlaceholder}"
+                    valueState="{= ${record>/errors/email} ? 'Error' : 'None' }"
+                    valueStateText="{record>/errors/email}"/>
+            </VBox>
 
-            <Label text="{i18n>admTaxId}" labelFor="recTaxId" visible="{= ${record>/kind} === 'client' }"/>
-            <Input
-                id="recTaxId"
-                visible="{= ${record>/kind} === 'client' }"
-                value="{record>/values/taxId}"
-                maxLength="9"
-                valueState="{= ${record>/errors/taxId} ? 'Error' : 'None' }"
-                valueStateText="{record>/errors/taxId}"/>
+            <HBox class="gtFieldRow" renderType="Bare" visible="{= ${record>/kind} === 'client' }">
+                <VBox class="gtField" renderType="Bare">
+                    <Label text="{i18n>admTaxId}" labelFor="recTaxId"/>
+                    <Input
+                        id="recTaxId"
+                        value="{record>/values/taxId}"
+                        maxLength="9"
+                        placeholder="{i18n>admTaxIdPlaceholder}"
+                        valueState="{= ${record>/errors/taxId} ? 'Error' : 'None' }"
+                        valueStateText="{record>/errors/taxId}"/>
+                </VBox>
+                <VBox class="gtField" renderType="Bare">
+                    <Label text="{i18n>admErpCode}" labelFor="recErp"/>
+                    <Input id="recErp" value="{record>/values/erpCode}" maxLength="50" placeholder="{i18n>admErpPlaceholder}"/>
+                </VBox>
+            </HBox>
 
-            <Label text="{i18n>admErpCode}" labelFor="recErp" visible="{= ${record>/kind} === 'client' }"/>
-            <Input id="recErp" visible="{= ${record>/kind} === 'client' }" value="{record>/values/erpCode}" maxLength="50"/>
+            <VBox class="gtField" renderType="Bare" visible="{= ${record>/kind} === 'person' }">
+                <Label text="{i18n>teamColProfile}" labelFor="recProfile" required="true"/>
+                <List
+                    id="recProfile"
+                    mode="SingleSelectLeft"
+                    includeItemInSelection="true"
+                    showSeparators="None"
+                    selectionChange=".onProfileSelect"
+                    class="gtChoiceList">
+                    <CustomListItem app:profile="User" selected="{= ${record>/values/profile} === 'User' }">
+                        <HBox class="gtChoice" alignItems="Center" renderType="Bare">
+                            <HBox class="gtKpiIcon gtTintBlue" renderType="Bare"><core:Icon src="sap-icon://employee"/></HBox>
+                            <VBox renderType="Bare">
+                                <Text text="{i18n>profileUser}" class="gtChoiceTitle"/>
+                                <Text text="{i18n>profileUserDesc}" class="gtSubtle"/>
+                            </VBox>
+                        </HBox>
+                    </CustomListItem>
+                    <CustomListItem app:profile="Architect" selected="{= ${record>/values/profile} === 'Architect' }">
+                        <HBox class="gtChoice" alignItems="Center" renderType="Bare">
+                            <HBox class="gtKpiIcon gtTintGreen" renderType="Bare"><core:Icon src="sap-icon://show"/></HBox>
+                            <VBox renderType="Bare">
+                                <Text text="{i18n>profileArchitect}" class="gtChoiceTitle"/>
+                                <Text text="{i18n>profileArchitectDesc}" class="gtSubtle"/>
+                            </VBox>
+                        </HBox>
+                    </CustomListItem>
+                    <CustomListItem app:profile="Administrator" selected="{= ${record>/values/profile} === 'Administrator' }">
+                        <HBox class="gtChoice" alignItems="Center" renderType="Bare">
+                            <HBox class="gtKpiIcon gtTintOrange" renderType="Bare"><core:Icon src="sap-icon://shield"/></HBox>
+                            <VBox renderType="Bare">
+                                <Text text="{i18n>profileAdministrator}" class="gtChoiceTitle"/>
+                                <Text text="{i18n>profileAdministratorDesc}" class="gtSubtle"/>
+                            </VBox>
+                        </HBox>
+                    </CustomListItem>
+                </List>
+            </VBox>
 
-            <Label text="{i18n>teamActive}" labelFor="recActive"/>
-            <Switch id="recActive" state="{record>/values/active}" customTextOn=" " customTextOff=" "/>
-        </f:SimpleForm>
+            <HBox class="gtToggleRow" alignItems="Center" justifyContent="SpaceBetween" renderType="Bare">
+                <VBox renderType="Bare">
+                    <Label text="{i18n>teamActive}" labelFor="recActive" class="gtChoiceTitle"/>
+                    <Text
+                        text="{= ${record>/kind} === 'person' ? ${i18n>admActiveHintPerson} : ${i18n>admActiveHintClient} }"
+                        class="gtSubtle"/>
+                </VBox>
+                <Switch id="recActive" state="{record>/values/active}" customTextOn=" " customTextOff=" "/>
+            </HBox>
+        </VBox>
         <beginButton>
             <Button text="{i18n>save}" type="Emphasized" press=".onSaveRecord" enabled="{= !${record>/busy} }"/>
         </beginButton>

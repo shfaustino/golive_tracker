@@ -36,6 +36,8 @@ sap.ui.define([
 
         init: function () {
             ComboBox.prototype.init.apply(this, arguments);
+            // the whole of its form field, as a Select took; a width in the XML still wins
+            this.setWidth("100%");
             // a ListItem's additionalText (a project's name, a person's email) shows in the list
             this.setShowSecondaryValues(true);
             this.setFilterFunction(contains);

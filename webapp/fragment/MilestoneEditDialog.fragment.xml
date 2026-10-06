@@ -15,7 +15,7 @@
         id="milestoneEditDialog"
         title="{msEdit>/title}"
         contentWidth="32rem"
-        class="sapUiContentPadding">
+        class="gtApp gtDialog sapUiContentPadding">
         <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
             <Label text="{i18n>colMilestone}" labelFor="msType" visible="{= ${msEdit>/mode} === 'create' }"/>
             <gt:SearchSelect id="msType" selectedKey="{msEdit>/values/milestoneType}" visible="{= ${msEdit>/mode} === 'create' }">

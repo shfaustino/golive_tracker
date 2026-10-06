@@ -16,7 +16,7 @@
         id="memberDialog"
         title="{member>/title}"
         contentWidth="30rem"
-        class="sapUiContentPadding">
+        class="gtApp gtDialog sapUiContentPadding">
         <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
             <Text text="{member>/handoverNote}" visible="{= ${member>/mode} === 'handover' }" class="gtSubtle"/>
 

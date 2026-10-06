@@ -11,7 +11,7 @@
         id="followUpDialog"
         title="{followUp>/title}"
         contentWidth="30rem"
-        class="sapUiContentPadding">
+        class="gtApp gtDialog sapUiContentPadding">
         <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
             <Label text="{i18n>fuName}" labelFor="fuName" required="true"/>
             <Input

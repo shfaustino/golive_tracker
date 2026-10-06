@@ -16,7 +16,7 @@
         id="projectActionDialog"
         title="{action>/title}"
         contentWidth="30rem"
-        class="sapUiContentPadding">
+        class="gtApp gtDialog sapUiContentPadding">
         <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
             <Text text="{action>/intro}" class="gtSubtle"/>
 

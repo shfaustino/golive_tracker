@@ -12,7 +12,7 @@
         id="auditDialog"
         title="{audit>/title}"
         contentWidth="34rem"
-        class="sapUiContentPadding">
+        class="gtApp gtDialog sapUiContentPadding">
         <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
             <Label text="{i18n>mwColProject}" labelFor="auditProject" required="true"/>
             <gt:SearchSelect

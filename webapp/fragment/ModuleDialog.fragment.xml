@@ -10,7 +10,7 @@
         id="moduleDialog"
         title="{i18n>modAddTitle}"
         contentWidth="26rem"
-        class="sapUiContentPadding">
+        class="gtApp gtDialog sapUiContentPadding">
         <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
             <Label text="{i18n>modModule}" labelFor="moduleChoice" required="true"/>
             <gt:SearchSelect

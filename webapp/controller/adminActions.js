@@ -97,6 +97,15 @@ sap.ui.define([
             }.bind(this));
         },
 
+        /**
+         * A profile card chosen in Nova pessoa / Editar pessoa.
+         * @param {sap.ui.base.Event} oEvent selectionChange of the cards' list
+         * @public
+         */
+        onProfileSelect: function (oEvent) {
+            this.getModel("record").setProperty("/values/profile", oEvent.getParameter("listItem").data("profile"));
+        },
+
         onCancelRecord: function () {
             this._getRecordDialog().then(function (oDialog) {
                 oDialog.close();
