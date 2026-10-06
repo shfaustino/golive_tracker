@@ -1,7 +1,0 @@
-{
-  "xsappname": "golive-tracker",
-  "tenant-mode": "dedicated",
-  "description": "GoLive Tracker - SAP login for the app; the API's own token comes from the destination's token exchange",
-  "scopes": [],
-  "role-templates": []
-}
