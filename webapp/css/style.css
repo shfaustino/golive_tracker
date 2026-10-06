@@ -433,10 +433,17 @@
 }
 
 /* Anexos: a long link is cut with an ellipsis (the whole of it in the tooltip) */
+/* an audit's code ("2_Testing_26092026") may break where it must */
+.gtApp .gtBreakCode {
+    display: block;
+    max-width: 10.5rem;
+    overflow-wrap: anywhere;
+}
+
 .gtApp .gtUrl,
 .gtApp .gtEllipsis {
     display: block;
-    max-width: 14rem;
+    max-width: 12rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -500,7 +507,7 @@
 
 .gtApp .gtTable .sapMListTblHeaderCell {
     height: 3.25rem;
-    padding: 0 1rem;
+    padding: 0 0.75rem;
     font-weight: 600;
     color: var(--gtInk);
     background: #f7f9fc;
@@ -514,7 +521,7 @@
 }
 
 .gtApp .gtTable .sapMListTblCell {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.75rem;
     vertical-align: middle;
     border-bottom: 1px solid var(--gtLine);
 }
@@ -1396,8 +1403,18 @@
 /* Módulos */
 .gtModuleGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
     gap: 1rem;
+    align-items: start;
+}
+
+/* a module: its header, then milestones, team, and audit and attachment counts */
+.gtModuleCard {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--gtLine);
+    border-radius: 0.75rem;
+    overflow: hidden;
 }
 
 .gtModule {
@@ -1405,8 +1422,57 @@
     align-items: center;
     gap: 0.875rem;
     padding: 1rem;
-    border: 1px solid var(--gtLine);
-    border-radius: 0.75rem;
+}
+
+.gtModuleSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.875rem 1rem;
+    border-top: 1px solid var(--gtLine);
+}
+
+.gtModuleSectionHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.gtApp .gtModuleLabel {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--gtMuted);
+}
+
+.gtModuleTeam {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.gtModuleCounts {
+    display: flex;
+    gap: 1.5rem;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--gtLine);
+    background: #f9fafc;
+}
+
+.gtModuleCount {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.gtApp .gtModuleCount .sapUiIcon {
+    color: var(--gtMuted);
+}
+
+.gtApp .gtModuleCountValue {
+    font-weight: 700;
+    color: var(--gtInk);
 }
 
 .gtModule .gtKpiIcon {
@@ -1770,6 +1836,15 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+}
+
+/* a module chip under the milestone's name, in the lists */
+.gtStackedChip {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    max-width: 8.5rem;
 }
 
 .gtApp .gtMiniChip .sapMObjStatusText {

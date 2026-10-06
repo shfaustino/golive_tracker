@@ -16,7 +16,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f26",
@@ -35,7 +36,8 @@
     "itemsCompletion": 40,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f28",
@@ -54,7 +56,8 @@
     "itemsCompletion": 4,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "Workzone"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f2c",
@@ -73,7 +76,8 @@
     "itemsCompletion": 72,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "REC"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f2e",
@@ -92,7 +96,8 @@
     "itemsCompletion": 58,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "Workzone"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f30",
@@ -111,7 +116,8 @@
     "itemsCompletion": 45,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f34",
@@ -130,7 +136,8 @@
     "itemsCompletion": 46,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f3c",
@@ -149,7 +156,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f3f",
@@ -168,7 +176,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "Compensation"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f44",
@@ -187,7 +196,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "Compensation"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f46",
@@ -206,7 +216,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f49",
@@ -225,7 +236,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f51",
@@ -244,7 +256,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f56",
@@ -263,7 +276,8 @@
     "itemsCompletion": 53,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f58",
@@ -282,7 +296,8 @@
     "itemsCompletion": 52,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "EC"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f5c",
@@ -301,7 +316,8 @@
     "itemsCompletion": 8,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f61",
@@ -320,7 +336,8 @@
     "itemsCompletion": 41,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f6c",
@@ -339,7 +356,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f6f",
@@ -358,7 +376,8 @@
     "itemsCompletion": 57,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "LMS"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f71",
@@ -377,7 +396,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f75",
@@ -396,7 +416,8 @@
     "itemsCompletion": 23,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f7c",
@@ -415,7 +436,8 @@
     "itemsCompletion": 0,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f80",
@@ -434,7 +456,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f82",
@@ -453,7 +476,8 @@
     "itemsCompletion": 28,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "REC"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f85",
@@ -472,7 +496,8 @@
     "itemsCompletion": 38,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "REC"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f89",
@@ -491,7 +516,8 @@
     "itemsCompletion": 60,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "REC"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f8c",
@@ -510,7 +536,8 @@
     "itemsCompletion": 54,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f90",
@@ -529,7 +556,8 @@
     "itemsCompletion": 35,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f98",
@@ -548,7 +576,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000f9c",
@@ -567,7 +596,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "ECP"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fa0",
@@ -586,7 +616,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "ECP"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fa2",
@@ -605,7 +636,8 @@
     "itemsCompletion": 75,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fa6",
@@ -624,7 +656,8 @@
     "itemsCompletion": 34,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fb0",
@@ -643,7 +676,8 @@
     "itemsCompletion": 39,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fb4",
@@ -662,7 +696,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fb6",
@@ -681,7 +716,8 @@
     "itemsCompletion": 47,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "ONB"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fba",
@@ -700,7 +736,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fbe",
@@ -719,7 +756,8 @@
     "itemsCompletion": 6,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fc6",
@@ -738,7 +776,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fc8",
@@ -757,7 +796,8 @@
     "itemsCompletion": 56,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "Workzone"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fcb",
@@ -776,7 +816,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fcd",
@@ -795,7 +836,8 @@
     "itemsCompletion": 74,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fd7",
@@ -814,7 +856,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fd9",
@@ -833,7 +876,8 @@
     "itemsCompletion": 12,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fdd",
@@ -852,7 +896,8 @@
     "itemsCompletion": 22,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "Compensation"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fdf",
@@ -871,7 +916,8 @@
     "itemsCompletion": 48,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "Workzone"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fe3",
@@ -890,7 +936,8 @@
     "itemsCompletion": 31,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "SD"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fe5",
@@ -909,7 +956,8 @@
     "itemsCompletion": 27,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000fe7",
@@ -928,7 +976,8 @@
     "itemsCompletion": 23,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000ff2",
@@ -947,7 +996,8 @@
     "itemsCompletion": 78,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-000000000ff4",
@@ -966,7 +1016,8 @@
     "itemsCompletion": 30,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "ECP"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000ff8",
@@ -985,7 +1036,8 @@
     "itemsCompletion": 30,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "ECP"
   },
   {
     "ID": "00000000-0000-4000-8000-000000000ffb",
@@ -1004,7 +1056,8 @@
     "itemsCompletion": 11,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f100",
@@ -1023,7 +1076,8 @@
     "itemsCompletion": 3,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f109",
@@ -1042,7 +1096,8 @@
     "itemsCompletion": 42,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f10d",
@@ -1061,7 +1116,8 @@
     "itemsCompletion": 71,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f111",
@@ -1080,7 +1136,8 @@
     "itemsCompletion": 30,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "REC"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f115",
@@ -1099,7 +1156,8 @@
     "itemsCompletion": 25,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f119",
@@ -1118,7 +1176,8 @@
     "itemsCompletion": 41,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f124",
@@ -1137,7 +1196,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f128",
@@ -1156,7 +1216,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "SD"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f12b",
@@ -1175,7 +1236,8 @@
     "itemsCompletion": 81,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f130",
@@ -1194,7 +1256,8 @@
     "itemsCompletion": 89,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f13b",
@@ -1213,7 +1276,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f13e",
@@ -1232,7 +1296,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "ONB"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f140",
@@ -1251,7 +1316,8 @@
     "itemsCompletion": 0,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "ONB"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f142",
@@ -1270,7 +1336,8 @@
     "itemsCompletion": 38,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f147",
@@ -1289,7 +1356,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f154",
@@ -1308,7 +1376,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f159",
@@ -1327,7 +1396,8 @@
     "itemsCompletion": 34,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "TT"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f15e",
@@ -1346,7 +1416,8 @@
     "itemsCompletion": 50,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f168",
@@ -1365,7 +1436,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f16b",
@@ -1384,7 +1456,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "LMS"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f16d",
@@ -1403,7 +1476,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f178",
@@ -1422,7 +1496,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f17b",
@@ -1441,7 +1516,8 @@
     "itemsCompletion": 66,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "Compensation"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f17e",
@@ -1460,7 +1536,8 @@
     "itemsCompletion": 18,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f181",
@@ -1479,7 +1556,8 @@
     "itemsCompletion": 41,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f18a",
@@ -1498,7 +1576,8 @@
     "itemsCompletion": 5,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f18d",
@@ -1517,7 +1596,8 @@
     "itemsCompletion": 48,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "ECP"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f191",
@@ -1536,7 +1616,8 @@
     "itemsCompletion": 41,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f194",
@@ -1555,7 +1636,8 @@
     "itemsCompletion": 1,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f19f",
@@ -1574,7 +1656,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1a4",
@@ -1593,7 +1676,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "ONB"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1a7",
@@ -1612,7 +1696,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "Workzone"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1aa",
@@ -1631,7 +1716,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1af",
@@ -1650,7 +1736,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1b7",
@@ -1669,7 +1756,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1b9",
@@ -1688,7 +1776,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "ONB"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1bc",
@@ -1707,7 +1796,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "ONB"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1c1",
@@ -1726,7 +1816,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1c6",
@@ -1745,7 +1836,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1ce",
@@ -1764,7 +1856,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1d0",
@@ -1783,7 +1876,8 @@
     "itemsCompletion": 69,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "LMS"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1d2",
@@ -1802,7 +1896,8 @@
     "itemsCompletion": 46,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1dc",
@@ -1821,7 +1916,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1e1",
@@ -1840,7 +1936,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "SD"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1e6",
@@ -1859,7 +1956,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "SD"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1eb",
@@ -1878,7 +1976,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1ef",
@@ -1897,7 +1996,8 @@
     "itemsCompletion": 58,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1f8",
@@ -1916,7 +2016,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1fa",
@@ -1935,7 +2036,8 @@
     "itemsCompletion": 87,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "ECP"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f1fc",
@@ -1954,7 +2056,8 @@
     "itemsCompletion": 8,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f20c",
@@ -1973,7 +2076,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f210",
@@ -1992,7 +2096,8 @@
     "itemsCompletion": 100,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f212",
@@ -2011,7 +2116,8 @@
     "itemsCompletion": 81,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "LMS"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f216",
@@ -2030,7 +2136,8 @@
     "itemsCompletion": 68,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": "LMS"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f218",
@@ -2049,7 +2156,8 @@
     "itemsCompletion": 26,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": "LMS"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f21a",
@@ -2068,7 +2176,8 @@
     "itemsCompletion": 35,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": true
+    "requiresAudit": true,
+    "module": null
   },
   {
     "ID": "00000000-0000-4000-8000-00000000f21c",
@@ -2087,6 +2196,7 @@
     "itemsCompletion": 24,
     "justification": null,
     "changeReason": null,
-    "requiresAudit": false
+    "requiresAudit": false,
+    "module": null
   }
 ]

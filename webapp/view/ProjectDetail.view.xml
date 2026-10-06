@@ -430,20 +430,67 @@
                                     press=".onAddModule"
                                     class="gtPrimaryButton gtPrimaryButtonSmall"/>
                             </HBox>
+                            <!-- Each module: its milestones (and progress), the members
+                                 who work on it, and how many of the project's audits
+                                 and attachments are its (model/moduleBreakdown.js) -->
                             <HBox items="{overview>/modules}" class="gtModuleGrid" renderType="Bare">
-                                <HBox class="gtModule" alignItems="Center" renderType="Bare">
-                                    <HBox class="gtKpiIcon gtTintBlue" renderType="Bare"><core:Icon src="sap-icon://puzzle"/></HBox>
-                                    <VBox renderType="Bare" class="gtModuleText">
-                                        <Text text="{overview>module}" class="gtModuleCode"/>
-                                        <Text text="{path: 'overview>module', formatter: '.formatter.moduleName'}" class="gtSubtle"/>
+                                <VBox class="gtModuleCard" renderType="Bare">
+                                    <HBox class="gtModule" alignItems="Center" renderType="Bare">
+                                        <HBox class="gtKpiIcon gtTintBlue" renderType="Bare"><core:Icon src="sap-icon://puzzle"/></HBox>
+                                        <VBox renderType="Bare" class="gtModuleText">
+                                            <Text text="{overview>module}" class="gtModuleCode"/>
+                                            <Text text="{path: 'overview>module', formatter: '.formatter.moduleName'}" class="gtSubtle"/>
+                                        </VBox>
+                                        <Button
+                                            icon="sap-icon://decline"
+                                            type="Transparent"
+                                            tooltip="{i18n>modRemove}"
+                                            press=".onRemoveModule"
+                                            class="gtModuleRemove"/>
+                                    </HBox>
+
+                                    <VBox class="gtModuleSection" renderType="Bare">
+                                        <HBox class="gtModuleSectionHead" justifyContent="SpaceBetween" renderType="Bare">
+                                            <Text text="{i18n>tabMilestones}" class="gtModuleLabel"/>
+                                            <Text text="{parts: ['overview>msDone', 'overview>msTotal'], formatter: '.modProgressText'}" class="gtSubtle"/>
+                                        </HBox>
+                                        <HBox items="{path: 'overview>milestones', templateShareable: false}" class="gtInlineChips gtChipsWrap" renderType="Bare">
+                                            <ObjectStatus
+                                                text="{path: 'overview>milestoneType', formatter: '.formatter.milestoneTypeText'}"
+                                                state="{= ${overview>status} === 'Completed' ? 'Success' : (${overview>status} === 'InProgress' ? 'Information' : 'None') }"
+                                                inverted="true"
+                                                class="gtMiniChip"/>
+                                        </HBox>
+                                        <Text text="{i18n>modNoMilestones}" visible="{= ${overview>milestones}.length === 0 }" class="gtSubtle"/>
                                     </VBox>
-                                    <Button
-                                        icon="sap-icon://decline"
-                                        type="Transparent"
-                                        tooltip="{i18n>modRemove}"
-                                        press=".onRemoveModule"
-                                        class="gtModuleRemove"/>
-                                </HBox>
+
+                                    <VBox class="gtModuleSection" renderType="Bare">
+                                        <Text text="{i18n>tabTeam}" class="gtModuleLabel"/>
+                                        <VBox items="{path: 'overview>team', templateShareable: false}" renderType="Bare" class="gtModuleTeam">
+                                            <HBox alignItems="Center" renderType="Bare" class="gtPersonCell">
+                                                <Avatar displaySize="XS" initials="{path: 'overview>name', formatter: '.formatter.initials'}" class="gtPersonAvatar"/>
+                                                <VBox renderType="Bare">
+                                                    <Text text="{overview>name}"/>
+                                                    <Text text="{path: 'overview>role', formatter: '.formatter.roleText'}" class="gtSubtle"/>
+                                                </VBox>
+                                            </HBox>
+                                        </VBox>
+                                        <Text text="{i18n>modNoTeam}" visible="{= ${overview>team}.length === 0 }" class="gtSubtle"/>
+                                    </VBox>
+
+                                    <HBox class="gtModuleCounts" renderType="Bare">
+                                        <HBox alignItems="Center" renderType="Bare" class="gtModuleCount">
+                                            <core:Icon src="sap-icon://shield"/>
+                                            <Text text="{parts: ['overview>module', 'projAudits>/rows'], formatter: '.moduleCount'}" class="gtModuleCountValue"/>
+                                            <Text text="{i18n>navAudits}" class="gtSubtle"/>
+                                        </HBox>
+                                        <HBox alignItems="Center" renderType="Bare" class="gtModuleCount">
+                                            <core:Icon src="sap-icon://attachment"/>
+                                            <Text text="{parts: ['overview>module', 'atts>/rows'], formatter: '.moduleCount'}" class="gtModuleCountValue"/>
+                                            <Text text="{i18n>navAttachments}" class="gtSubtle"/>
+                                        </HBox>
+                                    </HBox>
+                                </VBox>
                             </HBox>
                             <Text text="{i18n>modNoData}" visible="{= ${overview>/modules}.length === 0 }" class="gtSubtle"/>
                         </VBox>
@@ -483,7 +530,10 @@
                                 <items>
                                     <ColumnListItem>
                                         <cells>
-                                            <Text text="{path: 'projAudits>milestoneType', formatter: '.formatter.milestoneTypeText'}"/>
+                                            <VBox alignItems="Start" renderType="Bare" class="gtStackedChip">
+                                                <Text text="{path: 'projAudits>milestoneType', formatter: '.formatter.milestoneTypeText'}"/>
+                                                <ObjectStatus text="{projAudits>module}" visible="{= !!${projAudits>module} }" state="Information" inverted="true" class="gtMiniChip"/>
+                                            </VBox>
                                             <Text text="{projAudits>code}" wrapping="false"/>
                                             <ObjectStatus
                                                 text="{path: 'projAudits>result', formatter: '.formatter.auditResultText'}"

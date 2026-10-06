@@ -11,7 +11,7 @@ sap.ui.define([
          */
         QUERY: {
             $select: "ID,milestone_ID,code,date,auditor_ID,result,notes",
-            $expand: "milestone($select=ID,milestoneType,project_ID;$expand=project($select=ID,code,name))," +
+            $expand: "milestone($select=ID,milestoneType,module,project_ID;$expand=project($select=ID,code,name))," +
                 "auditor($select=name),followUps($select=ID,status)"
         },
 
@@ -36,6 +36,7 @@ sap.ui.define([
                 result: oAudit.result,
                 notes: oAudit.notes,
                 milestoneType: oMilestone.milestoneType,
+                module: oMilestone.module || null,
                 project_ID: oMilestone.project_ID || oProject.ID,
                 projectCode: oProject.code,
                 projectName: oProject.name,

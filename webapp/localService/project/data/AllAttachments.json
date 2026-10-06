@@ -47,7 +47,7 @@
     "projectCode": "CO-T-0001",
     "projectName": "Implementação SAP S/4HANA",
     "milestoneType": "GOP",
-    "module": null,
+    "module": "Workzone",
     "itemName": null
   },
   {
@@ -64,7 +64,7 @@
     "projectCode": "CO-T-0001",
     "projectName": "Implementação SAP S/4HANA",
     "milestoneType": "GOP",
-    "module": null,
+    "module": "Workzone",
     "itemName": "Repetir testes de integração"
   },
   {
@@ -132,7 +132,7 @@
     "projectCode": "CO-T-0002",
     "projectName": "Migração SAP S/4HANA",
     "milestoneType": "GOP",
-    "module": null,
+    "module": "Compensation",
     "itemName": null
   },
   {
@@ -149,7 +149,7 @@
     "projectCode": "CO-T-0002",
     "projectName": "Migração SAP S/4HANA",
     "milestoneType": "Testing",
-    "module": null,
+    "module": "Compensation",
     "itemName": "Repetir testes de integração"
   },
   {
@@ -302,7 +302,7 @@
     "projectCode": "CO-T-0005",
     "projectName": "Portal do Cliente",
     "milestoneType": "GOP",
-    "module": null,
+    "module": "REC",
     "itemName": null
   },
   {
@@ -319,7 +319,7 @@
     "projectCode": "CO-T-0005",
     "projectName": "Portal do Cliente",
     "milestoneType": "GOP",
-    "module": null,
+    "module": "REC",
     "itemName": "Validar unidades organizacionais"
   },
   {
@@ -387,7 +387,7 @@
     "projectCode": "CO-T-0006",
     "projectName": "Integração CRM",
     "milestoneType": "GOP",
-    "module": null,
+    "module": "ECP",
     "itemName": null
   },
   {
@@ -404,7 +404,7 @@
     "projectCode": "CO-T-0006",
     "projectName": "Integração CRM",
     "milestoneType": "Testing",
-    "module": null,
+    "module": "ECP",
     "itemName": "Validar unidades organizacionais"
   },
   {
@@ -557,7 +557,7 @@
     "projectCode": "CO-T-0009",
     "projectName": "Segurança e Compliance",
     "milestoneType": "GOP",
-    "module": null,
+    "module": "Compensation",
     "itemName": null
   },
   {
@@ -608,7 +608,7 @@
     "projectCode": "CO-T-0010",
     "projectName": "Apps Mobile",
     "milestoneType": "GOP",
-    "module": null,
+    "module": "ECP",
     "itemName": null
   }
 ]

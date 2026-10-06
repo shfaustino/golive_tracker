@@ -3,8 +3,9 @@ sap.ui.define([
     "sap/m/MessageToast",
     "sap/ui/model/json/JSONModel",
     "../model/projectForm",
+    "../model/moduleBreakdown",
     "../formatter/formatter"
-], function (MessageBox, MessageToast, JSONModel, projectForm, formatter) {
+], function (MessageBox, MessageToast, JSONModel, projectForm, moduleBreakdown, formatter) {
     "use strict";
 
     /**
@@ -17,9 +18,48 @@ sap.ui.define([
      * POST /Projects(<id>)/modules { module } and
      * DELETE /Projects(<id>)/modules(project_ID=<id>,module='<module>'),
      * both under the project (service/childWrites.js). Taking a module off
-     * leaves the milestones made for it alone.
+     * leaves the milestones made for it alone; the API takes it off the
+     * team members who had it.
+     *
+     * Each module's card shows its milestones, its team, and how many of
+     * the project's audits and attachments are its (model/moduleBreakdown.js).
      */
     return {
+
+        /**
+         * A module's audits or attachments, from the project's rows (the
+         * Auditorias and Anexos tabs read them).
+         * @param {string} sModule the module
+         * @param {{module: string}[]} aRows the rows
+         * @returns {number} how many are the module's
+         * @public
+         */
+        moduleCount: function (sModule, aRows) {
+            return moduleBreakdown.count(sModule, aRows);
+        },
+
+        /**
+         * A module's milestone progress: "1 de 3 concluídos".
+         * @param {number} iDone completed
+         * @param {number} iTotal counted (not applicable and cancelled left out)
+         * @returns {string} the text, empty with no milestones
+         * @public
+         */
+        modProgressText: function (iDone, iTotal) {
+            return iTotal ? this.getResourceBundle().getText("modMsProgress", [iDone, iTotal]) : "";
+        },
+
+        /**
+         * The project's modules as the Módulos tab shows them.
+         * @param {{module: string}[]} aModules the project's modules
+         * @param {object[]} aMilestones the project's milestones
+         * @param {object[]} aTeam the active team, with each member's modules
+         * @returns {object[]} per module: module, milestones, msDone, msTotal, team
+         * @private
+         */
+        _describeModules: function (aModules, aMilestones, aTeam) {
+            return moduleBreakdown.describe(aModules, aMilestones, aTeam);
+        },
 
         /**
          * "Adicionar módulo": the dialog, with the modules the project has not got.

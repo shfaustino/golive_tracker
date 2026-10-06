@@ -42,7 +42,11 @@
                         <Text text="{atts>projectCode}" class="gtFeedCode"/>
                         <Text text="{atts>projectName}" tooltip="{atts>projectName}" class="gtSubtle gtEllipsis" wrapping="false"/>
                     </VBox>
-                    <Text text="{parts: ['atts>owner', 'atts>milestoneType', 'atts>itemName'], formatter: '.formatter.attachmentOwnerText'}"/>
+                    <!-- the module of the milestone it hangs on, if any -->
+                    <VBox alignItems="Start" renderType="Bare" class="gtStackedChip">
+                        <Text text="{parts: ['atts>owner', 'atts>milestoneType', 'atts>itemName'], formatter: '.formatter.attachmentOwnerText'}"/>
+                        <ObjectStatus text="{atts>module}" visible="{= !!${atts>module} }" state="Information" inverted="true" class="gtMiniChip"/>
+                    </VBox>
                     <Text text="{atts>authorName}"/>
                     <Text text="{path: 'atts>createdAt', formatter: '.formatter.timestampDate'}" wrapping="false"/>
                     <Button icon="sap-icon://overflow" type="Transparent" tooltip="{i18n>admActions}" press=".onAttachmentActions" class="gtRowAction"/>

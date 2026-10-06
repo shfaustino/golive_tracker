@@ -339,6 +339,33 @@ projects.slice(0, 10).forEach(function (project, n) {
         add(DOCS[6], { milestoneItem_ID: item.ID });
     }
 });
+// Modules on milestones and team members, taken in turn from the project's
+// modules with no random draw, so every other value above stays as it was.
+// GOP, Training and Testing are per module; the rest are the whole project's.
+// Each member but the PM works on one module, every other one on two.
+const PER_MODULE = ["GOP", "Training", "Testing"];
+const modulesOf = (projectID) => modules.filter((m) => m.project_ID === projectID).map((m) => m.module);
+const memberModules = [];
+projects.forEach(function (project) {
+    const own = modulesOf(project.ID);
+    if (!own.length) {
+        return;
+    }
+    milestones.filter((m) => m.project_ID === project.ID && PER_MODULE.includes(m.milestoneType))
+        .forEach(function (m, i) {
+            m.module = own[i % own.length];
+        });
+    members.filter((m) => m.project_ID === project.ID && m.role !== "PM").forEach(function (m, i) {
+        memberModules.push({ member_ID: m.ID, module: own[i % own.length] });
+        if (i % 2 === 0 && own.length > 1) {
+            memberModules.push({ member_ID: m.ID, module: own[(i + 1) % own.length] });
+        }
+    });
+});
+milestones.forEach(function (m) {
+    m.module = m.module || null;
+});
+
 const allAttachments = attachments.map(function (a) {
     const item = a.milestoneItem_ID && items.find((i) => i.ID === a.milestoneItem_ID);
     const milestone = milestones.find((m) => m.ID === (a.milestone_ID || (item && item.milestone_ID)));
@@ -346,7 +373,8 @@ const allAttachments = attachments.map(function (a) {
 
     return Object.assign({}, a, {
         projectID: project.ID, projectCode: project.code, projectName: project.name,
-        milestoneType: milestone ? milestone.milestoneType : null, module: null, itemName: item ? item.name : null
+        milestoneType: milestone ? milestone.milestoneType : null, module: milestone ? milestone.module : null,
+        itemName: item ? item.name : null
     });
 });
 
@@ -361,6 +389,7 @@ const files = {
     Updates: updates,
     Projects: projects,
     Members: members,
+    MemberModules: memberModules,
     Milestones: milestones,
     MilestoneOwners: owners,
     // keyed by project and module, as in the API; the ID only keeps the other IDs where they were

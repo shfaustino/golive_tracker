@@ -16,7 +16,7 @@ sap.ui.define([], function () {
          */
         QUERY: {
             $select: "ID,documentType,name,url,createdAt,project_ID,milestone_ID,milestoneItem_ID,projectID,projectCode," +
-                "projectName,milestoneType,itemName",
+                "projectName,milestoneType,module,itemName",
             $expand: "author($select=name),milestoneItem($select=ID,milestone_ID)"
         },
 

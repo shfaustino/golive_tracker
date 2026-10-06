@@ -26,6 +26,10 @@
         <EntitySet Name="Members" EntityType="ProjectService.Members">
           <NavigationPropertyBinding Path="person" Target="People"/>
           <NavigationPropertyBinding Path="project" Target="Projects"/>
+          <NavigationPropertyBinding Path="modules" Target="MemberModules"/>
+        </EntitySet>
+        <EntitySet Name="MemberModules" EntityType="ProjectService.MemberModules">
+          <NavigationPropertyBinding Path="member" Target="Members"/>
         </EntitySet>
         <EntitySet Name="Milestones" EntityType="ProjectService.Milestones">
           <NavigationPropertyBinding Path="project" Target="Projects"/>
@@ -132,6 +136,18 @@
         <NavigationProperty Name="person" Type="ProjectService.People">
           <ReferentialConstraint Property="person_ID" ReferencedProperty="ID"/>
         </NavigationProperty>
+        <NavigationProperty Name="modules" Type="Collection(ProjectService.MemberModules)" Partner="member"/>
+      </EntityType>
+
+      <!-- The modules a team member works on (API: ProjectMemberModules);
+           none = the whole project -->
+      <EntityType Name="MemberModules">
+        <Key><PropertyRef Name="member_ID"/><PropertyRef Name="module"/></Key>
+        <Property Name="member_ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="module" Type="Edm.String" MaxLength="20" Nullable="false"/>
+        <NavigationProperty Name="member" Type="ProjectService.Members" Partner="modules">
+          <ReferentialConstraint Property="member_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
       </EntityType>
 
       <EntityType Name="Milestones">
@@ -139,6 +155,7 @@
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
         <Property Name="project_ID" Type="Edm.Guid"/>
         <Property Name="milestoneType" Type="Edm.String" MaxLength="40"/>
+        <Property Name="module" Type="Edm.String" MaxLength="20"/>
         <Property Name="sortOrder" Type="Edm.Int32"/>
         <Property Name="mandatory" Type="Edm.Boolean"/>
         <Property Name="requiresAudit" Type="Edm.Boolean"/>

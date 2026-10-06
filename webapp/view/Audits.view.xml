@@ -98,10 +98,13 @@
                             <cells>
                                 <VBox renderType="Bare">
                                     <Link text="{audits>projectCode}" press=".onOpenProject" class="gtCodeLink"/>
-                                    <Text text="{audits>projectName}" class="gtSubtle" maxLines="1"/>
+                                    <Text text="{audits>projectName}" tooltip="{audits>projectName}" class="gtSubtle gtEllipsis" wrapping="false"/>
                                 </VBox>
-                                <Text text="{path: 'audits>milestoneType', formatter: '.formatter.milestoneTypeText'}" wrapping="false"/>
-                                <Text text="{audits>code}" wrapping="false"/>
+                                <VBox alignItems="Start" renderType="Bare" class="gtStackedChip">
+                                    <Text text="{path: 'audits>milestoneType', formatter: '.formatter.milestoneTypeText'}" wrapping="false"/>
+                                    <ObjectStatus text="{audits>module}" visible="{= !!${audits>module} }" state="Information" inverted="true" class="gtMiniChip"/>
+                                </VBox>
+                                <Text text="{audits>code}" class="gtBreakCode"/>
                                 <ObjectStatus
                                     text="{path: 'audits>result', formatter: '.formatter.auditResultText'}"
                                     state="{path: 'audits>result', formatter: '.formatter.auditResultState'}"
