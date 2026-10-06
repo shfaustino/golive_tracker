@@ -217,7 +217,7 @@
                                     <VBox items="{path: 'overview>/updates', length: 3}" renderType="Bare" class="gtMiniList">
                                         <VBox class="gtMiniUpdate" renderType="Bare">
                                             <Text text="{overview>text}" maxLines="2"/>
-                                            <Text text="{parts: ['overview>author/name', 'overview>createdAt'], formatter: '.formatter.byline'}" class="gtSubtle"/>
+                                            <Text text="{parts: ['overview>author/name', 'overview>postedAt'], formatter: '.formatter.byline'}" class="gtSubtle"/>
                                         </VBox>
                                     </VBox>
                                     <Text text="{i18n>updNoData}" visible="{= ${overview>/updates}.length === 0 }" class="gtSubtle"/>
@@ -464,7 +464,7 @@
                                     path: 'updates',
                                     parameters: {
                                         $expand: 'author($select=name)',
-                                        $orderby: 'createdAt desc',
+                                        $orderby: 'postedAt desc',
                                         $$updateGroupId: 'updateEdit'
                                     }
                                 }">
@@ -474,7 +474,7 @@
                                         <VBox class="gtFeedText" renderType="Bare">
                                             <HBox alignItems="Center" renderType="Bare" class="gtUpdateHead">
                                                 <Text text="{author/name}" class="gtFeedTitle gtStrong"/>
-                                                <Text text="{path: 'createdAt', targetType: 'any', formatter: '.formatter.timestampDateTime'}" class="gtSubtle"/>
+                                                <Text text="{path: 'postedAt', targetType: 'any', formatter: '.formatter.timestampDateTime'}" class="gtSubtle"/>
                                                 <ObjectStatus text="{i18n>updAutomatic}" state="None" inverted="true" visible="{= !!${isAutomatic} }"/>
                                             </HBox>
                                             <Text text="{text}" class="gtUpdateText"/>

@@ -21,7 +21,8 @@ sap.ui.define([
             this.setModel(models.createUserModel(), "user");
             this.setModel(models.createAppModel(), "app");
 
-            this._loadSignedInUser();
+            // Pages that need the person's ID (O meu trabalho) wait on this.
+            this.pSignedInUser = this._loadSignedInUser();
             this.getRouter().initialize();
         },
 
@@ -53,13 +54,14 @@ sap.ui.define([
          *
          * A failed read leaves the user model as it started: signed in with no
          * known profile, which shows the least.
+         * @returns {Promise} settles once the user model is filled, or known to stay empty
          * @private
          */
         _loadSignedInUser: function () {
             var oUserModel = this.getModel("user"),
                 oOperation = this.getModel().bindContext("/me(...)");
 
-            oOperation.execute().then(function () {
+            return oOperation.execute().then(function () {
                 var oMe = oOperation.getBoundContext().getObject();
 
                 oUserModel.setData(Object.assign({

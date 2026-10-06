@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- A stand-in for the API's /project/$metadata, for `npm run start-mock`
-     only. It is written from docs/backend-api-guide.md and holds just what
-     the app reads; the real metadata (golive-tracker-api, /project/$metadata)
-     is the reference whenever the two differ. -->
+     only. Field names follow the API's own reference
+     (docs/api/ProjectService.openapi.json); it holds just what the app
+     reads, and the real /project/$metadata wins whenever the two differ.
+     Two liberties for the mock's sake: keys where the API has none of its
+     own (ProjectModules, MilestoneOwners), and pm_ID behind the pm
+     navigation, which the API resolves itself. -->
 <edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
   <edmx:DataServices>
     <Schema Namespace="ProjectService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
@@ -34,6 +37,9 @@
         <EntitySet Name="ProjectModules" EntityType="ProjectService.ProjectModules">
           <NavigationPropertyBinding Path="project" Target="Projects"/>
         </EntitySet>
+        <EntitySet Name="RecentUpdates" EntityType="ProjectService.RecentUpdates"/>
+        <EntitySet Name="MyItems" EntityType="ProjectService.MyItems"/>
+        <EntitySet Name="MyMilestones" EntityType="ProjectService.MyMilestones"/>
         <EntitySet Name="Clients" EntityType="ProjectService.Clients"/>
         <EntitySet Name="People" EntityType="ProjectService.People"/>
         <EntitySet Name="Currencies" EntityType="ProjectService.Currencies"/>
@@ -47,6 +53,7 @@
         <Property Name="code" Type="Edm.String" MaxLength="20"/>
         <Property Name="externalCode" Type="Edm.String" MaxLength="40"/>
         <Property Name="name" Type="Edm.String" MaxLength="200"/>
+        <Property Name="description" Type="Edm.String" MaxLength="1000"/>
         <Property Name="projectType" Type="Edm.String" MaxLength="40"/>
         <Property Name="status" Type="Edm.String" MaxLength="20"/>
         <Property Name="startDate" Type="Edm.Date"/>
@@ -70,9 +77,7 @@
         <NavigationProperty Name="updates" Type="Collection(ProjectService.Updates)" Partner="project"/>
       </EntityType>
 
-      <!-- Status updates (US-27). The guide names text, milestone_ID and
-           isAutomatic; author and createdAt are assumed (CAP's managed
-           aspect and an association to People). -->
+      <!-- Status updates (US-27); the API's StatusUpdates. -->
       <EntityType Name="Updates">
         <Key><PropertyRef Name="ID"/></Key>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
@@ -81,7 +86,7 @@
         <Property Name="milestone_ID" Type="Edm.Guid"/>
         <Property Name="isAutomatic" Type="Edm.Boolean"/>
         <Property Name="author_ID" Type="Edm.Guid"/>
-        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="postedAt" Type="Edm.DateTimeOffset" Precision="7"/>
         <NavigationProperty Name="project" Type="ProjectService.Projects" Partner="updates">
           <ReferentialConstraint Property="project_ID" ReferencedProperty="ID"/>
         </NavigationProperty>
@@ -153,6 +158,35 @@
         </NavigationProperty>
       </EntityType>
 
+      <!-- O meu trabalho (US-13): the signed-in person's items and
+           milestones, in any project, with the project flattened in. -->
+      <EntityType Name="MyItems">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String"/>
+        <Property Name="type" Type="Edm.String"/>
+        <Property Name="status" Type="Edm.String"/>
+        <Property Name="date" Type="Edm.Date"/>
+        <Property Name="isOverdue" Type="Edm.Boolean"/>
+        <Property Name="milestone_ID" Type="Edm.Guid"/>
+        <Property Name="milestoneType" Type="Edm.String"/>
+        <Property Name="project_ID" Type="Edm.Guid"/>
+        <Property Name="projectCode" Type="Edm.String"/>
+        <Property Name="projectName" Type="Edm.String"/>
+      </EntityType>
+
+      <EntityType Name="MyMilestones">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="milestoneType" Type="Edm.String"/>
+        <Property Name="status" Type="Edm.String"/>
+        <Property Name="forecastEnd" Type="Edm.Date"/>
+        <Property Name="isOverdue" Type="Edm.Boolean"/>
+        <Property Name="project_ID" Type="Edm.Guid"/>
+        <Property Name="projectCode" Type="Edm.String"/>
+        <Property Name="projectName" Type="Edm.String"/>
+      </EntityType>
+
       <EntityType Name="Clients">
         <Key><PropertyRef Name="ID"/></Key>
         <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
@@ -174,7 +208,29 @@
         <Key><PropertyRef Name="code"/></Key>
         <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
         <Property Name="name" Type="Edm.String" MaxLength="60"/>
+        <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
       </EntityType>
+
+      <!-- Dashboard's Últimas atualizações: updates across the projects the
+           person may see, with the project and the author flattened in. -->
+      <EntityType Name="RecentUpdates">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="project_ID" Type="Edm.Guid"/>
+        <Property Name="author_ID" Type="Edm.Guid"/>
+        <Property Name="postedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="text" Type="Edm.String"/>
+        <Property Name="isAutomatic" Type="Edm.Boolean"/>
+        <Property Name="projectCode" Type="Edm.String"/>
+        <Property Name="projectName" Type="Edm.String"/>
+        <Property Name="authorName" Type="Edm.String"/>
+      </EntityType>
+
+      <ComplexType Name="MonthCount">
+        <Property Name="month" Type="Edm.String"/>
+        <Property Name="created" Type="Edm.Int32"/>
+        <Property Name="closed" Type="Edm.Int32"/>
+      </ComplexType>
 
       <ComplexType Name="Me">
         <Property Name="ID" Type="Edm.Guid"/>
@@ -189,16 +245,17 @@
       </ComplexType>
 
       <ComplexType Name="OverdueMilestone">
-        <Property Name="projectID" Type="Edm.Guid"/>
+        <Property Name="project_ID" Type="Edm.Guid"/>
         <Property Name="projectCode" Type="Edm.String"/>
         <Property Name="projectName" Type="Edm.String"/>
+        <Property Name="milestone_ID" Type="Edm.Guid"/>
         <Property Name="milestoneType" Type="Edm.String"/>
         <Property Name="dueDate" Type="Edm.Date"/>
         <Property Name="status" Type="Edm.String"/>
       </ComplexType>
 
       <ComplexType Name="ProjectRef">
-        <Property Name="projectID" Type="Edm.Guid"/>
+        <Property Name="project_ID" Type="Edm.Guid"/>
         <Property Name="projectCode" Type="Edm.String"/>
         <Property Name="projectName" Type="Edm.String"/>
         <Property Name="clientName" Type="Edm.String"/>
@@ -213,6 +270,7 @@
         <Property Name="overdueMilestones" Type="Collection(ProjectService.OverdueMilestone)"/>
         <Property Name="staleProjects" Type="Collection(ProjectService.ProjectRef)"/>
         <Property Name="projectsToReview" Type="Collection(ProjectService.ProjectRef)"/>
+        <Property Name="projectsByMonth" Type="Collection(ProjectService.MonthCount)"/>
       </ComplexType>
 
       <Action Name="handOverPM" IsBound="true">
@@ -234,6 +292,8 @@
       </Function>
       <Function Name="dashboard" IsBound="false">
         <Parameter Name="staleDays" Type="Edm.Int32"/>
+        <Parameter Name="from" Type="Edm.Date"/>
+        <Parameter Name="to" Type="Edm.Date"/>
         <ReturnType Type="ProjectService.Dashboard"/>
       </Function>
     </Schema>

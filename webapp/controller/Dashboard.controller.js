@@ -28,8 +28,8 @@ sap.ui.define([
         onOpenProject: function (oEvent) {
             var oRow = oEvent.getSource().getBindingContext("dashboard").getObject();
 
-            if (oRow.projectID) {
-                this.getRouter().navTo("projectDetail", { projectId: oRow.projectID });
+            if (oRow.project_ID) {
+                this.getRouter().navTo("projectDetail", { projectId: oRow.project_ID });
             } else {
                 this.getOwnerComponent().getModel("app").setProperty("/globalSearch", oRow.projectCode);
                 this.getRouter().navTo("projects");

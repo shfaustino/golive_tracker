@@ -2,631 +2,771 @@
   {
     "ID": "00000000-0000-4000-8000-000000008220",
     "project_ID": "00000000-0000-4000-8000-000000000b1c",
-    "text": "Status changed from NotStarted to InProgress.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000ab",
-    "postedAt": "2026-09-07T00:00:00Z"
+    "postedAt": "2026-09-07T00:00:00Z",
+    "text": "Status changed from NotStarted to InProgress.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0001",
+    "projectName": "Implementação SAP S/4HANA",
+    "authorName": "Tiago Ferreira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008221",
     "project_ID": "00000000-0000-4000-8000-000000000b1c",
-    "text": "Documentação funcional revista e enviada para validação.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a5",
-    "postedAt": "2026-08-30T00:00:00Z"
+    "postedAt": "2026-08-30T00:00:00Z",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0001",
+    "projectName": "Implementação SAP S/4HANA",
+    "authorName": "Pedro Costa"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008222",
     "project_ID": "00000000-0000-4000-8000-000000000b36",
-    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a2",
-    "postedAt": "2026-08-23T00:00:00Z"
+    "postedAt": "2026-08-23T00:00:00Z",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0002",
+    "projectName": "Migração SAP S/4HANA",
+    "authorName": "Ana Silva"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008223",
     "project_ID": "00000000-0000-4000-8000-000000000b36",
-    "text": "Status changed from NotStarted to Closing.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000a2",
-    "postedAt": "2026-08-18T00:00:00Z"
+    "postedAt": "2026-08-18T00:00:00Z",
+    "text": "Status changed from NotStarted to Closing.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0002",
+    "projectName": "Migração SAP S/4HANA",
+    "authorName": "Ana Silva"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008224",
     "project_ID": "00000000-0000-4000-8000-000000000b36",
-    "text": "Status changed from NotStarted to Closing.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-000000000a12",
-    "postedAt": "2026-08-17T00:00:00Z"
+    "postedAt": "2026-08-17T00:00:00Z",
+    "text": "Status changed from NotStarted to Closing.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0002",
+    "projectName": "Migração SAP S/4HANA",
+    "authorName": "Ana Pereira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008225",
     "project_ID": "00000000-0000-4000-8000-000000000b4b",
-    "text": "Status changed from NotStarted to NotStarted.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000a6",
-    "postedAt": "2026-09-21T00:00:00Z"
+    "postedAt": "2026-09-21T00:00:00Z",
+    "text": "Status changed from NotStarted to NotStarted.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0003",
+    "projectName": "Novo Portal",
+    "authorName": "Carla Mendes"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008226",
     "project_ID": "00000000-0000-4000-8000-000000000b4b",
-    "text": "Documentação funcional revista e enviada para validação.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a1",
-    "postedAt": "2026-09-15T00:00:00Z"
+    "postedAt": "2026-09-15T00:00:00Z",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0003",
+    "projectName": "Novo Portal",
+    "authorName": "Marlon Teixeira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008227",
     "project_ID": "00000000-0000-4000-8000-000000000b4b",
-    "text": "Documentação funcional revista e enviada para validação.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a7",
-    "postedAt": "2026-09-05T00:00:00Z"
+    "postedAt": "2026-09-05T00:00:00Z",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0003",
+    "projectName": "Novo Portal",
+    "authorName": "Rui Almeida"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008228",
     "project_ID": "00000000-0000-4000-8000-000000000b66",
-    "text": "Status changed from NotStarted to InProgress.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000a8",
-    "postedAt": "2026-09-08T00:00:00Z"
+    "postedAt": "2026-09-08T00:00:00Z",
+    "text": "Status changed from NotStarted to InProgress.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0004",
+    "projectName": "Melhoria Analytics",
+    "authorName": "Sofia Carvalho"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008229",
     "project_ID": "00000000-0000-4000-8000-000000000b66",
-    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-000000000a11",
-    "postedAt": "2026-08-31T00:00:00Z"
+    "postedAt": "2026-08-31T00:00:00Z",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0004",
+    "projectName": "Melhoria Analytics",
+    "authorName": "Mariana Lopes"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000822a",
     "project_ID": "00000000-0000-4000-8000-000000000b66",
-    "text": "Configuração concluída no ambiente de qualidade.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a2",
-    "postedAt": "2026-08-25T00:00:00Z"
+    "postedAt": "2026-08-25T00:00:00Z",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0004",
+    "projectName": "Melhoria Analytics",
+    "authorName": "Ana Silva"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000822b",
     "project_ID": "00000000-0000-4000-8000-000000000b77",
-    "text": "Status changed from NotStarted to InProgress.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000ab",
-    "postedAt": "2026-09-11T00:00:00Z"
+    "postedAt": "2026-09-11T00:00:00Z",
+    "text": "Status changed from NotStarted to InProgress.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0005",
+    "projectName": "Portal do Cliente",
+    "authorName": "Tiago Ferreira"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000822c",
     "project_ID": "00000000-0000-4000-8000-000000000b77",
-    "text": "Configuração concluída no ambiente de qualidade.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a5",
-    "postedAt": "2026-09-08T00:00:00Z"
+    "postedAt": "2026-09-08T00:00:00Z",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0005",
+    "projectName": "Portal do Cliente",
+    "authorName": "Pedro Costa"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000822d",
     "project_ID": "00000000-0000-4000-8000-000000000b77",
-    "text": "Riscos revistos: dependência de dados mestre do cliente.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-000000000a12",
-    "postedAt": "2026-09-03T00:00:00Z"
+    "postedAt": "2026-09-03T00:00:00Z",
+    "text": "Riscos revistos: dependência de dados mestre do cliente.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0005",
+    "projectName": "Portal do Cliente",
+    "authorName": "Ana Pereira"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000822e",
     "project_ID": "00000000-0000-4000-8000-000000000b77",
-    "text": "Status changed from NotStarted to InProgress.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000a5",
-    "postedAt": "2026-08-30T00:00:00Z"
+    "postedAt": "2026-08-30T00:00:00Z",
+    "text": "Status changed from NotStarted to InProgress.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0005",
+    "projectName": "Portal do Cliente",
+    "authorName": "Pedro Costa"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000822f",
     "project_ID": "00000000-0000-4000-8000-000000000b92",
-    "text": "Status changed from NotStarted to Replanning.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-000000000a10",
-    "postedAt": "2026-08-30T00:00:00Z"
+    "postedAt": "2026-08-30T00:00:00Z",
+    "text": "Status changed from NotStarted to Replanning.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0006",
+    "projectName": "Integração CRM",
+    "authorName": "Sofia Almeida"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008230",
     "project_ID": "00000000-0000-4000-8000-000000000b92",
-    "text": "Status changed from NotStarted to Replanning.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000ae",
-    "postedAt": "2026-08-25T00:00:00Z"
+    "postedAt": "2026-08-25T00:00:00Z",
+    "text": "Status changed from NotStarted to Replanning.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0006",
+    "projectName": "Integração CRM",
+    "authorName": "Carlos Mendes"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008231",
     "project_ID": "00000000-0000-4000-8000-000000000baa",
-    "text": "Status changed from NotStarted to Replanning.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-000000000a13",
-    "postedAt": "2026-09-21T00:00:00Z"
+    "postedAt": "2026-09-21T00:00:00Z",
+    "text": "Status changed from NotStarted to Replanning.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0007",
+    "projectName": "Modernização Infra",
+    "authorName": "João Santos"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008232",
     "project_ID": "00000000-0000-4000-8000-000000000baa",
-    "text": "Documentação funcional revista e enviada para validação.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a7",
-    "postedAt": "2026-09-14T00:00:00Z"
+    "postedAt": "2026-09-14T00:00:00Z",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0007",
+    "projectName": "Modernização Infra",
+    "authorName": "Rui Almeida"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008233",
     "project_ID": "00000000-0000-4000-8000-000000000baa",
-    "text": "Status changed from NotStarted to Replanning.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-000000000a11",
-    "postedAt": "2026-09-07T00:00:00Z"
+    "postedAt": "2026-09-07T00:00:00Z",
+    "text": "Status changed from NotStarted to Replanning.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0007",
+    "projectName": "Modernização Infra",
+    "authorName": "Mariana Lopes"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008234",
     "project_ID": "00000000-0000-4000-8000-000000000baa",
-    "text": "Ambiente de testes disponível; testes de integração a decorrer.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000af",
-    "postedAt": "2026-09-03T00:00:00Z"
+    "postedAt": "2026-09-03T00:00:00Z",
+    "text": "Ambiente de testes disponível; testes de integração a decorrer.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0007",
+    "projectName": "Modernização Infra",
+    "authorName": "Ricardo Alves"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008235",
     "project_ID": "00000000-0000-4000-8000-000000000bc0",
-    "text": "Configuração concluída no ambiente de qualidade.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a1",
-    "postedAt": "2026-08-24T00:00:00Z"
+    "postedAt": "2026-08-24T00:00:00Z",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0008",
+    "projectName": "Integração Sistemas",
+    "authorName": "Marlon Teixeira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008236",
     "project_ID": "00000000-0000-4000-8000-000000000bc0",
-    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a2",
-    "postedAt": "2026-08-19T00:00:00Z"
+    "postedAt": "2026-08-19T00:00:00Z",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0008",
+    "projectName": "Integração Sistemas",
+    "authorName": "Ana Silva"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008237",
     "project_ID": "00000000-0000-4000-8000-000000000bd0",
-    "text": "Cliente pediu para adiar a formação uma semana.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-000000000a10",
-    "postedAt": "2026-09-28T00:00:00Z"
+    "postedAt": "2026-09-28T00:00:00Z",
+    "text": "Cliente pediu para adiar a formação uma semana.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0009",
+    "projectName": "Segurança e Compliance",
+    "authorName": "Sofia Almeida"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008238",
     "project_ID": "00000000-0000-4000-8000-000000000bd0",
-    "text": "Documentação funcional revista e enviada para validação.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000ac",
-    "postedAt": "2026-09-24T00:00:00Z"
+    "postedAt": "2026-09-24T00:00:00Z",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0009",
+    "projectName": "Segurança e Compliance",
+    "authorName": "Marcos Silva"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008239",
     "project_ID": "00000000-0000-4000-8000-000000000beb",
-    "text": "Cliente pediu para adiar a formação uma semana.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a6",
-    "postedAt": "2026-09-03T00:00:00Z"
+    "postedAt": "2026-09-03T00:00:00Z",
+    "text": "Cliente pediu para adiar a formação uma semana.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0010",
+    "projectName": "Apps Mobile",
+    "authorName": "Carla Mendes"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000823a",
     "project_ID": "00000000-0000-4000-8000-000000000beb",
-    "text": "Riscos revistos: dependência de dados mestre do cliente.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000ac",
-    "postedAt": "2026-08-30T00:00:00Z"
+    "postedAt": "2026-08-30T00:00:00Z",
+    "text": "Riscos revistos: dependência de dados mestre do cliente.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0010",
+    "projectName": "Apps Mobile",
+    "authorName": "Marcos Silva"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000823b",
     "project_ID": "00000000-0000-4000-8000-000000000beb",
-    "text": "Cliente pediu para adiar a formação uma semana.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a4",
-    "postedAt": "2026-08-28T00:00:00Z"
+    "postedAt": "2026-08-28T00:00:00Z",
+    "text": "Cliente pediu para adiar a formação uma semana.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0010",
+    "projectName": "Apps Mobile",
+    "authorName": "Maria Santos"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000823c",
     "project_ID": "00000000-0000-4000-8000-00000000b104",
-    "text": "Status changed from NotStarted to NotStarted.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000a6",
-    "postedAt": "2026-09-04T00:00:00Z"
+    "postedAt": "2026-09-04T00:00:00Z",
+    "text": "Status changed from NotStarted to NotStarted.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0011",
+    "projectName": "SuccessFactors Employee Central",
+    "authorName": "Carla Mendes"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000823d",
     "project_ID": "00000000-0000-4000-8000-00000000b104",
-    "text": "Status changed from NotStarted to NotStarted.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-000000000a12",
-    "postedAt": "2026-08-31T00:00:00Z"
+    "postedAt": "2026-08-31T00:00:00Z",
+    "text": "Status changed from NotStarted to NotStarted.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0011",
+    "projectName": "SuccessFactors Employee Central",
+    "authorName": "Ana Pereira"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000823e",
     "project_ID": "00000000-0000-4000-8000-00000000b104",
-    "text": "Cliente pediu para adiar a formação uma semana.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-000000000a13",
-    "postedAt": "2026-08-21T00:00:00Z"
+    "postedAt": "2026-08-21T00:00:00Z",
+    "text": "Cliente pediu para adiar a formação uma semana.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0011",
+    "projectName": "SuccessFactors Employee Central",
+    "authorName": "João Santos"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000823f",
     "project_ID": "00000000-0000-4000-8000-00000000b104",
-    "text": "Riscos revistos: dependência de dados mestre do cliente.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a1",
-    "postedAt": "2026-08-26T00:00:00Z"
+    "postedAt": "2026-08-26T00:00:00Z",
+    "text": "Riscos revistos: dependência de dados mestre do cliente.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0011",
+    "projectName": "SuccessFactors Employee Central",
+    "authorName": "Marlon Teixeira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008240",
     "project_ID": "00000000-0000-4000-8000-00000000b11c",
-    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a7",
-    "postedAt": "2026-09-14T00:00:00Z"
+    "postedAt": "2026-09-14T00:00:00Z",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0012",
+    "projectName": "Recrutamento e Onboarding",
+    "authorName": "Rui Almeida"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008241",
     "project_ID": "00000000-0000-4000-8000-00000000b11c",
-    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000ae",
-    "postedAt": "2026-09-08T00:00:00Z"
+    "postedAt": "2026-09-08T00:00:00Z",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0012",
+    "projectName": "Recrutamento e Onboarding",
+    "authorName": "Carlos Mendes"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008242",
     "project_ID": "00000000-0000-4000-8000-00000000b135",
-    "text": "Configuração concluída no ambiente de qualidade.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000ac",
-    "postedAt": "2026-08-30T00:00:00Z"
+    "postedAt": "2026-08-30T00:00:00Z",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0013",
+    "projectName": "Performance & Goals",
+    "authorName": "Marcos Silva"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008243",
     "project_ID": "00000000-0000-4000-8000-00000000b135",
-    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000ab",
-    "postedAt": "2026-08-27T00:00:00Z"
+    "postedAt": "2026-08-27T00:00:00Z",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0013",
+    "projectName": "Performance & Goals",
+    "authorName": "Tiago Ferreira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008244",
     "project_ID": "00000000-0000-4000-8000-00000000b135",
-    "text": "Documentação funcional revista e enviada para validação.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a4",
-    "postedAt": "2026-08-18T00:00:00Z"
+    "postedAt": "2026-08-18T00:00:00Z",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0013",
+    "projectName": "Performance & Goals",
+    "authorName": "Maria Santos"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008245",
     "project_ID": "00000000-0000-4000-8000-00000000b14c",
-    "text": "Riscos revistos: dependência de dados mestre do cliente.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000aa",
-    "postedAt": "2026-08-29T00:00:00Z"
+    "postedAt": "2026-08-29T00:00:00Z",
+    "text": "Riscos revistos: dependência de dados mestre do cliente.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0014",
+    "projectName": "Learning Management",
+    "authorName": "Beatriz Oliveira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008246",
     "project_ID": "00000000-0000-4000-8000-00000000b14c",
-    "text": "Ambiente de testes disponível; testes de integração a decorrer.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-000000000a10",
-    "postedAt": "2026-08-21T00:00:00Z"
+    "postedAt": "2026-08-21T00:00:00Z",
+    "text": "Ambiente de testes disponível; testes de integração a decorrer.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0014",
+    "projectName": "Learning Management",
+    "authorName": "Sofia Almeida"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008247",
     "project_ID": "00000000-0000-4000-8000-00000000b161",
-    "text": "Documentação funcional revista e enviada para validação.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a7",
-    "postedAt": "2026-09-27T00:00:00Z"
+    "postedAt": "2026-09-27T00:00:00Z",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0015",
+    "projectName": "Compensation Planning",
+    "authorName": "Rui Almeida"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008248",
     "project_ID": "00000000-0000-4000-8000-00000000b161",
-    "text": "Status changed from NotStarted to Closing.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000af",
-    "postedAt": "2026-09-24T00:00:00Z"
+    "postedAt": "2026-09-24T00:00:00Z",
+    "text": "Status changed from NotStarted to Closing.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0015",
+    "projectName": "Compensation Planning",
+    "authorName": "Ricardo Alves"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008249",
     "project_ID": "00000000-0000-4000-8000-00000000b161",
-    "text": "Cliente pediu para adiar a formação uma semana.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000ab",
-    "postedAt": "2026-09-17T00:00:00Z"
+    "postedAt": "2026-09-17T00:00:00Z",
+    "text": "Cliente pediu para adiar a formação uma semana.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0015",
+    "projectName": "Compensation Planning",
+    "authorName": "Tiago Ferreira"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000824a",
     "project_ID": "00000000-0000-4000-8000-00000000b170",
-    "text": "Status changed from NotStarted to InProgress.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000af",
-    "postedAt": "2026-08-27T00:00:00Z"
+    "postedAt": "2026-08-27T00:00:00Z",
+    "text": "Status changed from NotStarted to InProgress.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0016",
+    "projectName": "Rollout Espanha",
+    "authorName": "Ricardo Alves"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000824b",
     "project_ID": "00000000-0000-4000-8000-00000000b170",
-    "text": "Status changed from NotStarted to InProgress.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000a6",
-    "postedAt": "2026-08-22T00:00:00Z"
+    "postedAt": "2026-08-22T00:00:00Z",
+    "text": "Status changed from NotStarted to InProgress.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0016",
+    "projectName": "Rollout Espanha",
+    "authorName": "Carla Mendes"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000824c",
     "project_ID": "00000000-0000-4000-8000-00000000b170",
-    "text": "Ambiente de testes disponível; testes de integração a decorrer.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a8",
-    "postedAt": "2026-08-15T00:00:00Z"
+    "postedAt": "2026-08-15T00:00:00Z",
+    "text": "Ambiente de testes disponível; testes de integração a decorrer.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0016",
+    "projectName": "Rollout Espanha",
+    "authorName": "Sofia Carvalho"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000824d",
     "project_ID": "00000000-0000-4000-8000-00000000b170",
-    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-000000000a12",
-    "postedAt": "2026-08-09T00:00:00Z"
+    "postedAt": "2026-08-09T00:00:00Z",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0016",
+    "projectName": "Rollout Espanha",
+    "authorName": "Ana Pereira"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000824e",
     "project_ID": "00000000-0000-4000-8000-00000000b183",
-    "text": "Status changed from NotStarted to Cancelled.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-000000000a11",
-    "postedAt": "2026-08-30T00:00:00Z"
+    "postedAt": "2026-08-30T00:00:00Z",
+    "text": "Status changed from NotStarted to Cancelled.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0017",
+    "projectName": "Rollout Brasil",
+    "authorName": "Mariana Lopes"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000824f",
     "project_ID": "00000000-0000-4000-8000-00000000b183",
-    "text": "Configuração concluída no ambiente de qualidade.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a3",
-    "postedAt": "2026-08-25T00:00:00Z"
+    "postedAt": "2026-08-25T00:00:00Z",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0017",
+    "projectName": "Rollout Brasil",
+    "authorName": "João Pereira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008250",
     "project_ID": "00000000-0000-4000-8000-00000000b183",
-    "text": "Configuração concluída no ambiente de qualidade.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a1",
-    "postedAt": "2026-08-22T00:00:00Z"
+    "postedAt": "2026-08-22T00:00:00Z",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0017",
+    "projectName": "Rollout Brasil",
+    "authorName": "Marlon Teixeira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008251",
     "project_ID": "00000000-0000-4000-8000-00000000b198",
-    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-000000000a10",
-    "postedAt": "2026-09-16T00:00:00Z"
+    "postedAt": "2026-09-16T00:00:00Z",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0018",
+    "projectName": "Work Zone Intranet",
+    "authorName": "Sofia Almeida"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008252",
     "project_ID": "00000000-0000-4000-8000-00000000b198",
-    "text": "Configuração concluída no ambiente de qualidade.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a9",
-    "postedAt": "2026-09-09T00:00:00Z"
+    "postedAt": "2026-09-09T00:00:00Z",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0018",
+    "projectName": "Work Zone Intranet",
+    "authorName": "Miguel Rodrigues"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008253",
     "project_ID": "00000000-0000-4000-8000-00000000b198",
-    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a6",
-    "postedAt": "2026-08-31T00:00:00Z"
+    "postedAt": "2026-08-31T00:00:00Z",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0018",
+    "projectName": "Work Zone Intranet",
+    "authorName": "Carla Mendes"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008254",
     "project_ID": "00000000-0000-4000-8000-00000000b1b1",
-    "text": "Configuração concluída no ambiente de qualidade.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000ab",
-    "postedAt": "2026-09-09T00:00:00Z"
+    "postedAt": "2026-09-09T00:00:00Z",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0019",
+    "projectName": "Time Tracking",
+    "authorName": "Tiago Ferreira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008255",
     "project_ID": "00000000-0000-4000-8000-00000000b1b1",
-    "text": "Cliente pediu para adiar a formação uma semana.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a3",
-    "postedAt": "2026-09-05T00:00:00Z"
+    "postedAt": "2026-09-05T00:00:00Z",
+    "text": "Cliente pediu para adiar a formação uma semana.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0019",
+    "projectName": "Time Tracking",
+    "authorName": "João Pereira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008256",
     "project_ID": "00000000-0000-4000-8000-00000000b1c8",
-    "text": "Status changed from NotStarted to InProgress.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000a9",
-    "postedAt": "2026-08-31T00:00:00Z"
+    "postedAt": "2026-08-31T00:00:00Z",
+    "text": "Status changed from NotStarted to InProgress.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0020",
+    "projectName": "Assessment HR Digital",
+    "authorName": "Miguel Rodrigues"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008257",
     "project_ID": "00000000-0000-4000-8000-00000000b1c8",
-    "text": "Status changed from NotStarted to InProgress.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000ae",
-    "postedAt": "2026-08-28T00:00:00Z"
+    "postedAt": "2026-08-28T00:00:00Z",
+    "text": "Status changed from NotStarted to InProgress.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0020",
+    "projectName": "Assessment HR Digital",
+    "authorName": "Carlos Mendes"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008258",
     "project_ID": "00000000-0000-4000-8000-00000000b1c8",
-    "text": "Status changed from NotStarted to InProgress.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000aa",
-    "postedAt": "2026-08-19T00:00:00Z"
+    "postedAt": "2026-08-19T00:00:00Z",
+    "text": "Status changed from NotStarted to InProgress.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0020",
+    "projectName": "Assessment HR Digital",
+    "authorName": "Beatriz Oliveira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008259",
     "project_ID": "00000000-0000-4000-8000-00000000b1c8",
-    "text": "Status changed from NotStarted to InProgress.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-000000000a12",
-    "postedAt": "2026-08-16T00:00:00Z"
+    "postedAt": "2026-08-16T00:00:00Z",
+    "text": "Status changed from NotStarted to InProgress.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0020",
+    "projectName": "Assessment HR Digital",
+    "authorName": "Ana Pereira"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000825a",
     "project_ID": "00000000-0000-4000-8000-00000000b1d6",
-    "text": "Configuração concluída no ambiente de qualidade.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a6",
-    "postedAt": "2026-10-02T00:00:00Z"
+    "postedAt": "2026-10-02T00:00:00Z",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0021",
+    "projectName": "Change Management S/4",
+    "authorName": "Carla Mendes"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000825b",
     "project_ID": "00000000-0000-4000-8000-00000000b1d6",
-    "text": "Configuração concluída no ambiente de qualidade.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a7",
-    "postedAt": "2026-09-24T00:00:00Z"
+    "postedAt": "2026-09-24T00:00:00Z",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0021",
+    "projectName": "Change Management S/4",
+    "authorName": "Rui Almeida"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000825c",
     "project_ID": "00000000-0000-4000-8000-00000000b1d6",
-    "text": "Status changed from NotStarted to NotStarted.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000a4",
-    "postedAt": "2026-09-18T00:00:00Z"
+    "postedAt": "2026-09-18T00:00:00Z",
+    "text": "Status changed from NotStarted to NotStarted.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0021",
+    "projectName": "Change Management S/4",
+    "authorName": "Maria Santos"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000825d",
     "project_ID": "00000000-0000-4000-8000-00000000b1d6",
-    "text": "Status changed from NotStarted to NotStarted.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000a7",
-    "postedAt": "2026-09-20T00:00:00Z"
+    "postedAt": "2026-09-20T00:00:00Z",
+    "text": "Status changed from NotStarted to NotStarted.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0021",
+    "projectName": "Change Management S/4",
+    "authorName": "Rui Almeida"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000825e",
     "project_ID": "00000000-0000-4000-8000-00000000b1f3",
-    "text": "Configuração concluída no ambiente de qualidade.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a2",
-    "postedAt": "2026-09-11T00:00:00Z"
+    "postedAt": "2026-09-11T00:00:00Z",
+    "text": "Configuração concluída no ambiente de qualidade.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0022",
+    "projectName": "Bolsa de horas 2026",
+    "authorName": "Ana Silva"
   },
   {
     "ID": "00000000-0000-4000-8000-00000000825f",
     "project_ID": "00000000-0000-4000-8000-00000000b1f3",
-    "text": "Riscos revistos: dependência de dados mestre do cliente.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a4",
-    "postedAt": "2026-09-06T00:00:00Z"
+    "postedAt": "2026-09-06T00:00:00Z",
+    "text": "Riscos revistos: dependência de dados mestre do cliente.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0022",
+    "projectName": "Bolsa de horas 2026",
+    "authorName": "Maria Santos"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008260",
     "project_ID": "00000000-0000-4000-8000-00000000b1f3",
-    "text": "Riscos revistos: dependência de dados mestre do cliente.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000ad",
-    "postedAt": "2026-08-26T00:00:00Z"
+    "postedAt": "2026-08-26T00:00:00Z",
+    "text": "Riscos revistos: dependência de dados mestre do cliente.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0022",
+    "projectName": "Bolsa de horas 2026",
+    "authorName": "Marta Oliveira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008261",
     "project_ID": "00000000-0000-4000-8000-00000000b1ff",
-    "text": "Status changed from NotStarted to OnHold.",
-    "milestone_ID": null,
-    "isAutomatic": true,
     "author_ID": "00000000-0000-4000-8000-0000000000a2",
-    "postedAt": "2026-08-25T00:00:00Z"
+    "postedAt": "2026-08-25T00:00:00Z",
+    "text": "Status changed from NotStarted to OnHold.",
+    "isAutomatic": true,
+    "projectCode": "CO-T-0023",
+    "projectName": "Integração Payroll",
+    "authorName": "Ana Silva"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008262",
     "project_ID": "00000000-0000-4000-8000-00000000b1ff",
-    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a3",
-    "postedAt": "2026-08-19T00:00:00Z"
+    "postedAt": "2026-08-19T00:00:00Z",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0023",
+    "projectName": "Integração Payroll",
+    "authorName": "João Pereira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008263",
     "project_ID": "00000000-0000-4000-8000-00000000b1ff",
-    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000ad",
-    "postedAt": "2026-08-17T00:00:00Z"
+    "postedAt": "2026-08-17T00:00:00Z",
+    "text": "Reunião de acompanhamento com o cliente; próximos passos acordados.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0023",
+    "projectName": "Integração Payroll",
+    "authorName": "Marta Oliveira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008264",
     "project_ID": "00000000-0000-4000-8000-00000000b205",
-    "text": "Documentação funcional revista e enviada para validação.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a3",
-    "postedAt": "2026-09-30T00:00:00Z"
+    "postedAt": "2026-09-30T00:00:00Z",
+    "text": "Documentação funcional revista e enviada para validação.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0024",
+    "projectName": "Relatórios Financeiros",
+    "authorName": "João Pereira"
   },
   {
     "ID": "00000000-0000-4000-8000-000000008265",
     "project_ID": "00000000-0000-4000-8000-00000000b205",
-    "text": "Ambiente de testes disponível; testes de integração a decorrer.",
-    "milestone_ID": null,
-    "isAutomatic": false,
     "author_ID": "00000000-0000-4000-8000-0000000000a6",
-    "postedAt": "2026-09-22T00:00:00Z"
+    "postedAt": "2026-09-22T00:00:00Z",
+    "text": "Ambiente de testes disponível; testes de integração a decorrer.",
+    "isAutomatic": false,
+    "projectCode": "CO-T-0024",
+    "projectName": "Relatórios Financeiros",
+    "authorName": "Carla Mendes"
   }
 ]

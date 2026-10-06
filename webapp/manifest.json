@@ -120,7 +120,7 @@
         "projects": { "viewName": "Projects", "viewId": "projects", "viewLevel": 1, "title": "{i18n>navProjects}" },
         "projectCreate": { "viewName": "ProjectCreate", "viewId": "projectCreate", "viewLevel": 2, "title": "{i18n>newProject}" },
         "projectDetail": { "viewName": "ProjectDetail", "viewId": "projectDetail", "viewLevel": 2, "title": "{i18n>navProjects}" },
-        "myWork": { "viewName": "Placeholder", "viewId": "myWork", "viewLevel": 1, "title": "{i18n>navMyWork}" },
+        "myWork": { "viewName": "MyWork", "viewId": "myWork", "viewLevel": 1, "title": "{i18n>navMyWork}" },
         "audits": { "viewName": "Placeholder", "viewId": "audits", "viewLevel": 1, "title": "{i18n>navAudits}" },
         "attachments": { "viewName": "Placeholder", "viewId": "attachments", "viewLevel": 1, "title": "{i18n>navAttachments}" },
         "people": { "viewName": "Placeholder", "viewId": "people", "viewLevel": 1, "title": "{i18n>navPeople}" },

@@ -136,7 +136,7 @@ sap.ui.define([
                 }
                 oOverview.setProperty("/draft", "");
                 MessageToast.show(this.getResourceBundle().getText("updPosted"));
-                // author and createdAt are the API's to fill in
+                // author and postedAt are the API's to fill in
                 oList.getBinding("items").refresh();
                 this._loadOverview();
             }.bind(this));
@@ -170,8 +170,8 @@ sap.ui.define([
             Promise.all([
                 read("milestones", { $orderby: "sortOrder" }),
                 read("members", { $expand: "person($select=name)", $orderby: "startDate" }),
-                read("modules", { $select: "ID,module" }),
-                read("updates", { $expand: "author($select=name)", $orderby: "createdAt desc" }, 3)
+                read("modules", { $select: "module" }),
+                read("updates", { $expand: "author($select=name)", $orderby: "postedAt desc" }, 3)
             ]).then(function (aResults) {
                 var oProgress = projectOverview.describe(aResults[0], sToday),
                     oNext = oProgress.next,

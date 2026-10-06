@@ -20,12 +20,12 @@ async function people(base) {
 }
 
 // "Cada mudança de estado publica um update automático no projeto."
-async function publishUpdate(base, projectID, text) {
+async function publishUpdate(base, project_ID, text) {
     const author = (await people(base))[0];
 
     await (await base.getEntityInterface("Updates")).addEntry({
-        ID: randomUUID(), project_ID: projectID, text, milestone_ID: null, isAutomatic: true,
-        author_ID: author.ID, createdAt: new Date().toISOString()
+        ID: randomUUID(), project_ID: project_ID, text, milestone_ID: null, isAutomatic: true,
+        author_ID: author.ID, postedAt: new Date().toISOString()
     });
 }
 

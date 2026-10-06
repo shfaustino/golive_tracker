@@ -265,6 +265,78 @@ sap.ui.define([
         },
 
         /**
+         * The label of an item type (Meeting, Document, Task, FollowUp).
+         * @param {string} sType the API's type
+         * @returns {string} the label
+         */
+        itemTypeText: function (sType) {
+            return sType ? this.getResourceBundle().getText("itemType" + sType) : "";
+        },
+
+        /**
+         * The chip text of an item: "Em atraso" when late, its status otherwise.
+         * @param {string} sStatus ToDo, InProgress, Done or Cancelled
+         * @param {boolean} bLate whether it is late
+         * @returns {string} the label
+         */
+        itemStatusText: function (sStatus, bLate) {
+            var oBundle = this.getResourceBundle();
+
+            if (bLate) {
+                return oBundle.getText("msOverdue");
+            }
+            return {
+                ToDo: oBundle.getText("itemToDo"),
+                InProgress: oBundle.getText("statusInProgress"),
+                Done: oBundle.getText("itemDone"),
+                Cancelled: oBundle.getText("statusCancelled")
+            }[sStatus] || sStatus || "";
+        },
+
+        /**
+         * The chip colour of an item, as in the mockup: late red, in progress
+         * blue, done green, the rest grey.
+         * @param {string} sStatus the API's status
+         * @param {boolean} bLate whether it is late
+         * @returns {sap.ui.core.ValueState} the state
+         */
+        itemStatusState: function (sStatus, bLate) {
+            if (bLate) {
+                return ValueState.Error;
+            }
+            return { InProgress: ValueState.Information, Done: ValueState.Success }[sStatus] || ValueState.None;
+        },
+
+        /**
+         * "1 dia" or "n dias".
+         * @param {number} iDays days
+         * @returns {string} the text
+         */
+        daysText: function (iDays) {
+            return this.getResourceBundle().getText(iDays === 1 ? "daysLateOne" : "daysLate", [iDays]);
+        },
+
+        /**
+         * The day of a YYYY-MM-DD, two digits ("05"), for the date badges.
+         * @param {string} sDate YYYY-MM-DD
+         * @returns {string} the day
+         */
+        dayOfMonth: function (sDate) {
+            return (sDate || "").slice(8, 10);
+        },
+
+        /**
+         * The month of a YYYY-MM-DD, short and in capitals ("NOV").
+         * @param {string} sDate YYYY-MM-DD
+         * @returns {string} the month
+         */
+        monthShort: function (sDate) {
+            var iMonth = Number((sDate || "").slice(5, 7));
+
+            return iMonth ? this.getResourceBundle().getText("monthsShort").split(",")[iMonth - 1] : "";
+        },
+
+        /**
          * The label of a member role ("Functional lead" -> "Líder funcional").
          * @param {string} sRole the API's role
          * @returns {string} the label, or the raw value when unknown

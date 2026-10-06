@@ -6,6 +6,9 @@ services, `/project` and `/admin`, and on SAP BTP it is served by a standalone
 approuter that signs the user in through XSUAA and forwards the token.
 
 - API guide for the frontend: [docs/backend-api-guide.md](docs/backend-api-guide.md)
+- API reference (OpenAPI, every entity, field and operation):
+  [docs/api/ProjectService.openapi.json](docs/api/ProjectService.openapi.json),
+  [docs/api/AdminService.openapi.json](docs/api/AdminService.openapi.json)
 - Mockups: [docs/mockups](docs/mockups)
 - API code: [NelsonTeixeira09/golive-tracker-api](https://github.com/NelsonTeixeira09/golive-tracker-api)
 
@@ -74,7 +77,8 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
 - [x] 05 Projeto — equipa (add, edit, end today, remove, PM hand-over)
 - [x] 06 Novo projeto — general data, modules, initial team, preview of the
   milestones the type generates; one deep insert
-- [ ] 07 O meu trabalho
+- [x] 07 O meu trabalho — my items (KPIs, search, state filter, pages, late,
+  upcoming), my milestones, projects where I am a member
 - [ ] 08 Auditorias
 - [ ] 09 Administração — pessoas e clientes
 

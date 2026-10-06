@@ -22,6 +22,8 @@ function pick(a) {
     return a[Math.floor(random() * a.length)];
 }
 let uuidCounter = 0;
+// prefix: one hex digit per kind of row, so ids stay valid GUIDs and the
+// kind can be read off an id when debugging.
 function uuid(prefix) {
     uuidCounter += 1;
     const hex = (prefix + uuidCounter.toString(16)).padStart(12, "0").slice(-12);
@@ -147,7 +149,7 @@ PROJECT_NAMES.forEach(function (name, i) {
             changeReason: null
         });
         team.slice(0, 1 + Math.floor(random() * Math.min(4, team.length))).forEach(function (person) {
-            owners.push({ ID: uuid("g"), milestone_ID: msID, person_ID: person.ID });
+            owners.push({ ID: uuid("9"), milestone_ID: msID, person_ID: person.ID });
         });
     });
 
@@ -189,18 +191,71 @@ projects.forEach(function (project) {
         const automatic = random() < 0.25;
 
         updates.push({
-            ID: uuid("h"),
+            ID: uuid("8"),
             project_ID: project.ID,
             text: automatic ? "Status changed from NotStarted to " + project.status + "." : pick(UPDATE_TEXTS),
             milestone_ID: null,
             isAutomatic: automatic,
             author_ID: pick(PEOPLE).ID,
-            createdAt: addDays(new Date(project.lastUpdateAt), -k * (3 + Math.floor(random() * 6))).toISOString().replace(".000Z", "Z")
+            postedAt: addDays(new Date(project.lastUpdateAt), -k * (3 + Math.floor(random() * 6))).toISOString().replace(".000Z", "Z")
         });
     }
 });
 
+// O meu trabalho for the signed-in mock user (the first person): a member
+// of eight projects, owner of some of their milestones, and of items under
+// them. Generated after everything above, so no earlier id moves.
+const ME = PEOPLE[0];
+const ITEM_NAMES = [
+    ["Rever documentação funcional", "Document"], ["Reunião de acompanhamento", "Meeting"],
+    ["Executar testes de carga", "Task"], ["Validação de dados mestres", "Task"],
+    ["Preparar ambiente de produção", "Task"], ["Checklist de go-live", "Task"],
+    ["Atualizar manual do utilizador", "Document"], ["Aprovação final do cliente", "Meeting"],
+    ["Corrigir observações da auditoria", "FollowUp"], ["Configuração de autorizações", "Task"]
+];
+const myItems = [];
+const myMilestones = [];
+projects.filter((p) => ["InProgress", "OnHold", "Replanning"].includes(p.status)).slice(0, 8).forEach(function (project) {
+    if (!members.some((m) => m.project_ID === project.ID && m.person_ID === ME.ID)) {
+        members.push({ ID: uuid("d"), project_ID: project.ID, person_ID: ME.ID, role: "Functional lead", startDate: project.startDate, endDate: null });
+    }
+    milestones.filter((m) => m.project_ID === project.ID).slice(0, 4).forEach(function (milestone, n) {
+        if (n % 2 === 0) {
+            owners.push({ ID: uuid("9"), milestone_ID: milestone.ID, person_ID: ME.ID });
+            myMilestones.push({
+                ID: milestone.ID, milestoneType: milestone.milestoneType, status: milestone.status,
+                forecastEnd: milestone.forecastEnd, isOverdue: milestone.isOverdue,
+                project_ID: project.ID, projectCode: project.code, projectName: project.name
+            });
+        }
+        const [name, type] = pick(ITEM_NAMES);
+        const date = isoDate(addDays(TODAY, Math.floor(random() * 50) - 18));
+        const status = date < isoDate(TODAY) ? pick(["Done", "InProgress", "ToDo"]) : pick(["ToDo", "InProgress", "ToDo"]);
+
+        myItems.push({
+            ID: uuid("7"), name, type, status, date,
+            isOverdue: date < isoDate(TODAY) && (status === "ToDo" || status === "InProgress"),
+            milestone_ID: milestone.ID, milestoneType: milestone.milestoneType,
+            project_ID: project.ID, projectCode: project.code, projectName: project.name
+        });
+    });
+});
+
+// RecentUpdates: the API's view of all updates, project and author flattened in.
+const recentUpdates = updates.map(function (u) {
+    const project = projects.find((p) => p.ID === u.project_ID);
+    const author = PEOPLE.find((p) => p.ID === u.author_ID);
+
+    return {
+        ID: u.ID, project_ID: u.project_ID, author_ID: u.author_ID, postedAt: u.postedAt, text: u.text,
+        isAutomatic: u.isAutomatic, projectCode: project.code, projectName: project.name, authorName: author.name
+    };
+});
+
 const files = {
+    RecentUpdates: recentUpdates,
+    MyItems: myItems,
+    MyMilestones: myMilestones,
     Updates: updates,
     Projects: projects,
     Members: members,
