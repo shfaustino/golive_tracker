@@ -31,10 +31,10 @@ modules:
       - name: golive-tracker-destination
 
 resources:
-  # The API's own XSUAA instance (xsappname golive-tracker-api-DevOps): the
+  # The API's own XSUAA instance (xsappname golive-tracker-api-Sandbox): the
   # approuter has to be bound to it so the token it forwards is one the API
-  # accepts. The API's MTA creates it in the same space (DevOps, deployed
-  # with deploy/api-devops.mtaext); this one only binds to it.
+  # accepts. The API's MTA creates it; this one only binds to it, so it is
+  # deployed in the API's space (Sandbox).
   - name: golive-tracker-api-auth
     type: org.cloudfoundry.existing-service
     parameters:
@@ -53,7 +53,7 @@ resources:
             destinations:
               - Name: golive-tracker-api
                 Type: HTTP
-                URL: https://h2h-sandbox-lwsjexg2-golive-tracker-api.cfapps.us10.hana.ondemand.com
+                URL: https://amt---consulting--s-a--h2h-sandbox-lwsjexg2-sandbox-gol62961c38.cfapps.us10.hana.ondemand.com
                 ProxyType: Internet
                 Authentication: NoAuthentication
                 forwardAuthToken: true
