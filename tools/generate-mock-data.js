@@ -51,7 +51,7 @@ const PEOPLE = [
 
 const CLIENTS = ["Cliente A", "Cliente B", "Cliente C", "Cliente D", "Cliente E", "Cliente F", "Cerejeira SA", "Lusitânia Retail"]
     .map(function (name, i) {
-        return { ID: uuid("c"), name, taxId: String(500000001 + i), active: true };
+        return { ID: uuid("c"), name, taxId: String(500000001 + i), erpCode: "ERP-" + String(1001 + i), active: true };
     });
 
 const PROJECT_NAMES = [
@@ -324,4 +324,17 @@ fs.mkdirSync(OUT, { recursive: true });
 Object.keys(files).forEach(function (name) {
     fs.writeFileSync(path.join(OUT, name + ".json"), JSON.stringify(files[name], null, 2) + "\n");
 });
-console.log("Mock data written to " + path.relative(process.cwd(), OUT));
+
+// The /admin mock: the same people and clients, inactive ones included,
+// with every field AdminService has. A few more clients, some inactive, so
+// the Clientes tab has something to page through.
+const ADMIN_OUT = path.join(__dirname, "..", "webapp", "localService", "admin", "data");
+const moreClients = ["Atlântico Seguros", "Norte Logística", "Vinhos do Douro", "Saúde Mais", "TecnoPorto"]
+    .map(function (name, i) {
+        return { ID: uuid("c"), name, taxId: String(500000101 + i), erpCode: "ERP-" + String(2001 + i), active: i !== 2 };
+    });
+fs.mkdirSync(ADMIN_OUT, { recursive: true });
+fs.writeFileSync(path.join(ADMIN_OUT, "People.json"), JSON.stringify(PEOPLE, null, 2) + "\n");
+fs.writeFileSync(path.join(ADMIN_OUT, "Clients.json"), JSON.stringify(CLIENTS.concat(moreClients), null, 2) + "\n");
+
+console.log("Mock data written to " + path.relative(process.cwd(), OUT) + " and " + path.relative(process.cwd(), ADMIN_OUT));

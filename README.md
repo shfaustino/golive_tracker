@@ -29,7 +29,8 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
 
 ### With the API
 
-1. Start the API (Node.js 22+), in a clone of `golive-tracker-api`:
+1. Start the API (Node.js 22+), in a clone of `golive-tracker-api` (next to
+   this folder, `../golive-tracker-api`):
 
    ```sh
    npm install
@@ -81,7 +82,9 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
   upcoming), my milestones, projects where I am a member
 - [x] 08 Auditorias — paged list with search, project and result filters;
   new, edit, follow-up and delete; also as the project's Auditorias tab
-- [ ] 09 Administração — pessoas e clientes
+- [x] 09 Administração — Pessoas and Clientes tabs; Administrators manage
+  them through /admin (new, edit, deactivate, delete), others see the active
+  ones read-only through /project; also the side menu's Pessoas and Clientes
 
 "Evolução dos projetos" and "Últimas atualizações" on the dashboard mockup
 have no source in the API yet; their places show overdue milestones and

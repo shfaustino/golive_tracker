@@ -123,9 +123,9 @@
         "myWork": { "viewName": "MyWork", "viewId": "myWork", "viewLevel": 1, "title": "{i18n>navMyWork}" },
         "audits": { "viewName": "Audits", "viewId": "audits", "viewLevel": 1, "title": "{i18n>navAudits}" },
         "attachments": { "viewName": "Placeholder", "viewId": "attachments", "viewLevel": 1, "title": "{i18n>navAttachments}" },
-        "people": { "viewName": "Placeholder", "viewId": "people", "viewLevel": 1, "title": "{i18n>navPeople}" },
-        "clients": { "viewName": "Placeholder", "viewId": "clients", "viewLevel": 1, "title": "{i18n>navClients}" },
-        "admin": { "viewName": "Placeholder", "viewId": "admin", "viewLevel": 1, "title": "{i18n>navAdmin}" },
+        "people": { "viewName": "Admin", "viewId": "admin", "viewLevel": 1, "title": "{i18n>navPeople}" },
+        "clients": { "viewName": "Admin", "viewId": "admin", "viewLevel": 1, "title": "{i18n>navClients}" },
+        "admin": { "viewName": "Admin", "viewId": "admin", "viewLevel": 1, "title": "{i18n>navAdmin}" },
         "notFound": { "viewName": "NotFound", "viewId": "notFound" }
       }
     },

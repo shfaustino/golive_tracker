@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A stand-in for the API's /admin/$metadata, for `npm run start-mock`
+     only, following docs/api/AdminService.openapi.json. -->
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="AdminService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="People" EntityType="AdminService.People"/>
+        <EntitySet Name="Clients" EntityType="AdminService.Clients"/>
+      </EntityContainer>
+
+      <EntityType Name="People">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="150"/>
+        <Property Name="email" Type="Edm.String" MaxLength="200"/>
+        <Property Name="profile" Type="Edm.String" MaxLength="20"/>
+        <Property Name="active" Type="Edm.Boolean"/>
+      </EntityType>
+
+      <EntityType Name="Clients">
+        <Key><PropertyRef Name="ID"/></Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="200"/>
+        <Property Name="taxId" Type="Edm.String" MaxLength="20"/>
+        <Property Name="erpCode" Type="Edm.String" MaxLength="50"/>
+        <Property Name="active" Type="Edm.Boolean"/>
+      </EntityType>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

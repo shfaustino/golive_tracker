@@ -1,0 +1,164 @@
+<mvc:View
+    controllerName="com.amt.golivetracker.controller.Admin"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc">
+
+    <!-- Pessoas e Clientes (docs/mockups/09-administracao-pessoas.png),
+         US-07, US-08: one page for the routes Pessoas, Clientes and
+         Administração. An Administrator manages both through /admin (every
+         record, inactive ones too, with profile and status); everyone else
+         sees the active ones read-only, through /project. A page at a time,
+         in the "dir" model (Admin.controller.js). -->
+    <Page id="adminPage" showHeader="false" class="gtPage">
+        <VBox class="gtPageContent" renderType="Bare">
+            <Breadcrumbs currentLocationText="{dir>/title}" separatorStyle="GreaterThan" class="gtBreadcrumbs" visible="{user>/isAdmin}">
+                <Link text="{i18n>navAdmin}" press=".onTabPeople"/>
+            </Breadcrumbs>
+
+            <HBox class="gtPageHeader" alignItems="Start" renderType="Bare">
+                <VBox renderType="Bare">
+                    <Title text="{dir>/title}" level="H1" class="gtPageTitle"/>
+                    <Text text="{dir>/subtitle}" class="gtSubtitle"/>
+                </VBox>
+                <Button
+                    id="newRecordButton"
+                    text="{dir>/newText}"
+                    icon="sap-icon://add"
+                    type="Emphasized"
+                    visible="{user>/isAdmin}"
+                    press=".onNew"
+                    class="gtPrimaryButton"/>
+            </HBox>
+
+            <IconTabBar
+                id="adminTabs"
+                selectedKey="{dir>/tab}"
+                select=".onTabSelect"
+                expandable="false"
+                headerMode="Inline"
+                headerBackgroundDesign="Transparent"
+                backgroundDesign="Transparent"
+                applyContentPadding="false"
+                class="gtProjectTabs">
+                <items>
+                    <IconTabFilter key="pessoas" text="{i18n>navPeople}"/>
+                    <IconTabFilter key="clientes" text="{i18n>navClients}"/>
+                </items>
+            </IconTabBar>
+
+            <HBox class="gtAdminFilters" alignItems="End" renderType="Bare">
+                <SearchField
+                    id="dirSearch"
+                    placeholder="{= ${dir>/tab} === 'pessoas' ? ${i18n>admSearchPeople} : ${i18n>admSearchClients} }"
+                    search=".onSearch"
+                    liveChange=".onSearch"
+                    showSearchButton="false"
+                    class="gtFilterSearch"/>
+                <VBox class="gtFilterField" renderType="Bare" visible="{= ${dir>/tab} === 'pessoas' }">
+                    <Label text="{i18n>teamColProfile}" labelFor="profileFilter" class="gtFilterLabel"/>
+                    <Select id="profileFilter" width="100%" selectedKey="{dir>/profile}" change=".onFilterChange">
+                        <core:Item key="" text="{i18n>filterAll}"/>
+                        <core:Item key="Administrator" text="{i18n>profileAdministrator}"/>
+                        <core:Item key="Architect" text="{i18n>profileArchitect}"/>
+                        <core:Item key="User" text="{i18n>profileUser}"/>
+                    </Select>
+                </VBox>
+                <VBox class="gtFilterField" renderType="Bare" visible="{user>/isAdmin}">
+                    <Label text="{i18n>colStatus}" labelFor="activeFilter" class="gtFilterLabel"/>
+                    <Select id="activeFilter" width="100%" selectedKey="{dir>/state}" change=".onFilterChange">
+                        <core:Item key="" text="{i18n>filterAll}"/>
+                        <core:Item key="active" text="{i18n>teamActive}"/>
+                        <core:Item key="inactive" text="{i18n>teamInactive}"/>
+                    </Select>
+                </VBox>
+            </HBox>
+
+            <VBox class="gtCard gtTableCard" renderType="Bare">
+                <!-- Pessoas -->
+                <Table
+                    id="peopleTable"
+                    class="gtTable"
+                    fixedLayout="false"
+                    visible="{= ${dir>/tab} === 'pessoas' }"
+                    busy="{dir>/busy}"
+                    busyIndicatorDelay="0"
+                    noDataText="{i18n>admNoPeople}"
+                    items="{dir>/rows}">
+                    <columns>
+                        <Column><Text text="{i18n>admName}"/></Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>admEmail}"/></Column>
+                        <Column><Text text="{i18n>teamColProfile}"/></Column>
+                        <Column visible="{user>/isAdmin}"><Text text="{i18n>colStatus}"/></Column>
+                        <Column width="4rem" hAlign="Center" visible="{user>/isAdmin}"/>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <HBox alignItems="Center" renderType="Bare" class="gtPersonCell">
+                                    <Avatar displaySize="S" initials="{path: 'dir>name', formatter: '.formatter.initials'}" class="gtPersonAvatar"/>
+                                    <Text text="{dir>name}"/>
+                                </HBox>
+                                <Link text="{dir>email}" href="{= 'mailto:' + ${dir>email} }"/>
+                                <Text text="{path: 'dir>profile', formatter: '.formatter.profileText'}"/>
+                                <ObjectStatus
+                                    text="{= ${dir>active} !== false ? ${i18n>teamActive} : ${i18n>teamInactive} }"
+                                    state="{= ${dir>active} !== false ? 'Success' : 'Error' }"
+                                    inverted="true"/>
+                                <Button icon="sap-icon://overflow" type="Transparent" tooltip="{i18n>admActions}" press=".onRowActions" class="gtRowAction"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+
+                <!-- Clientes -->
+                <Table
+                    id="clientsTable"
+                    class="gtTable"
+                    fixedLayout="false"
+                    visible="{= ${dir>/tab} === 'clientes' }"
+                    busy="{dir>/busy}"
+                    busyIndicatorDelay="0"
+                    noDataText="{i18n>admNoClients}"
+                    items="{dir>/rows}">
+                    <columns>
+                        <Column><Text text="{i18n>admName}"/></Column>
+                        <Column visible="{user>/isAdmin}"><Text text="{i18n>admTaxId}"/></Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>admErpCode}"/></Column>
+                        <Column visible="{user>/isAdmin}"><Text text="{i18n>colStatus}"/></Column>
+                        <Column width="4rem" hAlign="Center" visible="{user>/isAdmin}"/>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <HBox alignItems="Center" renderType="Bare" class="gtPersonCell">
+                                    <HBox class="gtFeedIcon gtTintBlue" renderType="Bare"><core:Icon src="sap-icon://building"/></HBox>
+                                    <Text text="{dir>name}"/>
+                                </HBox>
+                                <Text text="{= ${dir>taxId} || '—' }"/>
+                                <Text text="{= ${dir>erpCode} || '—' }"/>
+                                <ObjectStatus
+                                    text="{= ${dir>active} !== false ? ${i18n>teamActive} : ${i18n>teamInactive} }"
+                                    state="{= ${dir>active} !== false ? 'Success' : 'Error' }"
+                                    inverted="true"/>
+                                <Button icon="sap-icon://overflow" type="Transparent" tooltip="{i18n>admActions}" press=".onRowActions" class="gtRowAction"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+
+                <HBox class="gtTableFooter" justifyContent="SpaceBetween" alignItems="Center" renderType="Bare">
+                    <Text text="{dir>/rangeText}" class="gtSubtle"/>
+                    <HBox class="gtPager" alignItems="Center" renderType="Bare" visible="{= ${dir>/pageCount} > 1 }">
+                        <Button icon="sap-icon://slim-arrow-left" tooltip="{i18n>pagePrevious}" enabled="{= ${dir>/page} > 1 }" press=".onPagePrevious" class="gtPagerButton"/>
+                        <HBox items="{dir>/pages}" renderType="Bare" class="gtPagerPages">
+                            <Button text="{dir>n}" type="{= ${dir>current} ? 'Emphasized' : 'Default' }" press=".onPagePress" class="gtPagerButton"/>
+                        </HBox>
+                        <Button icon="sap-icon://slim-arrow-right" tooltip="{i18n>pageNext}" enabled="{= ${dir>/page} &lt; ${dir>/pageCount} }" press=".onPageNext" class="gtPagerButton"/>
+                    </HBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </Page>
+
+</mvc:View>

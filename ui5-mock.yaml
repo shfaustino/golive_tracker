@@ -35,6 +35,10 @@ server:
             metadataPath: ./webapp/localService/project/metadata.xml
             mockdataPath: ./webapp/localService/project/data
             generateMockData: false
+          - urlPath: /admin
+            metadataPath: ./webapp/localService/admin/metadata.xml
+            mockdataPath: ./webapp/localService/admin/data
+            generateMockData: false
         annotations: []
 builder:
   resources:

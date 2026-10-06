@@ -54,5 +54,40 @@
     "taxId": "500000008",
     "erpCode": "ERP-1008",
     "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000c2b8",
+    "name": "Atlântico Seguros",
+    "taxId": "500000101",
+    "erpCode": "ERP-2001",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000c2b9",
+    "name": "Norte Logística",
+    "taxId": "500000102",
+    "erpCode": "ERP-2002",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000c2ba",
+    "name": "Vinhos do Douro",
+    "taxId": "500000103",
+    "erpCode": "ERP-2003",
+    "active": false
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000c2bb",
+    "name": "Saúde Mais",
+    "taxId": "500000104",
+    "erpCode": "ERP-2004",
+    "active": true
+  },
+  {
+    "ID": "00000000-0000-4000-8000-00000000c2bc",
+    "name": "TecnoPorto",
+    "taxId": "500000105",
+    "erpCode": "ERP-2005",
+    "active": true
   }
 ]

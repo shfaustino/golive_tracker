@@ -432,6 +432,19 @@
     box-shadow: none;
 }
 
+/* Pessoas e Clientes: the filters between the tabs and the table */
+.gtAdminFilters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1rem 1.25rem;
+    margin: 1.25rem 0 1.5rem;
+}
+
+.gtAdminFilters + .gtCard {
+    margin-top: 0;
+}
+
 /* Filters on top of a table in the same card (Auditorias), as in the mockup */
 .gtFilterBarInCard {
     padding: 1.5rem 1.5rem 1.25rem;
