@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+
+# build
+dist/
+/tmp/
+
+# logs
+npm-debug.log*
+*.log
+
+# environment / secrets (NEVER commit credentials)
+.env
+.env.local
+default-env.json
+*.pem
+
+# editors / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# tools
+.playwright-mcp/
+.superpowers/
+.claude/worktrees/
+
+# BTP deploy (mbt build output and build-time copies)
+mta_archives/
+.*_mta_build_tmp/
+deploy/approuter/webapp/
