@@ -261,6 +261,7 @@
         <Property Name="clientName" Type="Edm.String"/>
         <Property Name="status" Type="Edm.String"/>
         <Property Name="reviewReason" Type="Edm.String"/>
+        <Property Name="reviewRequestedAt" Type="Edm.DateTimeOffset"/>
         <Property Name="lastUpdateAt" Type="Edm.DateTimeOffset"/>
       </ComplexType>
 

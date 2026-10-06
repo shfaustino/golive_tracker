@@ -162,7 +162,7 @@ sap.ui.define([
                 busy: false,
                 errors: {},
                 values: {
-                    code: "", name: "", client_ID: null, projectType: null, externalCode: "",
+                    code: "", name: "", client_ID: null, projectType: null, externalCode: "", description: "",
                     startDate: memberRules.today(), endDate: null, value: "", currency_code: "EUR",
                     modules: [], members: []
                 },

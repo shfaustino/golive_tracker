@@ -57,4 +57,5 @@ test("payload is the guide's deep insert, without empty optional fields", () => 
         members: [{ person_ID: "p1", role: "PM", startDate: "2026-10-01" }, { person_ID: "p2", role: "PMO", startDate: "2026-11-01" }]
     });
     assert.equal("value" in projectForm.payload(Object.assign({}, VALID, { value: "" })), false);
+    assert.equal(projectForm.payload(Object.assign({}, VALID, { description: "  Fase 2  " })).description, "Fase 2");
 });

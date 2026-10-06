@@ -129,6 +129,7 @@
                                     <HBox class="gtCardHeaderPlain" renderType="Bare">
                                         <Title text="{i18n>ovDetails}" level="H2" class="gtSectionTitle"/>
                                     </HBox>
+                                    <Text text="{description}" visible="{= !!${description} }" class="gtDescription"/>
                                     <HBox class="gtDetails" renderType="Bare">
                                         <VBox class="gtDetail" renderType="Bare">
                                             <Label text="{i18n>projectType}"/>

@@ -109,6 +109,9 @@ sap.ui.define([], function () {
             if ((oValues.externalCode || "").trim()) {
                 oBody.externalCode = oValues.externalCode.trim();
             }
+            if ((oValues.description || "").trim()) {
+                oBody.description = oValues.description.trim();
+            }
             if (oValues.value !== null && oValues.value !== undefined && oValues.value !== "") {
                 oBody.value = Number(oValues.value);
             }

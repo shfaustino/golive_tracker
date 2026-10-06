@@ -45,7 +45,8 @@ module.exports = {
             const clientName = (p) => (clients.find((c) => c.ID === p.client_ID) || {}).name || null;
             const ref = (p) => ({
                 project_ID: p.ID, projectCode: p.code, projectName: p.name, clientName: clientName(p),
-                status: p.status, reviewReason: p.reviewReason, lastUpdateAt: p.lastUpdateAt
+                status: p.status, reviewReason: p.reviewReason, lastUpdateAt: p.lastUpdateAt,
+                reviewRequestedAt: p.needsReview ? p.lastUpdateAt : null
             });
             const counts = {};
             const staleLimit = Date.now() - staleDays * 86400000;

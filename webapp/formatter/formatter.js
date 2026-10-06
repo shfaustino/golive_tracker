@@ -265,6 +265,36 @@ sap.ui.define([
         },
 
         /**
+         * How long ago something happened, as the mockup says it ("há 2
+         * horas", "há 1 dia"); the date itself after a week.
+         * @param {string} sTimestamp ISO 8601
+         * @returns {string} the text
+         */
+        timeAgo: function (sTimestamp) {
+            var oBundle = this.getResourceBundle(),
+                iMinutes = sTimestamp ? Math.floor((Date.now() - Date.parse(sTimestamp)) / 60000) : NaN,
+                iHours = Math.floor(iMinutes / 60),
+                iDays = Math.floor(iHours / 24);
+
+            if (isNaN(iMinutes)) {
+                return "";
+            }
+            if (iMinutes < 1) {
+                return oBundle.getText("agoNow");
+            }
+            if (iMinutes < 60) {
+                return oBundle.getText(iMinutes === 1 ? "agoMinute" : "agoMinutes", [iMinutes]);
+            }
+            if (iHours < 24) {
+                return oBundle.getText(iHours === 1 ? "agoHour" : "agoHours", [iHours]);
+            }
+            if (iDays < 7) {
+                return oBundle.getText(iDays === 1 ? "agoDay" : "agoDays", [iDays]);
+            }
+            return this.formatter.timestampDate(sTimestamp);
+        },
+
+        /**
          * The label of an item type (Meeting, Document, Task, FollowUp).
          * @param {string} sType the API's type
          * @returns {string} the label
