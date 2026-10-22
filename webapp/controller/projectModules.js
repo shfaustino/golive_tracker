@@ -64,6 +64,31 @@ sap.ui.define([
         },
 
         /**
+         * The Módulos tab's cards: first Geral, what is of no module (the
+         * whole project's milestones, the members of no module), then each
+         * module; each card opens its page.
+         * @param {{module: string}[]} aModules the project's modules
+         * @param {object[]} aMilestones the project's milestones
+         * @param {object[]} aTeam the active team, with each member's modules
+         * @returns {object[]} per card: what describe gives, whole, title, subtitle
+         * @private
+         */
+        _moduleCards: function (aModules, aMilestones, aTeam) {
+            var oBundle = this.getResourceBundle();
+
+            return moduleBreakdown.describe([{ module: moduleBreakdown.WHOLE_PROJECT }].concat(aModules || []),
+                aMilestones, aTeam).map(function (oCard) {
+                var bWhole = oCard.module === moduleBreakdown.WHOLE_PROJECT;
+
+                return Object.assign(oCard, {
+                    whole: bWhole,
+                    title: bWhole ? oBundle.getText("modWholeProject") : oCard.module,
+                    subtitle: bWhole ? oBundle.getText("modWholeProjectHint") : formatter.moduleName(oCard.module)
+                });
+            });
+        },
+
+        /**
          * "Adicionar módulo": the dialog, with the modules the project has not got.
          * @public
          */

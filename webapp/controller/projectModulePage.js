@@ -29,20 +29,12 @@ sap.ui.define([
         },
 
         /**
-         * "Abrir módulo" on a module's card.
+         * "Abrir módulo" on a module's card, Geral's included.
          * @param {sap.ui.base.Event} oEvent press of the card's button
          * @public
          */
         onOpenModule: function (oEvent) {
             this.navToModule(this._sProjectId, oEvent.getSource().getBindingContext("overview").getProperty("module"));
-        },
-
-        /**
-         * The whole project's milestones, on the same page a module has.
-         * @public
-         */
-        onOpenWholeProject: function () {
-            this.navToModule(this._sProjectId, moduleBreakdown.WHOLE_PROJECT);
         },
 
         /**
@@ -153,7 +145,7 @@ sap.ui.define([
                 code: bWhole ? "" : sModule,
                 name: sName,
                 ofProject: oBundle.getText(bWhole ? "modOfProjectWhole" : "modOfProject"),
-                msTitle: oBundle.getText("modMsTitle", [sName]),
+                msTitle: bWhole ? oBundle.getText("modMsTitleWhole") : oBundle.getText("modMsTitle", [sName]),
                 pct: oProgress.pct,
                 // as in Visão geral: the bar's width is the app's own number, nothing else goes in the HTML
                 progressBarHtml: "<div class=\"gtProgressFill\" style=\"width:" + oProgress.pct + "%\"></div>",

@@ -75,8 +75,9 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
   (progress, timeline, details, next milestone, team, latest updates);
   Módulos, each card opening the module's page (Projetos/<id>/Modulos/<module>)
   with its Marcos (KPIs, table, new and edit dialog), Equipa, Auditorias and
-  Anexos, and "Geral" for the milestones of no module; Updates (feed and
-  posting); Equipa, Auditorias and Anexos of the whole project
+  Anexos, and first "Geral", the same page for what is of no module (the
+  whole project's milestones, its whole team, the project's own
+  attachments); Updates (feed and posting)
 - [x] 05 Projeto — equipa (add, edit, end today, remove, PM hand-over)
 - [x] 06 Novo projeto — general data, modules, initial team, preview of the
   milestones the type generates; one deep insert

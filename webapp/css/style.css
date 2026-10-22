@@ -1515,16 +1515,6 @@
     font-weight: 600;
 }
 
-/* the whole project's milestones, under the module cards */
-.gtWholeProject {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-    padding: 1rem;
-    border: 1px dashed #c7d0de;
-    border-radius: 0.75rem;
-}
-
 /* A module's page: the module's code as a badge, its name as the title */
 .gtModuleHead {
     display: flex;

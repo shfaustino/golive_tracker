@@ -44,6 +44,17 @@ sap.ui.define([], function () {
         });
     }
 
+    /**
+     * Whether a row (an audit, an attachment) is a module's, through the
+     * module of its milestone; for the whole project, a row with none.
+     * @param {string} sModule a module, or WHOLE_PROJECT
+     * @param {string} [sRowModule] the row's module
+     * @returns {boolean} whether it is
+     */
+    function isOfModule(sModule, sRowModule) {
+        return (sRowModule || null) === (sModule === WHOLE_PROJECT ? null : sModule);
+    }
+
     return {
 
         WHOLE_PROJECT: WHOLE_PROJECT,
@@ -87,26 +98,17 @@ sap.ui.define([], function () {
         },
 
         /**
-         * How many of the rows (audits, attachments) are a module's.
-         * @param {string} sModule the module
+         * How many of the rows (audits, attachments) are a module's (isOfModule).
+         * @param {string} sModule a module, or WHOLE_PROJECT
          * @param {{module: string}[]} aRows rows with the module of their milestone
          * @returns {number} the count
          */
         count: function (sModule, aRows) {
             return (aRows || []).filter(function (oRow) {
-                return oRow.module === sModule;
+                return isOfModule(sModule, oRow.module);
             }).length;
         },
 
-        /**
-         * Whether a row (an audit, an attachment) is a module's, through the
-         * module of its milestone; for the whole project, a row with none.
-         * @param {string} sModule a module, or WHOLE_PROJECT
-         * @param {string} [sRowModule] the row's module
-         * @returns {boolean} whether it is
-         */
-        isOfModule: function (sModule, sRowModule) {
-            return (sRowModule || null) === (sModule === WHOLE_PROJECT ? null : sModule);
-        }
+        isOfModule: isOfModule
     };
 });
