@@ -35,16 +35,17 @@ sap.ui.define([
          * A module's page of a project, where its milestones, team, audits
          * and attachments are managed.
          * @param {string} sProjectId the project
-         * @param {string} [sModule] the module; none: the whole project's
-         *   milestones, those of no module
+         * @param {string} [sModule] the module; none: Geral, what is of no
+         *   module (the whole project's milestones, its whole team)
          * @param {string} [sTab] the tab to open, "marcos" by default
+         * @param {boolean} [bReplace] in place of the current history entry
          */
-        navToModule: function (sProjectId, sModule, sTab) {
+        navToModule: function (sProjectId, sModule, sTab, bReplace) {
             this.getRouter().navTo("projectModule", {
                 projectId: sProjectId,
                 module: sModule || moduleBreakdown.WHOLE_PROJECT,
                 tab: sTab || "marcos"
-            });
+            }, undefined, bReplace);
         },
 
         onExit: function () {

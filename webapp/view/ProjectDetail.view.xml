@@ -304,20 +304,24 @@
                             </HBox>
                             <!-- Each module: its milestones (and progress), the members
                                  who work on it, and how many of the project's audits
-                                 and attachments are its (model/moduleBreakdown.js) -->
-                            <HBox items="{overview>/modules}" class="gtModuleGrid" renderType="Bare">
+                                 and attachments are its (model/moduleBreakdown.js).
+                                 First, Geral: what is of no module (whole: true). -->
+                            <HBox items="{overview>/moduleCards}" class="gtModuleGrid" renderType="Bare">
                                 <VBox class="gtModuleCard" renderType="Bare">
                                     <HBox class="gtModule" alignItems="Center" renderType="Bare">
-                                        <HBox class="gtKpiIcon gtTintBlue" renderType="Bare"><core:Icon src="sap-icon://puzzle"/></HBox>
+                                        <HBox class="gtKpiIcon gtTintBlue" renderType="Bare">
+                                            <core:Icon src="{= ${overview>whole} ? 'sap-icon://home' : 'sap-icon://puzzle' }"/>
+                                        </HBox>
                                         <VBox renderType="Bare" class="gtModuleText">
-                                            <Text text="{overview>module}" class="gtModuleCode"/>
-                                            <Text text="{path: 'overview>module', formatter: '.formatter.moduleName'}" class="gtSubtle"/>
+                                            <Text text="{overview>title}" class="gtModuleCode"/>
+                                            <Text text="{overview>subtitle}" class="gtSubtle"/>
                                         </VBox>
                                         <Button
                                             icon="sap-icon://decline"
                                             type="Transparent"
                                             tooltip="{i18n>modRemove}"
                                             press=".onRemoveModule"
+                                            visible="{= !${overview>whole} }"
                                             class="gtModuleRemove"/>
                                     </HBox>
 
@@ -372,21 +376,6 @@
                                 </VBox>
                             </HBox>
                             <Text text="{i18n>modNoData}" visible="{= ${overview>/modules}.length === 0 }" class="gtSubtle"/>
-
-                            <!-- What is of no module: the whole project's milestones -->
-                            <HBox class="gtWholeProject" alignItems="Center" renderType="Bare">
-                                <VBox renderType="Bare" class="gtModuleText">
-                                    <Text text="{i18n>modWholeProjectTitle}" class="gtModuleCode"/>
-                                    <Text text="{i18n>modWholeProjectHint}" class="gtSubtle"/>
-                                </VBox>
-                                <Button
-                                    text="{i18n>modWholeProjectOpen}"
-                                    icon="sap-icon://navigation-right-arrow"
-                                    iconFirst="false"
-                                    type="Transparent"
-                                    press=".onOpenWholeProject"
-                                    class="gtModuleOpen"/>
-                            </HBox>
                         </VBox>
                     </IconTabFilter>
 
@@ -506,11 +495,12 @@
 
                     <!-- Equipa (docs/mockups/05-projeto-equipa.png), US-10, US-11,
                          BR-03: .../members with the person's name and profile.
-                         The PM changes only through the hand-over. -->
-                    <IconTabFilter key="equipa" text="{i18n>tabTeam}">
+                         The PM changes only through the hand-over. On a module's
+                         page its members; on Geral the whole team. -->
+                    <IconTabFilter key="equipa" text="{i18n>tabTeam}" visible="{= !!${detail>/module} }">
                         <VBox class="gtCard gtTableCard" renderType="Bare">
                             <HBox class="gtCardHeader" renderType="Bare">
-                                <Title text="{= ${detail>/module} ? ${i18n>modTeamTitle} : ${i18n>teamTitle} }" level="H2" class="gtSectionTitle"/>
+                                <Title text="{= ${detail>/moduleInfo/code} ? ${i18n>modTeamTitle} : ${i18n>teamTitle} }" level="H2" class="gtSectionTitle"/>
                                 <Button
                                     id="addMemberButton"
                                     text="{i18n>teamAdd}"
@@ -580,7 +570,7 @@
                     <!-- Auditorias: this project's audits (GET /project/Audits
                          filtered on the milestone's project); the dialogs are
                          the Auditorias page's (controller/auditDialogs.js). -->
-                    <IconTabFilter key="auditorias" text="{i18n>navAudits}" count="{parts: ['detail>/module', 'projAudits>/rows'], formatter: '.recordCount'}">
+                    <IconTabFilter key="auditorias" text="{i18n>navAudits}" count="{parts: ['detail>/module', 'projAudits>/rows'], formatter: '.recordCount'}" visible="{= !!${detail>/module} }">
                         <VBox class="gtCard gtTableCard" renderType="Bare">
                             <HBox class="gtCardHeader" renderType="Bare">
                                 <Title text="{i18n>auditProjectTitle}" level="H2" class="gtSectionTitle"/>
@@ -637,7 +627,7 @@
                     </IconTabFilter>
                     <!-- Anexos: the project's attachments, wherever they hang;
                          the table and dialogs are the Anexos page's. -->
-                    <IconTabFilter key="anexos" text="{i18n>navAttachments}" count="{parts: ['detail>/module', 'atts>/rows'], formatter: '.recordCount'}">
+                    <IconTabFilter key="anexos" text="{i18n>navAttachments}" count="{parts: ['detail>/module', 'atts>/rows'], formatter: '.recordCount'}" visible="{= !!${detail>/module} }">
                         <VBox class="gtCard gtTableCard" renderType="Bare">
                             <HBox class="gtCardHeader" renderType="Bare">
                                 <Title text="{i18n>attProjectTitle}" level="H2" class="gtSectionTitle"/>

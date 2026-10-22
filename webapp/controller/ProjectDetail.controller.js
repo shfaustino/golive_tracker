@@ -15,9 +15,10 @@ sap.ui.define([
 
     /**
      * The tabs of a project, and those of one of its modules (route
-     * projectModule); a page opens on its first when the route names none.
+     * projectModule) and of Geral, what is of no module; a page opens on its
+     * first when the route names none.
      */
-    var PROJECT_TABS = [DEFAULT_TAB, "modulos", "equipa", "auditorias", "anexos", "updates"],
+    var PROJECT_TABS = [DEFAULT_TAB, "modulos", "updates"],
         MODULE_TABS = ["marcos", "equipa", "auditorias", "anexos"];
 
     // The Equipa tab's handlers live in ./projectTeam, the header's actions,
@@ -274,6 +275,7 @@ sap.ui.define([
                 milestones: [],
                 team: [],
                 modules: [],
+                moduleCards: [],
                 updates: [],
                 draft: "",
                 posting: false
@@ -294,8 +296,13 @@ sap.ui.define([
                 aTabs = sModule ? MODULE_TABS : PROJECT_TABS,
                 sPath = "/Projects(" + oArgs.projectId + ")";
 
-            // A tab the page has not got (the project's old Marcos tab, now
-            // in each module) opens the page's first one.
+            // The project's Marcos, Equipa, Auditorias and Anexos are now in
+            // its modules: a link to one of them (from Visão geral, the
+            // Auditorias and Anexos pages, an old bookmark) opens it on Geral.
+            if (!sModule && MODULE_TABS.indexOf(oArgs.tab) !== -1) {
+                this.navToModule(oArgs.projectId, "", oArgs.tab, true);
+                return;
+            }
             oDetailModel.setProperty("/tab", aTabs.indexOf(oArgs.tab) === -1 ? aTabs[0] : oArgs.tab);
             oDetailModel.setProperty("/module", sModule);
             this._applyModuleFilters(sModule);

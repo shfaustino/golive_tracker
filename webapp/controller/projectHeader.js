@@ -209,6 +209,8 @@ sap.ui.define([
                 oOverview.setProperty("/milestones", aResults[0]);
                 oOverview.setProperty("/modules",
                     this._describeModules(aResults[2], aResults[0], oOverview.getProperty("/team")));
+                oOverview.setProperty("/moduleCards",
+                    this._moduleCards(aResults[2], aResults[0], oOverview.getProperty("/team")));
                 oOverview.setProperty("/updates", aResults[3]);
                 this._updateModuleInfo();
             }.bind(this));

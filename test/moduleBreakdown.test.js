@@ -42,6 +42,15 @@ test("describe of a module with nothing yet", () => {
 test("count counts the rows of a module", () => {
     assert.equal(moduleBreakdown.count("EC", [{ module: "EC" }, { module: null }, { module: "EC" }]), 2);
     assert.equal(moduleBreakdown.count("EC", null), 0);
+    assert.equal(moduleBreakdown.count(moduleBreakdown.WHOLE_PROJECT, [{ module: "EC" }, { module: null }, {}]), 2);
+});
+
+test("describe of the whole project: the milestones and members of no module", () => {
+    const [oWhole] = moduleBreakdown.describe([{ module: moduleBreakdown.WHOLE_PROJECT }], MILESTONES, TEAM);
+
+    assert.deepEqual(oWhole.milestones.map((m) => m.milestoneType), ["KO"]);
+    assert.equal(oWhole.msDone, 1);
+    assert.deepEqual(oWhole.team.map((m) => m.name), ["Paula"]);
 });
 
 test("milestonesOf a module, and of the whole project (no module)", () => {
