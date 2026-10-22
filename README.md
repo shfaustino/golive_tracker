@@ -72,9 +72,11 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
 - [x] 02 Dashboard — KPIs, projects by status, overdue milestones, to review, stale projects
 - [x] 03 Projetos — paged list, sorting, search, filters
 - [x] 04 Projeto — header with Mudar estado and Gravar baseline; Visão geral
-  (progress, timeline, details, next milestone, team, latest updates); Marcos
-  (KPIs, table, new and edit dialog); Módulos; Updates (feed and posting);
-  Auditorias; Anexos
+  (progress, timeline, details, next milestone, team, latest updates);
+  Módulos, each card opening the module's page (Projetos/<id>/Modulos/<module>)
+  with its Marcos (KPIs, table, new and edit dialog), Equipa, Auditorias and
+  Anexos, and "Geral" for the milestones of no module; Updates (feed and
+  posting); Equipa, Auditorias and Anexos of the whole project
 - [x] 05 Projeto — equipa (add, edit, end today, remove, PM hand-over)
 - [x] 06 Novo projeto — general data, modules, initial team, preview of the
   milestones the type generates; one deep insert
