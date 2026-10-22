@@ -16,6 +16,7 @@ sap.ui.define([
         projects: "projects",
         projectCreate: "projects",
         projectDetail: "projects",
+        projectModule: "projects",
         myWork: "myWork",
         audits: "audits",
         attachments: "attachments",

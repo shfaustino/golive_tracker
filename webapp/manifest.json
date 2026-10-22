@@ -107,6 +107,7 @@
         { "pattern": "", "name": "dashboard", "target": ["dashboard"] },
         { "pattern": "Projetos", "name": "projects", "target": ["projects"] },
         { "pattern": "Projetos/Novo", "name": "projectCreate", "target": ["projectCreate"] },
+        { "pattern": "Projetos/{projectId}/Modulos/{module}/:tab:", "name": "projectModule", "target": ["projectDetail"] },
         { "pattern": "Projetos/{projectId}/:tab:", "name": "projectDetail", "target": ["projectDetail"] },
         { "pattern": "OMeuTrabalho", "name": "myWork", "target": ["myWork"] },
         { "pattern": "Auditorias", "name": "audits", "target": ["audits"] },

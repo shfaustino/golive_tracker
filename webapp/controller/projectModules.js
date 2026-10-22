@@ -4,8 +4,9 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "../model/projectForm",
     "../model/moduleBreakdown",
-    "../formatter/formatter"
-], function (MessageBox, MessageToast, JSONModel, projectForm, moduleBreakdown, formatter) {
+    "../formatter/formatter",
+    "./projectModulePage"
+], function (MessageBox, MessageToast, JSONModel, projectForm, moduleBreakdown, formatter, projectModulePage) {
     "use strict";
 
     /**
@@ -22,9 +23,10 @@ sap.ui.define([
      * team members who had it.
      *
      * Each module's card shows its milestones, its team, and how many of
-     * the project's audits and attachments are its (model/moduleBreakdown.js).
+     * the project's audits and attachments are its (model/moduleBreakdown.js),
+     * and opens the module's page (./projectModulePage, brought in with this).
      */
-    return {
+    return Object.assign({}, projectModulePage, {
 
         /**
          * A module's audits or attachments, from the project's rows (the
@@ -156,5 +158,5 @@ sap.ui.define([
             }
             return this._pModuleDialog;
         }
-    };
+    });
 });

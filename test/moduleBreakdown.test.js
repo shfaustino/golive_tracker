@@ -43,3 +43,23 @@ test("count counts the rows of a module", () => {
     assert.equal(moduleBreakdown.count("EC", [{ module: "EC" }, { module: null }, { module: "EC" }]), 2);
     assert.equal(moduleBreakdown.count("EC", null), 0);
 });
+
+test("milestonesOf a module, and of the whole project (no module)", () => {
+    assert.deepEqual(moduleBreakdown.milestonesOf("EC", MILESTONES).map((m) => m.ID), ["2", "3", "4"]);
+    assert.deepEqual(moduleBreakdown.milestonesOf(moduleBreakdown.WHOLE_PROJECT, MILESTONES).map((m) => m.ID), ["1"]);
+    assert.deepEqual(moduleBreakdown.milestonesOf("FI", MILESTONES), []);
+});
+
+test("membersOf a module, and of the whole project (members with no module)", () => {
+    assert.deepEqual(moduleBreakdown.membersOf("LMS", TEAM).map((m) => m.person.name), ["Rui", "Ana"]);
+    assert.deepEqual(moduleBreakdown.membersOf(moduleBreakdown.WHOLE_PROJECT, TEAM).map((m) => m.person.name), ["Paula"]);
+});
+
+test("isOfModule matches a row through its milestone's module", () => {
+    assert.equal(moduleBreakdown.isOfModule("EC", "EC"), true);
+    assert.equal(moduleBreakdown.isOfModule("EC", "LMS"), false);
+    assert.equal(moduleBreakdown.isOfModule("EC", null), false);
+    assert.equal(moduleBreakdown.isOfModule(moduleBreakdown.WHOLE_PROJECT, null), true);
+    assert.equal(moduleBreakdown.isOfModule(moduleBreakdown.WHOLE_PROJECT, undefined), true);
+    assert.equal(moduleBreakdown.isOfModule(moduleBreakdown.WHOLE_PROJECT, "EC"), false);
+});

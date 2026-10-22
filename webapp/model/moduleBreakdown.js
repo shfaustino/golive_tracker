@@ -4,7 +4,53 @@ sap.ui.define([], function () {
     /** Milestone statuses that leave a milestone out of the progress. */
     var OUT = ["NotApplicable", "Cancelled"];
 
+    /**
+     * The module key, in the URL, of what belongs to no module: the
+     * milestones of the whole project and the members who work on all of it.
+     */
+    var WHOLE_PROJECT = "Geral";
+
+    /**
+     * A module's milestones; for the whole project, those with no module.
+     * @param {string} sModule a module, or WHOLE_PROJECT
+     * @param {{module: string}[]} aMilestones the project's milestones
+     * @returns {object[]} the module's, in the same order
+     */
+    function milestonesOf(sModule, aMilestones) {
+        var sWanted = sModule === WHOLE_PROJECT ? null : sModule;
+
+        return (aMilestones || []).filter(function (oMilestone) {
+            return (oMilestone.module || null) === sWanted;
+        });
+    }
+
+    /**
+     * The members who work on a module; for the whole project, those with
+     * no module (a member with none works on all of it).
+     * @param {string} sModule a module, or WHOLE_PROJECT
+     * @param {{modules: {module: string}[]}[]} aTeam the team
+     * @returns {object[]} the module's members, in the same order
+     */
+    function membersOf(sModule, aTeam) {
+        return (aTeam || []).filter(function (oMember) {
+            var aOwn = oMember.modules || [];
+
+            if (sModule === WHOLE_PROJECT) {
+                return !aOwn.length;
+            }
+            return aOwn.some(function (oOwn) {
+                return oOwn.module === sModule;
+            });
+        });
+    }
+
     return {
+
+        WHOLE_PROJECT: WHOLE_PROJECT,
+
+        milestonesOf: milestonesOf,
+
+        membersOf: membersOf,
 
         /**
          * What the Módulos tab shows for each of the project's modules: its
@@ -19,9 +65,7 @@ sap.ui.define([], function () {
         describe: function (aModules, aMilestones, aTeam) {
             return (aModules || []).map(function (oModule) {
                 var sModule = oModule.module,
-                    aOwn = (aMilestones || []).filter(function (oMilestone) {
-                        return oMilestone.module === sModule;
-                    }),
+                    aOwn = milestonesOf(sModule, aMilestones),
                     aCounted = aOwn.filter(function (oMilestone) {
                         return OUT.indexOf(oMilestone.status) === -1;
                     });
@@ -35,11 +79,7 @@ sap.ui.define([], function () {
                     msDone: aCounted.filter(function (oMilestone) {
                         return oMilestone.status === "Completed";
                     }).length,
-                    team: (aTeam || []).filter(function (oMember) {
-                        return (oMember.modules || []).some(function (oOwn) {
-                            return oOwn.module === sModule;
-                        });
-                    }).map(function (oMember) {
+                    team: membersOf(sModule, aTeam).map(function (oMember) {
                         return { name: oMember.person ? oMember.person.name : "", role: oMember.role };
                     })
                 };
@@ -56,6 +96,17 @@ sap.ui.define([], function () {
             return (aRows || []).filter(function (oRow) {
                 return oRow.module === sModule;
             }).length;
+        },
+
+        /**
+         * Whether a row (an audit, an attachment) is a module's, through the
+         * module of its milestone; for the whole project, a row with none.
+         * @param {string} sModule a module, or WHOLE_PROJECT
+         * @param {string} [sRowModule] the row's module
+         * @returns {boolean} whether it is
+         */
+        isOfModule: function (sModule, sRowModule) {
+            return (sRowModule || null) === (sModule === WHOLE_PROJECT ? null : sModule);
         }
     };
 });
