@@ -1495,6 +1495,71 @@
     color: var(--gtMuted);
 }
 
+/* "Abrir módulo" at the end of a card's counts, which wrap rather than squeeze */
+.gtModuleCounts {
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+}
+
+.gtApp .gtModuleCount .sapMText {
+    white-space: nowrap;
+}
+
+.gtApp .gtModuleOpen {
+    margin-left: auto;
+}
+
+.gtApp .gtModuleOpen .sapMBtnInner,
+.gtApp .gtModuleOpen .sapMBtnIcon {
+    color: var(--gtBlue);
+    font-weight: 600;
+}
+
+/* the whole project's milestones, under the module cards */
+.gtWholeProject {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px dashed #c7d0de;
+    border-radius: 0.75rem;
+}
+
+/* A module's page: the module's code as a badge, its name as the title */
+.gtModuleHead {
+    display: flex;
+    gap: 1rem;
+}
+
+.gtModuleBadge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 4rem;
+    height: 4rem;
+    padding: 0 0.5rem;
+    box-sizing: border-box;
+    border-radius: 0.875rem;
+    background: var(--gtBlue);
+}
+
+.gtApp .gtModuleBadge .sapMText {
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.gtApp .gtModuleTitle.sapMTitle {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--gtInk);
+}
+
+.gtModuleProgressFact {
+    flex: 1 1 14rem;
+}
+
 /* Updates */
 .gtComposer {
     display: flex;

@@ -38,13 +38,19 @@ sap.ui.define([
         },
 
         /**
-         * Novo anexo, optionally for one project (a project's tab passes it).
+         * Novo anexo, optionally for one project (a project's tab passes it),
+         * on some of its milestones (a module's page passes its own, and asks
+         * for a milestone first: that is what ties an attachment to a module).
          * @param {string} [sProjectId] the project
+         * @param {function(object): boolean} [fnKeepMilestone] which milestones to offer
+         * @param {string} [sOwner] what it goes on at first: "project" (the
+         *   default), "milestone" or "item"
          * @public
          */
-        openNewAttachment: function (sProjectId) {
+        openNewAttachment: function (sProjectId, fnKeepMilestone, sOwner) {
             var oAttach = this.getModel("attach");
 
+            this._fnKeepAttachMilestone = fnKeepMilestone || null;
             oAttach.setData(Object.assign({}, oAttach.getData(), {
                 busy: false,
                 projectFixed: !!sProjectId,
@@ -52,7 +58,7 @@ sap.ui.define([
                 milestones: [],
                 items: [],
                 values: {
-                    project_ID: sProjectId || null, owner: "project", milestone_ID: null, milestoneItem_ID: null,
+                    project_ID: sProjectId || null, owner: sOwner || "project", milestone_ID: null, milestoneItem_ID: null,
                     documentType: "", name: "", url: ""
                 }
             }));
@@ -197,7 +203,8 @@ sap.ui.define([
          */
         _loadAttachMilestones: function () {
             var oAttach = this.getModel("attach"),
-                sProjectId = oAttach.getProperty("/values/project_ID");
+                sProjectId = oAttach.getProperty("/values/project_ID"),
+                fnKeep = this._fnKeepAttachMilestone;
 
             oAttach.setProperty("/milestones", []);
             oAttach.setProperty("/items", []);
@@ -205,9 +212,11 @@ sap.ui.define([
                 return;
             }
             this._readAttachRows("/Projects(" + sProjectId + ")/milestones", {
-                $select: "ID,milestoneType,forecastEnd", $orderby: "sortOrder"
+                $select: "ID,milestoneType,module,forecastEnd", $orderby: "sortOrder"
             }).then(function (aRows) {
-                oAttach.setProperty("/milestones", aRows.map(function (oMilestone) {
+                oAttach.setProperty("/milestones", aRows.filter(function (oMilestone) {
+                    return !fnKeep || fnKeep(oMilestone);
+                }).map(function (oMilestone) {
                     return {
                         ID: oMilestone.ID,
                         label: formatter.milestoneTypeText.call(this, oMilestone.milestoneType) + " · " +

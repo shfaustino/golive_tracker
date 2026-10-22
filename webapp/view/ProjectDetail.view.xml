@@ -12,11 +12,67 @@
          link or the back button lands on the same tab. -->
     <Page id="projectDetailPage" showHeader="false" class="gtPage" busy="{detail>/busy}" busyIndicatorDelay="0">
         <VBox class="gtPageContent" renderType="Bare">
-            <Breadcrumbs currentLocationText="{code}" separatorStyle="GreaterThan" class="gtBreadcrumbs">
+            <!-- On a module's page (route projectModule, detail>/module set) the
+                 breadcrumbs go through the project's Módulos -->
+            <Breadcrumbs
+                currentLocationText="{= ${detail>/module} ? (${detail>/moduleInfo/code} || ${detail>/moduleInfo/name}) : ${code} }"
+                separatorStyle="GreaterThan"
+                class="gtBreadcrumbs">
                 <Link text="{i18n>navProjects}" press=".onNavToProjects"/>
+                <Link text="{code}" press=".onNavToProjectModules" visible="{= !!${detail>/module} }"/>
+                <Link text="{i18n>tabModules}" press=".onNavToProjectModules" visible="{= !!${detail>/module} }"/>
             </Breadcrumbs>
 
-            <HBox class="gtPageHeader" alignItems="Start" renderType="Bare">
+            <!-- A module's page: its header and facts, then its own tabs -->
+            <HBox class="gtPageHeader" alignItems="Center" renderType="Bare" visible="{= !!${detail>/module} }">
+                <HBox class="gtModuleHead" alignItems="Center" renderType="Bare">
+                    <HBox class="gtModuleBadge" renderType="Bare">
+                        <Text text="{= ${detail>/moduleInfo/code} || '★' }"/>
+                    </HBox>
+                    <VBox renderType="Bare">
+                        <Title text="{detail>/moduleInfo/name}" level="H1" class="gtModuleTitle"/>
+                        <Text text="{detail>/moduleInfo/ofProject} {code} · {name}" class="gtSubtle"/>
+                    </VBox>
+                </HBox>
+            </HBox>
+
+            <HBox class="gtCard gtProjectFacts gtModuleFacts" renderType="Bare" visible="{= !!${detail>/module} }">
+                <HBox class="gtProjectFact" renderType="Bare">
+                    <HBox class="gtFactIcon" renderType="Bare"><core:Icon src="sap-icon://manager"/></HBox>
+                    <VBox renderType="Bare">
+                        <Label text="{i18n>modLeads}"/>
+                        <Text text="{detail>/moduleInfo/leads}"/>
+                    </VBox>
+                </HBox>
+                <HBox class="gtProjectFact" renderType="Bare">
+                    <HBox class="gtFactIcon" renderType="Bare"><core:Icon src="sap-icon://flag"/></HBox>
+                    <VBox renderType="Bare">
+                        <Label text="{i18n>ovNext}"/>
+                        <Text text="{detail>/moduleInfo/nextText}"/>
+                    </VBox>
+                </HBox>
+                <HBox class="gtProjectFact" renderType="Bare">
+                    <HBox class="gtFactIcon" renderType="Bare"><core:Icon src="sap-icon://appointment"/></HBox>
+                    <VBox renderType="Bare">
+                        <Label text="{i18n>modGoLive}"/>
+                        <Text text="{path: 'detail>/moduleInfo/goLive', formatter: '.formatter.dateOrDash'}"/>
+                    </VBox>
+                </HBox>
+                <HBox class="gtProjectFact gtModuleProgressFact" renderType="Bare">
+                    <VBox renderType="Bare" width="100%">
+                        <Label text="{i18n>ovProgress}"/>
+                        <HBox class="gtProgress" alignItems="Center" renderType="Bare">
+                            <HBox class="gtProgressTrack" renderType="Bare">
+                                <core:HTML content="{detail>/moduleInfo/progressBarHtml}"/>
+                            </HBox>
+                            <Text text="{detail>/moduleInfo/pct}%" class="gtProgressPct"/>
+                        </HBox>
+                        <Text text="{detail>/moduleInfo/progressText}" class="gtSubtle"/>
+                    </VBox>
+                </HBox>
+            </HBox>
+
+            <HBox class="gtPageHeader" alignItems="Start" renderType="Bare" visible="{= !${detail>/module} }">
                 <VBox renderType="Bare">
                     <Title text="{code}" level="H1" class="gtProjectCode"/>
                     <Text text="{name}" class="gtProjectName"/>
@@ -45,7 +101,7 @@
                 visible="{= !!${needsReview} }"
                 class="gtReviewStrip"/>
 
-            <HBox class="gtCard gtProjectFacts" renderType="Bare">
+            <HBox class="gtCard gtProjectFacts" renderType="Bare" visible="{= !${detail>/module} }">
                 <HBox class="gtProjectFact" renderType="Bare">
                     <HBox class="gtFactIcon" renderType="Bare"><core:Icon src="sap-icon://building"/></HBox>
                     <VBox renderType="Bare">
@@ -97,7 +153,7 @@
                     <!-- Visão geral: how far the project is, its details, and
                          what comes next. Read into the "overview" model by
                          controller/projectHeader.js#_loadOverview. -->
-                    <IconTabFilter key="visao-geral" text="{i18n>tabOverview}">
+                    <IconTabFilter key="visao-geral" text="{i18n>tabOverview}" visible="{= !${detail>/module} }">
                         <HBox class="gtOverviewGrid" renderType="Bare">
                             <VBox class="gtOverviewMain" renderType="Bare">
                                 <VBox class="gtCard gtCardBody" renderType="Bare">
@@ -168,8 +224,8 @@
                                 <VBox class="gtCard gtCardBody" renderType="Bare">
                                     <HBox class="gtCardHeaderPlain" renderType="Bare">
                                         <Title text="{i18n>ovNext}" level="H2" class="gtSectionTitle"/>
-                                        <Link text="{i18n>ovSeeMilestones}" press=".onGoToTab" class="gtSeeAll">
-                                            <customData><core:CustomData key="tab" value="marcos"/></customData>
+                                        <Link text="{i18n>ovSeeModules}" press=".onGoToTab" class="gtSeeAll">
+                                            <customData><core:CustomData key="tab" value="modulos"/></customData>
                                         </Link>
                                     </HBox>
                                     <HBox class="gtNext" alignItems="Center" renderType="Bare" visible="{= !!${overview>/progress/next} }">
@@ -232,8 +288,9 @@
 
                     <!-- Módulos: the SAP modules the project covers, set when
                          the project is created (deep insert), and added or
-                         taken off here (controller/projectModules.js). -->
-                    <IconTabFilter key="modulos" text="{i18n>tabModules}">
+                         taken off here (controller/projectModules.js). Each
+                         card opens the module's page (route projectModule). -->
+                    <IconTabFilter key="modulos" text="{i18n>tabModules}" visible="{= !${detail>/module} }">
                         <VBox class="gtCard gtCardBody" renderType="Bare">
                             <HBox class="gtCardHeader" renderType="Bare">
                                 <Title text="{i18n>modTitle}" level="H2" class="gtSectionTitle"/>
@@ -293,7 +350,7 @@
                                         <Text text="{i18n>modNoTeam}" visible="{= ${overview>team}.length === 0 }" class="gtSubtle"/>
                                     </VBox>
 
-                                    <HBox class="gtModuleCounts" renderType="Bare">
+                                    <HBox class="gtModuleCounts" alignItems="Center" renderType="Bare">
                                         <HBox alignItems="Center" renderType="Bare" class="gtModuleCount">
                                             <core:Icon src="sap-icon://shield"/>
                                             <Text text="{parts: ['overview>module', 'projAudits>/rows'], formatter: '.moduleCount'}" class="gtModuleCountValue"/>
@@ -304,14 +361,38 @@
                                             <Text text="{parts: ['overview>module', 'atts>/rows'], formatter: '.moduleCount'}" class="gtModuleCountValue"/>
                                             <Text text="{i18n>navAttachments}" class="gtSubtle"/>
                                         </HBox>
+                                        <Button
+                                            text="{i18n>modOpen}"
+                                            icon="sap-icon://navigation-right-arrow"
+                                            iconFirst="false"
+                                            type="Transparent"
+                                            press=".onOpenModule"
+                                            class="gtModuleOpen"/>
                                     </HBox>
                                 </VBox>
                             </HBox>
                             <Text text="{i18n>modNoData}" visible="{= ${overview>/modules}.length === 0 }" class="gtSubtle"/>
+
+                            <!-- What is of no module: the whole project's milestones -->
+                            <HBox class="gtWholeProject" alignItems="Center" renderType="Bare">
+                                <VBox renderType="Bare" class="gtModuleText">
+                                    <Text text="{i18n>modWholeProjectTitle}" class="gtModuleCode"/>
+                                    <Text text="{i18n>modWholeProjectHint}" class="gtSubtle"/>
+                                </VBox>
+                                <Button
+                                    text="{i18n>modWholeProjectOpen}"
+                                    icon="sap-icon://navigation-right-arrow"
+                                    iconFirst="false"
+                                    type="Transparent"
+                                    press=".onOpenWholeProject"
+                                    class="gtModuleOpen"/>
+                            </HBox>
                         </VBox>
                     </IconTabFilter>
 
-                    <IconTabFilter key="marcos" text="{i18n>tabMilestones}">
+                    <!-- Marcos: a module's milestones (the table is filtered on the
+                         module by the controller); the project has no tab of its own -->
+                    <IconTabFilter key="marcos" text="{i18n>tabMilestones}" visible="{= !!${detail>/module} }">
                         <HBox class="gtKpiRow gtKpiRowFive" renderType="Bare">
                             <VBox class="gtCard gtKpi" renderType="Bare">
                                 <HBox class="gtKpiIcon gtTintGreen" renderType="Bare"><core:Icon src="sap-icon://media-play"/></HBox>
@@ -354,7 +435,7 @@
 
                         <VBox class="gtCard gtTableCard" renderType="Bare">
                             <HBox class="gtCardHeader" renderType="Bare">
-                                <Title text="{i18n>msTitle}" level="H2" class="gtSectionTitle"/>
+                                <Title text="{detail>/moduleInfo/msTitle}" level="H2" class="gtSectionTitle"/>
                                 <Button
                                     id="newMilestoneButton"
                                     text="{i18n>msNew}"
@@ -391,7 +472,7 @@
                                             <VBox renderType="Bare">
                                                 <HBox alignItems="Center" renderType="Bare" class="gtInlineChips">
                                                     <Text text="{path: 'milestoneType', formatter: '.formatter.milestoneTypeText'}"/>
-                                                    <ObjectStatus text="{module}" visible="{= !!%{module} }" state="Information" inverted="true" class="gtMiniChip"/>
+                                                    <ObjectStatus text="{module}" visible="{= !!%{module} &amp;&amp; !${detail>/moduleInfo/code} }" state="Information" inverted="true" class="gtMiniChip"/>
                                                 </HBox>
                                                 <Text text="{i18n>msEstimated}" visible="{= !!${isEstimated} }" class="gtSubtle"/>
                                             </VBox>
@@ -429,7 +510,7 @@
                     <IconTabFilter key="equipa" text="{i18n>tabTeam}">
                         <VBox class="gtCard gtTableCard" renderType="Bare">
                             <HBox class="gtCardHeader" renderType="Bare">
-                                <Title text="{i18n>teamTitle}" level="H2" class="gtSectionTitle"/>
+                                <Title text="{= ${detail>/module} ? ${i18n>modTeamTitle} : ${i18n>teamTitle} }" level="H2" class="gtSectionTitle"/>
                                 <Button
                                     id="addMemberButton"
                                     text="{i18n>teamAdd}"
@@ -499,7 +580,7 @@
                     <!-- Auditorias: this project's audits (GET /project/Audits
                          filtered on the milestone's project); the dialogs are
                          the Auditorias page's (controller/auditDialogs.js). -->
-                    <IconTabFilter key="auditorias" text="{i18n>navAudits}" count="{= ${projAudits>/rows}.length || '' }">
+                    <IconTabFilter key="auditorias" text="{i18n>navAudits}" count="{parts: ['detail>/module', 'projAudits>/rows'], formatter: '.recordCount'}">
                         <VBox class="gtCard gtTableCard" renderType="Bare">
                             <HBox class="gtCardHeader" renderType="Bare">
                                 <Title text="{i18n>auditProjectTitle}" level="H2" class="gtSectionTitle"/>
@@ -556,7 +637,7 @@
                     </IconTabFilter>
                     <!-- Anexos: the project's attachments, wherever they hang;
                          the table and dialogs are the Anexos page's. -->
-                    <IconTabFilter key="anexos" text="{i18n>navAttachments}" count="{= ${atts>/rows}.length || '' }">
+                    <IconTabFilter key="anexos" text="{i18n>navAttachments}" count="{parts: ['detail>/module', 'atts>/rows'], formatter: '.recordCount'}">
                         <VBox class="gtCard gtTableCard" renderType="Bare">
                             <HBox class="gtCardHeader" renderType="Bare">
                                 <Title text="{i18n>attProjectTitle}" level="H2" class="gtSectionTitle"/>
@@ -575,7 +656,7 @@
                     <!-- Updates (US-27): what happened on the project, newest
                          first, and a box to post one. Automatic ones (each
                          status change) are marked. -->
-                    <IconTabFilter key="updates" text="{i18n>tabUpdates}">
+                    <IconTabFilter key="updates" text="{i18n>tabUpdates}" visible="{= !${detail>/module} }">
                         <VBox class="gtCard gtCardBody" renderType="Bare">
                             <HBox class="gtCardHeaderPlain" renderType="Bare">
                                 <Title text="{i18n>updTitle}" level="H2" class="gtSectionTitle"/>

@@ -27,11 +27,20 @@ sap.ui.define([
      */
     return {
 
+        /**
+         * "+ Adicionar membro"; on a module's page the member comes in on
+         * that module.
+         * @public
+         */
         onAddMember: function () {
+            var sModule = this._moduleOnShow();
+
             this._openMemberDialog({
                 mode: "add",
                 title: this.getResourceBundle().getText("teamAddTitle"),
-                values: { person_ID: null, role: null, modules: [], startDate: memberRules.today(), endDate: null }
+                values: {
+                    person_ID: null, role: null, modules: sModule ? [sModule] : [], startDate: memberRules.today(), endDate: null
+                }
             });
         },
 

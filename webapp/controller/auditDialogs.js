@@ -33,11 +33,13 @@ sap.ui.define([
         },
 
         /**
-         * Nova auditoria, optionally for one project (a project's tab passes it).
+         * Nova auditoria, optionally for one project (a project's tab passes
+         * it), and on some of its milestones (a module's page passes its own).
          * @param {string} [sProjectId] the project the audit is for
+         * @param {function(object): boolean} [fnKeepMilestone] which milestones it may be on
          * @public
          */
-        openNewAudit: function (sProjectId) {
+        openNewAudit: function (sProjectId, fnKeepMilestone) {
             var oAudit = this.getModel("audit");
 
             this._oAuditRow = null;
@@ -56,7 +58,7 @@ sap.ui.define([
             }));
             this._loadAuditChoices();
             if (sProjectId) {
-                this._loadAuditMilestones(sProjectId);
+                this._loadAuditMilestones(sProjectId, fnKeepMilestone);
             }
             this._getAuditDialog().then(function (oDialog) {
                 oDialog.open();
@@ -380,11 +382,13 @@ sap.ui.define([
         },
 
         /**
-         * A project's milestones that require an audit (BR-10).
+         * A project's milestones that require an audit (BR-10), those kept
+         * when a test is given (a module's).
          * @param {string} sProjectId the project
+         * @param {function(object): boolean} [fnKeepMilestone] which milestones to offer
          * @private
          */
-        _loadAuditMilestones: function (sProjectId) {
+        _loadAuditMilestones: function (sProjectId, fnKeepMilestone) {
             var oAudit = this.getModel("audit");
 
             oAudit.setProperty("/milestones", []);
@@ -393,10 +397,10 @@ sap.ui.define([
             }
             // filtered here rather than with $filter: a project has a handful of milestones
             this._readRows("/Projects(" + sProjectId + ")/milestones", {
-                $select: "ID,milestoneType,forecastEnd,status,requiresAudit", $orderby: "sortOrder"
+                $select: "ID,milestoneType,module,forecastEnd,status,requiresAudit", $orderby: "sortOrder"
             }).then(function (aRows) {
                 oAudit.setProperty("/milestones", aRows.filter(function (oMilestone) {
-                    return oMilestone.requiresAudit;
+                    return oMilestone.requiresAudit && (!fnKeepMilestone || fnKeepMilestone(oMilestone));
                 }).map(function (oMilestone) {
                     return {
                         ID: oMilestone.ID,

@@ -26,7 +26,9 @@ sap.ui.define([
         },
 
         onNewProjectAttachment: function () {
-            this.openNewAttachment(this._sProjectId);
+            // on a module's page, on one of the module's milestones
+            this.openNewAttachment(this._sProjectId, this._moduleMilestoneFilter(),
+                this._moduleOnShow() ? "milestone" : "project");
         },
 
         /** Called by attachmentDialogs after every change. @private */

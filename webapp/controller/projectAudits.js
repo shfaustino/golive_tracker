@@ -26,7 +26,7 @@ sap.ui.define([
         },
 
         onNewProjectAudit: function () {
-            this.openNewAudit(this._sProjectId);
+            this.openNewAudit(this._sProjectId, this._moduleMilestoneFilter());
         },
 
         /**

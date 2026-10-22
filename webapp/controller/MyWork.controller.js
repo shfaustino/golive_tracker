@@ -63,16 +63,27 @@ sap.ui.define([
 
         /**
          * An item lives under a milestone of a project: open that project's
-         * milestones.
+         * modules, where its milestones are.
          * @param {sap.ui.base.Event} oEvent press of a row or a link
          * @public
          */
         onOpenItem: function (oEvent) {
-            this._openProject(oEvent.getSource().getBindingContext("work").getProperty("project_ID"), "marcos");
+            this._openProject(oEvent.getSource().getBindingContext("work").getProperty("project_ID"), "modulos");
         },
 
+        /**
+         * A milestone: the page of its module (or of the whole project's
+         * milestones, for one of no module), where it is managed.
+         * @param {sap.ui.base.Event} oEvent press of a row or a link
+         * @public
+         */
         onOpenMilestone: function (oEvent) {
-            this._openProject(oEvent.getSource().getBindingContext("work").getProperty("project_ID"), "marcos");
+            var oContext = oEvent.getSource().getBindingContext("work"),
+                sProjectId = oContext.getProperty("project_ID");
+
+            if (sProjectId) {
+                this.navToModule(sProjectId, oContext.getProperty("module"));
+            }
         },
 
         onOpenProject: function (oEvent) {

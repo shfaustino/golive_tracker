@@ -206,9 +206,11 @@ sap.ui.define([
                 oOverview.setProperty("/team", aResults[1].filter(function (oMember) {
                     return memberRules.isActive(oMember.endDate);
                 }));
+                oOverview.setProperty("/milestones", aResults[0]);
                 oOverview.setProperty("/modules",
                     this._describeModules(aResults[2], aResults[0], oOverview.getProperty("/team")));
                 oOverview.setProperty("/updates", aResults[3]);
+                this._updateModuleInfo();
             }.bind(this));
         },
 

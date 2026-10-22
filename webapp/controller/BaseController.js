@@ -2,8 +2,9 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
     "sap/ui/core/routing/History",
-    "../service/childWrites"
-], function (Controller, UIComponent, History, childWrites) {
+    "../service/childWrites",
+    "../model/moduleBreakdown"
+], function (Controller, UIComponent, History, childWrites, moduleBreakdown) {
     "use strict";
 
     /**
@@ -28,6 +29,22 @@ sap.ui.define([
 
         getResourceBundle: function () {
             return this.getOwnerComponent().getModel("i18n").getResourceBundle();
+        },
+
+        /**
+         * A module's page of a project, where its milestones, team, audits
+         * and attachments are managed.
+         * @param {string} sProjectId the project
+         * @param {string} [sModule] the module; none: the whole project's
+         *   milestones, those of no module
+         * @param {string} [sTab] the tab to open, "marcos" by default
+         */
+        navToModule: function (sProjectId, sModule, sTab) {
+            this.getRouter().navTo("projectModule", {
+                projectId: sProjectId,
+                module: sModule || moduleBreakdown.WHOLE_PROJECT,
+                tab: sTab || "marcos"
+            });
         },
 
         onExit: function () {

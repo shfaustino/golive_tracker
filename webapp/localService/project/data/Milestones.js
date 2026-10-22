@@ -34,5 +34,14 @@ module.exports = {
         }
         delete updatedData.owners;
         return this.base.updateEntry(keyValues, updatedData, patchData, odataRequest);
+    },
+
+    // "module eq null" (the whole project's milestones, on its module page)
+    // as the API answers it; the mock server matches nothing to null.
+    checkFilterValue: function (comparisonType, mockValue, literal, operator, odataRequest) {
+        if (literal === "null" && (operator === "eq" || operator === "ne")) {
+            return (mockValue === null || mockValue === undefined) === (operator === "eq");
+        }
+        return this.base.checkFilterValue(comparisonType, mockValue, literal, operator, odataRequest);
     }
 };
