@@ -38,27 +38,30 @@ sap.ui.define([
         },
 
         /**
-         * Novo anexo, optionally for one project (a project's tab passes it),
-         * on some of its milestones (a module's page passes its own, and asks
-         * for a milestone first: that is what ties an attachment to a module).
+         * Novo anexo, optionally for one project (a project's tab passes it).
+         * A module's page passes its scope: there is no "Ligado a", only the
+         * milestone, among the module's, which is what ties an attachment to
+         * the module (required); on Geral the milestone may stay empty, and
+         * the attachment is then the project's.
          * @param {string} [sProjectId] the project
-         * @param {function(object): boolean} [fnKeepMilestone] which milestones to offer
-         * @param {string} [sOwner] what it goes on at first: "project" (the
-         *   default), "milestone" or "item"
+         * @param {{keepMilestone: function(object): boolean, milestoneRequired: boolean}} [oScope]
+         *   which milestones to offer, and whether one must be chosen
          * @public
          */
-        openNewAttachment: function (sProjectId, fnKeepMilestone, sOwner) {
+        openNewAttachment: function (sProjectId, oScope) {
             var oAttach = this.getModel("attach");
 
-            this._fnKeepAttachMilestone = fnKeepMilestone || null;
+            this._fnKeepAttachMilestone = oScope ? oScope.keepMilestone : null;
             oAttach.setData(Object.assign({}, oAttach.getData(), {
                 busy: false,
                 projectFixed: !!sProjectId,
+                inModule: !!oScope,
+                milestoneRequired: !!oScope && oScope.milestoneRequired,
                 errors: {},
                 milestones: [],
                 items: [],
                 values: {
-                    project_ID: sProjectId || null, owner: sOwner || "project", milestone_ID: null, milestoneItem_ID: null,
+                    project_ID: sProjectId || null, owner: "project", milestone_ID: null, milestoneItem_ID: null,
                     documentType: "", name: "", url: ""
                 }
             }));
@@ -90,11 +93,18 @@ sap.ui.define([
             var oAttach = this.getModel("attach"),
                 oValues = oAttach.getProperty("/values"),
                 oBundle = this.getResourceBundle(),
-                oKeys = attachmentRules.validate(oValues),
+                oKeys,
                 oErrors = {},
                 oModel = this.getOwnerComponent().getModel(),
                 oBinding,
                 oContext;
+
+            // On a module's page what it goes on follows from the milestone
+            // (none, on Geral: the project); a required one is checked as such.
+            if (oAttach.getProperty("/inModule")) {
+                oValues.owner = oAttach.getProperty("/milestoneRequired") || oValues.milestone_ID ? "milestone" : "project";
+            }
+            oKeys = attachmentRules.validate(oValues);
 
             Object.keys(oKeys).forEach(function (sField) {
                 oErrors[sField] = oBundle.getText(oKeys[sField]);

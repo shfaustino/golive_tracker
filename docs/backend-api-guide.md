@@ -277,7 +277,7 @@ codificados no URL.
 | `type` do item | Meeting, Document, Task, FollowUp |
 | `status` do item | ToDo, InProgress, Done, Cancelled |
 | `result` da auditoria | Approved, ApprovedWithReservations, Rejected |
-| `documentType` | Proposal, Contract, Project plan, Status report, KO minutes, GOP presentation, Test plan, Final report |
+| `documentType` | Proposal, Contract, Project plan, Status report, KO minutes, GOP presentation, Test plan, Final report, Audit |
 | `profile` | Administrator, Architect, User |
 | `currency_code` | EUR, USD, GBP (em `GET /project/Currencies`) |
 

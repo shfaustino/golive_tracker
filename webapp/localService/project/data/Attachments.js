@@ -43,7 +43,8 @@ module.exports = {
         await this.base.addEntry(mockEntry, odataRequest);
         await (await this.base.getEntityInterface("AllAttachments")).addEntry(Object.assign({}, mockEntry, {
             projectID: project ? project.ID : null, projectCode: project ? project.code : null, projectName: project ? project.name : null,
-            milestoneType: milestone ? milestone.milestoneType : null, module: null, itemName: item ? item.name : null
+            milestoneType: milestone ? milestone.milestoneType : null, module: milestone ? milestone.module || null : null,
+            itemName: item ? item.name : null
         }));
     },
 

@@ -7,7 +7,7 @@ sap.ui.define([], function () {
     return {
 
         DOCUMENT_TYPES: ["Proposal", "Contract", "Project plan", "Status report", "KO minutes", "GOP presentation",
-            "Test plan", "Final report"],
+            "Test plan", "Final report", "Audit"],
 
         /**
          * What a list of attachments reads from GET /project/AllAttachments:
