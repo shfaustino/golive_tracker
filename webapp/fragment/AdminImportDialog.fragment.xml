@@ -3,19 +3,20 @@
     xmlns:core="sap.ui.core"
     xmlns:u="sap.ui.unified">
 
-    <!-- Importar pessoas / clientes (controller/adminBulk.js), in the
-         "import" model (kind: person or client): the template, the chosen
+    <!-- Importar pessoas / clientes / módulos / tipos de marco
+         (controller/adminBulk.js), in the "import" model (kind, and the
+         texts of the tab on show): the template, the chosen
          file, and every row of it checked before the valid ones are created. -->
     <Dialog
         id="adminImportDialog"
-        title="{= ${import>/kind} === 'person' ? ${i18n>impTitlePeople} : ${i18n>impTitleClients} }"
+        title="{import>/title}"
         contentWidth="56rem"
         resizable="true"
         busy="{import>/busy}"
         busyIndicatorDelay="0"
         class="gtApp gtDialog sapUiContentPadding">
         <VBox renderType="Bare" class="gtImport">
-            <Text text="{= ${import>/kind} === 'person' ? ${i18n>impIntroPeople} : ${i18n>impIntroClients} }" class="gtSubtle"/>
+            <Text text="{import>/intro}" class="gtSubtle"/>
             <HBox alignItems="Center" renderType="Bare" class="gtImportActions">
                 <Button text="{i18n>impTemplate}" icon="sap-icon://download" press=".onDownloadRecordsTemplate"/>
                 <!-- picks the file only: it is read in the browser, never uploaded as it is -->
@@ -38,8 +39,8 @@
                 <columns>
                     <Column width="3.5rem"><Text text="{i18n>impLine}"/></Column>
                     <Column><Text text="{i18n>admName}"/></Column>
-                    <Column><Text text="{= ${import>/kind} === 'person' ? ${i18n>admEmail} : ${i18n>admTaxId} }"/></Column>
-                    <Column width="9rem"><Text text="{= ${import>/kind} === 'person' ? ${i18n>teamColProfile} : ${i18n>admErpCode} }"/></Column>
+                    <Column><Text text="{import>/detailLabel}"/></Column>
+                    <Column width="9rem" visible="{= !!${import>/extraLabel} }"><Text text="{import>/extraLabel}"/></Column>
                     <Column width="20rem"><Text text="{i18n>colStatus}"/></Column>
                 </columns>
                 <items>

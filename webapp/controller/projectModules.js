@@ -2,11 +2,11 @@ sap.ui.define([
     "sap/m/MessageBox",
     "sap/m/MessageToast",
     "sap/ui/model/json/JSONModel",
-    "../model/projectForm",
+    "../model/lists",
     "../model/moduleBreakdown",
     "../formatter/formatter",
     "./projectModulePage"
-], function (MessageBox, MessageToast, JSONModel, projectForm, moduleBreakdown, formatter, projectModulePage) {
+], function (MessageBox, MessageToast, JSONModel, lists, moduleBreakdown, formatter, projectModulePage) {
     "use strict";
 
     /**
@@ -96,10 +96,10 @@ sap.ui.define([
             var aTaken = (this.getModel("overview").getProperty("/modules") || []).map(function (oModule) {
                     return oModule.module;
                 }),
-                aChoices = projectForm.MODULES.filter(function (sModule) {
-                    return aTaken.indexOf(sModule) === -1;
-                }).map(function (sModule) {
-                    return { key: sModule, name: formatter.moduleName(sModule) };
+                aChoices = lists.activeModules().filter(function (oModule) {
+                    return aTaken.indexOf(oModule.code) === -1;
+                }).map(function (oModule) {
+                    return { key: oModule.code, name: oModule.name };
                 });
 
             if (!aChoices.length) {

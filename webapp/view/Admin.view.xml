@@ -59,13 +59,16 @@
                 <items>
                     <IconTabFilter key="pessoas" text="{i18n>navPeople}"/>
                     <IconTabFilter key="clientes" text="{i18n>navClients}"/>
+                    <!-- the managed lists (model/lists.js): Administrators only -->
+                    <IconTabFilter key="modulos" text="{i18n>admModules}" visible="{user>/isAdmin}"/>
+                    <IconTabFilter key="tipos" text="{i18n>admTypes}" visible="{user>/isAdmin}"/>
                 </items>
             </IconTabBar>
 
             <HBox class="gtAdminFilters" alignItems="End" renderType="Bare">
                 <SearchField
                     id="dirSearch"
-                    placeholder="{= ${dir>/tab} === 'pessoas' ? ${i18n>admSearchPeople} : ${i18n>admSearchClients} }"
+                    placeholder="{= ${dir>/tab} === 'pessoas' ? ${i18n>admSearchPeople} : (${dir>/tab} === 'clientes' ? ${i18n>admSearchClients} : ${i18n>admSearchCodes}) }"
                     search=".onSearch"
                     liveChange=".onSearch"
                     showSearchButton="false"
@@ -156,6 +159,76 @@
                                 </HBox>
                                 <Text text="{= ${dir>taxId} || '—' }"/>
                                 <Text text="{= ${dir>erpCode} || '—' }"/>
+                                <ObjectStatus
+                                    text="{= ${dir>active} !== false ? ${i18n>teamActive} : ${i18n>teamInactive} }"
+                                    state="{= ${dir>active} !== false ? 'Success' : 'Error' }"
+                                    inverted="true"/>
+                                <Button icon="sap-icon://overflow" type="Transparent" tooltip="{i18n>admActions}" press=".onRowActions" class="gtRowAction"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+
+                <!-- Módulos (Administrators only) -->
+                <Table
+                    id="modulesTable"
+                    class="gtTable"
+                    fixedLayout="false"
+                    mode="MultiSelect"
+                    selectionChange=".onBulkSelectionChange"
+                    visible="{= ${dir>/tab} === 'modulos' }"
+                    busy="{dir>/busy}"
+                    busyIndicatorDelay="0"
+                    noDataText="{i18n>admNoModules}"
+                    items="{dir>/rows}">
+                    <columns>
+                        <Column width="12rem"><Text text="{i18n>admCode}"/></Column>
+                        <Column><Text text="{i18n>admName}"/></Column>
+                        <Column><Text text="{i18n>colStatus}"/></Column>
+                        <Column width="4rem" hAlign="Center"/>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <ObjectStatus text="{dir>code}" state="Information" inverted="true"/>
+                                <Text text="{dir>name}"/>
+                                <ObjectStatus
+                                    text="{= ${dir>active} !== false ? ${i18n>teamActive} : ${i18n>teamInactive} }"
+                                    state="{= ${dir>active} !== false ? 'Success' : 'Error' }"
+                                    inverted="true"/>
+                                <Button icon="sap-icon://overflow" type="Transparent" tooltip="{i18n>admActions}" press=".onRowActions" class="gtRowAction"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+
+                <!-- Tipos de marco (Administrators only), in timeline order -->
+                <Table
+                    id="typesTable"
+                    class="gtTable"
+                    fixedLayout="false"
+                    mode="MultiSelect"
+                    selectionChange=".onBulkSelectionChange"
+                    visible="{= ${dir>/tab} === 'tipos' }"
+                    busy="{dir>/busy}"
+                    busyIndicatorDelay="0"
+                    noDataText="{i18n>admNoTypes}"
+                    items="{dir>/rows}">
+                    <columns>
+                        <Column width="12rem"><Text text="{i18n>admCode}"/></Column>
+                        <Column><Text text="{i18n>admName}"/></Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>admRequiresAudit}"/></Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true" width="6rem"><Text text="{i18n>admOrder}"/></Column>
+                        <Column><Text text="{i18n>colStatus}"/></Column>
+                        <Column width="4rem" hAlign="Center"/>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <ObjectStatus text="{dir>code}" state="Information" inverted="true"/>
+                                <Text text="{dir>name}"/>
+                                <Text text="{= ${dir>requiresAudit} ? ${i18n>yes} : ${i18n>no} }"/>
+                                <Text text="{dir>sortOrder}"/>
                                 <ObjectStatus
                                     text="{= ${dir>active} !== false ? ${i18n>teamActive} : ${i18n>teamInactive} }"
                                     state="{= ${dir>active} !== false ? 'Success' : 'Error' }"

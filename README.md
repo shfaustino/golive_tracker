@@ -89,7 +89,10 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
   am a member
 - [x] 08 Auditorias — paged list with search, project and result filters;
   new, edit, follow-up and delete; also as the project's Auditorias tab
-- [x] 09 Administração — Pessoas and Clientes tabs; Administrators manage
+- [x] 09 Administração — Pessoas, Clientes, Módulos and Tipos de marco tabs
+  (the last two Administrators' only: the managed lists of modules and
+  milestone types, read at the start into `model/lists.js`, which the
+  choices and the code-to-name formatters use); Administrators manage
   them through /admin (new, edit, deactivate, delete; many at a time: Importar
   from Excel, Eliminar selecionados, and those with project history
   deactivated instead), others see the active

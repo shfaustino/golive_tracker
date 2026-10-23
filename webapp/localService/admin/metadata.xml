@@ -7,6 +7,8 @@
       <EntityContainer Name="EntityContainer">
         <EntitySet Name="People" EntityType="AdminService.People"/>
         <EntitySet Name="Clients" EntityType="AdminService.Clients"/>
+        <EntitySet Name="Modules" EntityType="AdminService.Modules"/>
+        <EntitySet Name="MilestoneTypes" EntityType="AdminService.MilestoneTypes"/>
       </EntityContainer>
 
       <EntityType Name="People">
@@ -24,6 +26,20 @@
         <Property Name="name" Type="Edm.String" MaxLength="200"/>
         <Property Name="taxId" Type="Edm.String" MaxLength="20"/>
         <Property Name="erpCode" Type="Edm.String" MaxLength="50"/>
+        <Property Name="active" Type="Edm.Boolean"/>
+      </EntityType>
+      <EntityType Name="Modules">
+        <Key><PropertyRef Name="code"/></Key>
+        <Property Name="code" Type="Edm.String" MaxLength="20" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="100"/>
+        <Property Name="active" Type="Edm.Boolean"/>
+      </EntityType>
+      <EntityType Name="MilestoneTypes">
+        <Key><PropertyRef Name="code"/></Key>
+        <Property Name="code" Type="Edm.String" MaxLength="20" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="100"/>
+        <Property Name="requiresAudit" Type="Edm.Boolean"/>
+        <Property Name="sortOrder" Type="Edm.Int32"/>
         <Property Name="active" Type="Edm.Boolean"/>
       </EntityType>
     </Schema>

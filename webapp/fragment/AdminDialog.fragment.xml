@@ -3,8 +3,9 @@
     xmlns:core="sap.ui.core"
     xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 
-    <!-- Nova pessoa / Editar pessoa, Novo cliente / Editar cliente, in the
-         "record" model (Admin.controller.js), kind "person" or "client".
+    <!-- Nova pessoa / Editar pessoa, Novo cliente / Editar cliente, Novo
+         módulo, Novo tipo de marco, in the "record" model
+         (Admin.controller.js), kind "person", "client", "module" or "milestoneType".
          The profile is one of three cards, each saying what it lets one do
          (onProfileSelect in adminActions.js); Ativo is a row with a switch. -->
     <Dialog
@@ -14,13 +15,27 @@
         class="gtApp gtDialog">
         <VBox class="gtDialogBody" renderType="Bare">
 
+            <!-- a module's or milestone type's code: its key, set once -->
+            <VBox class="gtField" renderType="Bare" visible="{= ${record>/kind} === 'module' || ${record>/kind} === 'milestoneType' }">
+                <Label text="{i18n>admCode}" labelFor="recCode" required="true"/>
+                <Input
+                    id="recCode"
+                    value="{record>/values/code}"
+                    maxLength="20"
+                    enabled="{= ${record>/mode} === 'create' }"
+                    placeholder="{= ${record>/kind} === 'module' ? 'SF-RCM' : 'UAT' }"
+                    valueState="{= ${record>/errors/code} ? 'Error' : 'None' }"
+                    valueStateText="{record>/errors/code}"/>
+                <Text text="{i18n>admCodeHint}" class="gtHint"/>
+            </VBox>
+
             <VBox class="gtField" renderType="Bare">
                 <Label text="{i18n>admName}" labelFor="recName" required="true"/>
                 <Input
                     id="recName"
                     value="{record>/values/name}"
                     maxLength="200"
-                    placeholder="{= ${record>/kind} === 'person' ? ${i18n>admNamePlaceholder} : ${i18n>admClientNamePlaceholder} }"
+                    placeholder="{= ${record>/kind} === 'person' ? ${i18n>admNamePlaceholder} : (${record>/kind} === 'client' ? ${i18n>admClientNamePlaceholder} : '') }"
                     valueState="{= ${record>/errors/name} ? 'Error' : 'None' }"
                     valueStateText="{record>/errors/name}"/>
             </VBox>
@@ -93,11 +108,33 @@
                 </List>
             </VBox>
 
+            <!-- a milestone type: whether one added by hand needs an audit, and its place on the timeline -->
+            <HBox class="gtToggleRow" alignItems="Center" justifyContent="SpaceBetween" renderType="Bare"
+                visible="{= ${record>/kind} === 'milestoneType' }">
+                <VBox renderType="Bare">
+                    <Label text="{i18n>admRequiresAudit}" labelFor="recAudit" class="gtChoiceTitle"/>
+                    <Text text="{i18n>admRequiresAuditHint}" class="gtSubtle"/>
+                </VBox>
+                <Switch id="recAudit" state="{record>/values/requiresAudit}" customTextOn=" " customTextOff=" "/>
+            </HBox>
+            <VBox class="gtField" renderType="Bare" visible="{= ${record>/kind} === 'milestoneType' }">
+                <Label text="{i18n>admOrder}" labelFor="recOrder"/>
+                <Input
+                    id="recOrder"
+                    value="{record>/values/sortOrder}"
+                    type="Number"
+                    width="8rem"
+                    placeholder="100"
+                    valueState="{= ${record>/errors/sortOrder} ? 'Error' : 'None' }"
+                    valueStateText="{record>/errors/sortOrder}"/>
+                <Text text="{i18n>admOrderHint}" class="gtHint"/>
+            </VBox>
+
             <HBox class="gtToggleRow" alignItems="Center" justifyContent="SpaceBetween" renderType="Bare">
                 <VBox renderType="Bare">
                     <Label text="{i18n>teamActive}" labelFor="recActive" class="gtChoiceTitle"/>
                     <Text
-                        text="{= ${record>/kind} === 'person' ? ${i18n>admActiveHintPerson} : ${i18n>admActiveHintClient} }"
+                        text="{= ${record>/kind} === 'person' ? ${i18n>admActiveHintPerson} : (${record>/kind} === 'client' ? ${i18n>admActiveHintClient} : ${i18n>admActiveHintList}) }"
                         class="gtSubtle"/>
                 </VBox>
                 <Switch id="recActive" state="{record>/values/active}" customTextOn=" " customTextOff=" "/>

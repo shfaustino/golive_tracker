@@ -1,8 +1,9 @@
 sap.ui.define([
     "../model/projectImport",
     "../model/projectForm",
+    "../model/lists",
     "./excelFiles"
-], function (projectImport, projectForm, excelFiles) {
+], function (projectImport, projectForm, lists, excelFiles) {
     "use strict";
 
     /** The label of each field an error names */
@@ -38,7 +39,7 @@ sap.ui.define([
          */
         onDownloadImportTemplate: function () {
             this._pImportKnown.then(function (oKnown) {
-                var iRows = Math.max(projectForm.PROJECT_TYPES.length, projectForm.MODULES.length,
+                var iRows = Math.max(projectForm.PROJECT_TYPES.length, oKnown.modules.length,
                         oKnown.clients.length, oKnown.people.length),
                     aLists = [["Tipo de projeto", "Módulos", "Clientes", "Pessoas (email)"]],
                     i;
@@ -46,7 +47,7 @@ sap.ui.define([
                 for (i = 0; i < iRows; i++) {
                     aLists.push([
                         projectForm.PROJECT_TYPES[i] || "",
-                        projectForm.MODULES[i] || "",
+                        oKnown.modules[i] || "",
                         oKnown.clients[i] ? oKnown.clients[i].name : "",
                         oKnown.people[i] ? oKnown.people[i].email : ""
                     ]);
@@ -124,6 +125,10 @@ sap.ui.define([
                     people: aResults[1],
                     codes: aResults[2].map(function (oProject) {
                         return oProject.code;
+                    }),
+                    // the active modules of the managed list
+                    modules: lists.activeModules().map(function (oModule) {
+                        return oModule.code;
                     })
                 };
             });

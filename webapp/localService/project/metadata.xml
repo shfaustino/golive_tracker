@@ -67,6 +67,8 @@
         <EntitySet Name="MyItems" EntityType="ProjectService.MyItems"/>
         <EntitySet Name="MyMilestones" EntityType="ProjectService.MyMilestones"/>
         <EntitySet Name="Clients" EntityType="ProjectService.Clients"/>
+        <EntitySet Name="Modules" EntityType="ProjectService.Modules"/>
+        <EntitySet Name="MilestoneTypes" EntityType="ProjectService.MilestoneTypes"/>
         <EntitySet Name="People" EntityType="ProjectService.People"/>
         <EntitySet Name="Currencies" EntityType="ProjectService.Currencies"/>
         <FunctionImport Name="me" Function="ProjectService.me"/>
@@ -447,6 +449,20 @@
         <Parameter Name="to" Type="Edm.Date"/>
         <ReturnType Type="ProjectService.Dashboard"/>
       </Function>
+      <EntityType Name="Modules">
+        <Key><PropertyRef Name="code"/></Key>
+        <Property Name="code" Type="Edm.String" MaxLength="20" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="100"/>
+        <Property Name="active" Type="Edm.Boolean"/>
+      </EntityType>
+      <EntityType Name="MilestoneTypes">
+        <Key><PropertyRef Name="code"/></Key>
+        <Property Name="code" Type="Edm.String" MaxLength="20" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="100"/>
+        <Property Name="requiresAudit" Type="Edm.Boolean"/>
+        <Property Name="sortOrder" Type="Edm.Int32"/>
+        <Property Name="active" Type="Edm.Boolean"/>
+      </EntityType>
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>
