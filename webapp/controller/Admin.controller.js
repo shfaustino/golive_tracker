@@ -23,7 +23,7 @@ sap.ui.define([
         onInit: function () {
             this.setModel(new JSONModel({
                 busy: false, tab: "pessoas", title: "", subtitle: "", newText: "",
-                rows: [], page: 1, pageCount: 0, pages: [], rangeText: "", search: "", profile: "", state: ""
+                rows: [], page: 1, pageCount: 0, pages: [], rangeText: "", search: "", profile: "", state: "", selectedCount: 0
             }), "dir");
             this.setModel(new JSONModel({ busy: false, kind: "person", values: {}, errors: {} }), "record");
             ["people", "clients", "admin"].forEach(function (sRoute) {
@@ -140,6 +140,10 @@ sap.ui.define([
                     return;
                 }
                 oPage = paging.describe(iPage, PAGE_SIZE, oBinding.getCount() || 0);
+                // a selection is of the rows on show: a new page, or tab, starts with none
+                this.byId("peopleTable").removeSelections(true);
+                this.byId("clientsTable").removeSelections(true);
+                oDir.setProperty("/selectedCount", 0);
                 oDir.setProperty("/rows", aContexts.map(function (oContext) {
                     return oContext.getObject();
                 }));

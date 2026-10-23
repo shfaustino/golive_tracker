@@ -22,14 +22,28 @@
                     <Title text="{dir>/title}" level="H1" class="gtPageTitle"/>
                     <Text text="{dir>/subtitle}" class="gtSubtitle"/>
                 </VBox>
-                <Button
-                    id="newRecordButton"
-                    text="{dir>/newText}"
-                    icon="sap-icon://add"
-                    type="Emphasized"
-                    visible="{user>/isAdmin}"
-                    press=".onNew"
-                    class="gtPrimaryButton"/>
+                <!-- Administrators: many at a time (controller/adminBulk.js), and one -->
+                <HBox alignItems="Center" renderType="Bare" class="gtHeaderButtons" visible="{user>/isAdmin}">
+                    <Button
+                        id="deleteSelectedRecordsButton"
+                        text="{parts: ['i18n>bulkOpen', 'dir>/selectedCount'], formatter: '.formatMessage'}"
+                        icon="sap-icon://delete"
+                        type="Reject"
+                        visible="{= ${dir>/selectedCount} > 0 }"
+                        press=".onDeleteSelected"/>
+                    <Button
+                        id="importRecordsButton"
+                        text="{i18n>impOpen}"
+                        icon="sap-icon://excel-attachment"
+                        press=".onImportRecords"/>
+                    <Button
+                        id="newRecordButton"
+                        text="{dir>/newText}"
+                        icon="sap-icon://add"
+                        type="Emphasized"
+                        press=".onNew"
+                        class="gtPrimaryButton"/>
+                </HBox>
             </HBox>
 
             <IconTabBar
@@ -81,6 +95,8 @@
                     id="peopleTable"
                     class="gtTable"
                     fixedLayout="false"
+                    mode="{= ${user>/isAdmin} ? 'MultiSelect' : 'None' }"
+                    selectionChange=".onBulkSelectionChange"
                     visible="{= ${dir>/tab} === 'pessoas' }"
                     busy="{dir>/busy}"
                     busyIndicatorDelay="0"
@@ -117,6 +133,8 @@
                     id="clientsTable"
                     class="gtTable"
                     fixedLayout="false"
+                    mode="{= ${user>/isAdmin} ? 'MultiSelect' : 'None' }"
+                    selectionChange=".onBulkSelectionChange"
                     visible="{= ${dir>/tab} === 'clientes' }"
                     busy="{dir>/busy}"
                     busyIndicatorDelay="0"

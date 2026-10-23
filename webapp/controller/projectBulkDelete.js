@@ -1,92 +1,50 @@
 sap.ui.define([
-    "sap/ui/model/json/JSONModel",
-    "sap/m/MessageToast",
-    "../service/childWrites"
-], function (JSONModel, MessageToast, childWrites) {
+    "./bulkDelete"
+], function (bulkDelete) {
     "use strict";
 
     /**
-     * Eliminar projetos selecionados, on the Projetos page (Administrators
-     * only: the table is MultiSelect for them, and the API refuses anyone
-     * else). The selected projects of the page on show are listed, the
-     * number of them typed to confirm, and then each one is deleted with
-     * DELETE /Projects(<id>), which takes everything in it; each row then
-     * says whether it was deleted or why not. Mixed into
-     * Projects.controller.js through ./projectListActions, so `this` is
-     * that controller; it implements _load(iPage).
+     * Eliminar selecionados on the Projetos page (./bulkDelete), for
+     * Administrators: the table is MultiSelect for them, and the API refuses
+     * anyone else. DELETE /Projects(<id>) takes everything in the project.
+     * Mixed into Projects.controller.js through ./projectListActions.
      */
-    return {
+    return Object.assign({}, bulkDelete, {
 
         /**
-         * The selection changed: the button shows how many are selected.
-         * @public
+         * What ./bulkDelete works with on this page.
+         * @returns {object} the setup
+         * @private
          */
-        onProjectSelectionChange: function () {
-            this.getModel("list").setProperty("/selectedCount", this.byId("projectsTable").getSelectedItems().length);
-        },
+        _bulkSetup: function () {
+            var oBundle = this.getResourceBundle(),
+                oList = this.getModel("list");
 
-        /** @public */
-        onDeleteSelectedProjects: function () {
-            var aRows = this.byId("projectsTable").getSelectedItems().map(function (oItem) {
-                var oProject = oItem.getBindingContext("list").getObject();
-
-                return { ID: oProject.ID, code: oProject.code, name: oProject.name, state: "None", stateText: "", message: "" };
-            });
-
-            if (!this.getModel("bulk")) {
-                this.setModel(new JSONModel({}), "bulk");
-            }
-            this.getModel("bulk").setData({ busy: false, done: false, rows: aRows, count: String(aRows.length), typed: "" });
-            this._getBulkDeleteDialog().then(function (oDialog) {
-                oDialog.open();
-            });
-        },
-
-        /**
-         * Eliminar: one DELETE after the other, each row saying how it went.
-         * @public
-         */
-        onConfirmBulkDelete: function () {
-            var oBulk = this.getModel("bulk"),
-                oModel = this.getOwnerComponent().getModel(),
-                oBundle = this.getResourceBundle(),
-                iDeleted = 0;
-
-            oBulk.setProperty("/busy", true);
-            oBulk.getProperty("/rows").reduce(function (pPrevious, oRow, i) {
-                return pPrevious.then(function () {
-                    return childWrites.request(oModel, "DELETE", "/Projects(" + oRow.ID + ")");
-                }).then(function (oResult) {
-                    iDeleted += oResult.ok ? 1 : 0;
-                    oBulk.setProperty("/rows/" + i + "/state", oResult.ok ? "Success" : "Error");
-                    oBulk.setProperty("/rows/" + i + "/stateText", oBundle.getText(oResult.ok ? "bulkDeleted" : "bulkNotDeleted"));
-                    oBulk.setProperty("/rows/" + i + "/message", oResult.message);
-                });
-            }, Promise.resolve()).then(function () {
-                oBulk.setProperty("/busy", false);
-                oBulk.setProperty("/done", true);
-                MessageToast.show(oBundle.getText("bulkDone", [iDeleted]));
-                this.byId("projectsTable").removeSelections(true);
-                this.getModel("list").setProperty("/selectedCount", 0);
-                // the lists that showed them read again
-                oModel.refresh();
-                this._load(this.getModel("list").getProperty("/page"));
-            }.bind(this));
-        },
-
-        /** @public */
-        onCloseBulkDelete: function () {
-            this._getBulkDeleteDialog().then(function (oDialog) {
-                oDialog.close();
-            });
-        },
-
-        /** @private */
-        _getBulkDeleteDialog: function () {
-            if (!this._pBulkDeleteDialog) {
-                this._pBulkDeleteDialog = this.loadFragment({ name: "com.amt.golivetracker.fragment.ProjectBulkDeleteDialog" });
-            }
-            return this._pBulkDeleteDialog;
+            return {
+                table: this.byId("projectsTable"),
+                rowModel: "list",
+                model: this.getOwnerComponent().getModel(),
+                canDeactivate: false,
+                texts: {
+                    title: oBundle.getText("bulkTitle"),
+                    intro: oBundle.getText("bulkIntro"),
+                    codeLabel: oBundle.getText("colCode")
+                },
+                row: function (oProject) {
+                    return { ID: oProject.ID, code: oProject.code, name: oProject.name };
+                },
+                path: function (oRow) {
+                    return "/Projects(" + oRow.ID + ")";
+                },
+                setCount: function (iCount) {
+                    oList.setProperty("/selectedCount", iCount);
+                },
+                done: function () {
+                    // the lists that showed them read again
+                    this.getOwnerComponent().getModel().refresh();
+                    this._load(oList.getProperty("/page"));
+                }.bind(this)
+            };
         }
-    };
+    });
 });

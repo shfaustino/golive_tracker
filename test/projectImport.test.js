@@ -23,7 +23,7 @@ test("toDate reads date cells, Excel serials and typed dates", () => {
     assert.equal(projectImport.toDate("amanhã"), null);
 });
 
-test("a complete row becomes the Novo projeto payload, the PM in the team", () => {
+test("a complete row becomes the Novo projeto body, the PM in the team", () => {
     const [oRow] = projectImport.read([HEADERS, row({
         code: "CO-N-0100", name: "Projeto X", client: "500100200", projectType: "Rollout",
         startDate: "01/02/2027", endDate: "30/11/2027", pm: "ANA.SILVA@amt.pt", modules: "EC; ECP", value: "1200,50"
@@ -32,7 +32,7 @@ test("a complete row becomes the Novo projeto payload, the PM in the team", () =
     assert.deepEqual(oRow.errors, []);
     assert.equal(oRow.line, 2);
     assert.equal(oRow.clientName, "Cliente A");
-    assert.deepEqual(oRow.payload, {
+    assert.deepEqual(oRow.body, {
         code: "CO-N-0100", name: "Projeto X", client_ID: "c1", projectType: "Rollout",
         startDate: "2027-02-01", endDate: "2027-11-30", currency_code: "EUR",
         modules: [{ module: "EC" }, { module: "ECP" }],
@@ -41,7 +41,7 @@ test("a complete row becomes the Novo projeto payload, the PM in the team", () =
     });
 });
 
-test("says what is wrong in each row, and makes no payload for it", () => {
+test("says what is wrong in each row, and makes no body for it", () => {
     const aRows = projectImport.read([HEADERS,
         row({ code: "CO-N-0001", name: "", client: "Cliente Z", projectType: "Foo", startDate: "amanhã",
             endDate: "01/01/2027", pm: "ninguem@amt.pt", modules: "EC, XX" }),
@@ -53,7 +53,7 @@ test("says what is wrong in each row, and makes no payload for it", () => {
         "impErrorClient:Cliente Z", "impErrorCodeTaken:CO-N-0001", "impErrorDate:amanhã", "impErrorModule:XX",
         "impErrorPerson:ninguem@amt.pt", "impErrorType:Foo", "pfErrorRequired"
     ]);
-    assert.equal(aRows[0].payload, null);
+    assert.equal(aRows[0].body, null);
     assert.deepEqual(aRows[1].errors, []);
     assert.deepEqual(errorsOf(aRows[2]), ["impErrorCodeRepeated:co-n-0200"]);
 });
@@ -67,5 +67,5 @@ test("finds columns by their header, in any order, and skips empty rows", () => 
 
     assert.equal(aRows.length, 1);
     assert.deepEqual(aRows[0].errors, []);
-    assert.equal(aRows[0].payload.code, "CO-N-0300");
+    assert.equal(aRows[0].body.code, "CO-N-0300");
 });

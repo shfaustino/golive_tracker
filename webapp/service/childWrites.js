@@ -95,7 +95,8 @@ sap.ui.define([
      * @param {string} sMethod POST, PATCH or DELETE
      * @param {string} sPath e.g. /Projects(<id>)/milestones(<id>)
      * @param {object} [oBody] the body
-     * @returns {Promise<{ok: boolean, message: string}>} whether the API took it, and its message when not
+     * @returns {Promise<{ok: boolean, status: number, message: string}>} whether the API took it, its
+     *   HTTP status (0 when it was not reached), and its message when not
      */
     function request(oModel, sMethod, sPath, oBody) {
         var sServiceUrl = oModel.getServiceUrl(),
@@ -105,13 +106,13 @@ sap.ui.define([
             return send(sServiceUrl, sMethod, sPath, oBody);
         }).then(function (oResponse) {
             if (oResponse.ok) {
-                return { ok: true, message: "" };
+                return { ok: true, status: oResponse.status, message: "" };
             }
             return messageOf(oResponse).then(function (sMessage) {
-                return { ok: false, message: sMessage };
+                return { ok: false, status: oResponse.status, message: sMessage };
             });
         }).catch(function (oError) {
-            return { ok: false, message: oError.message || String(oError) };
+            return { ok: false, status: 0, message: oError.message || String(oError) };
         });
     }
 

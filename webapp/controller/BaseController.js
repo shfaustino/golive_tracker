@@ -2,9 +2,10 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
     "sap/ui/core/routing/History",
+    "sap/base/strings/formatMessage",
     "../service/childWrites",
     "../model/moduleBreakdown"
-], function (Controller, UIComponent, History, childWrites, moduleBreakdown) {
+], function (Controller, UIComponent, History, formatMessage, childWrites, moduleBreakdown) {
     "use strict";
 
     /**
@@ -29,6 +30,17 @@ sap.ui.define([
 
         getResourceBundle: function () {
             return this.getOwnerComponent().getModel("i18n").getResourceBundle();
+        },
+
+        /**
+         * A text with its numbers in, for bindings that put them together
+         * ({parts: ['i18n>key', 'model>/n'], formatter: '.formatMessage'}).
+         * @param {string} sPattern the text, with {0}, {1}
+         * @returns {string} the text
+         * @public
+         */
+        formatMessage: function (sPattern) {
+            return sPattern ? formatMessage(sPattern, Array.prototype.slice.call(arguments, 1)) : "";
         },
 
         /**
