@@ -1,6 +1,7 @@
 sap.ui.define([
-    "./projectForm"
-], function (projectForm) {
+    "./projectForm",
+    "./sheetImport"
+], function (projectForm, sheetImport) {
     "use strict";
 
     /**
@@ -26,23 +27,8 @@ sap.ui.define([
     /** Days from 1899-12-30 to 1970-01-01: Excel's serial dates */
     var EXCEL_EPOCH_DAYS = 25569;
 
-    /**
-     * A header as it is matched: no "*", no accents, no case, no spaces.
-     * @param {*} vText the header
-     * @returns {string} the key
-     */
-    function headerKey(vText) {
-        return String(vText || "").split("(")[0].replace(/\*/g, "").normalize("NFD").replace(/[̀-ͯ]/g, "")
-            .toLowerCase().replace(/\s+/g, "");
-    }
-
-    /**
-     * @param {*} vValue a cell
-     * @returns {string} its text, trimmed
-     */
-    function text(vValue) {
-        return vValue === null || vValue === undefined ? "" : String(vValue).trim();
-    }
+    var text = sheetImport.text,
+        same = sheetImport.same;
 
     /**
      * A date cell as YYYY-MM-DD: a Date, an Excel serial number, DD/MM/YYYY
@@ -69,14 +55,6 @@ sap.ui.define([
             return null;
         }
         return isNaN(oUtc.getTime()) ? null : oUtc.toISOString().slice(0, 10);
-    }
-
-    /**
-     * @param {string} sValue a name, NIF or email
-     * @returns {string} as compared
-     */
-    function same(sValue) {
-        return text(sValue).toLowerCase();
     }
 
     /**
@@ -111,25 +89,6 @@ sap.ui.define([
         return aErrors;
     }
 
-    /**
-     * A code already taken, or repeated in the file; a new one is noted.
-     * @param {string} sCode the row's code
-     * @param {Object<string, string>} mCodes the codes seen: "taken" (a project) or "file" (an earlier row)
-     * @returns {{field: string, key: string, value: string}[]} the error, if any
-     */
-    function codeErrors(sCode, mCodes) {
-        var sSeen = mCodes[same(sCode)];
-
-        if (!sCode) {
-            return [];
-        }
-        if (!sSeen) {
-            mCodes[same(sCode)] = "file";
-            return [];
-        }
-        return [{ field: "code", key: sSeen === "taken" ? "impErrorCodeTaken" : "impErrorCodeRepeated", value: sCode }];
-    }
-
     return {
 
         COLUMNS: COLUMNS,
@@ -142,9 +101,7 @@ sap.ui.define([
          */
         templateRows: function () {
             return [
-                COLUMNS.map(function (aColumn) {
-                    return aColumn[1];
-                }),
+                sheetImport.headers(COLUMNS),
                 ["CO-N-0001", "Implementação SAP SuccessFactors", "[nome ou NIF do cliente]", "Implementation", "01/02/2027",
                     "30/11/2027", "[email do gestor]", "EC, ECP", "EUR", "", "", ""]
             ];
@@ -158,31 +115,14 @@ sap.ui.define([
          * @param {{clients: {ID: string, name: string, taxId: string}[], people: {ID: string, name: string, email: string}[],
          *   codes: string[]}} oKnown active clients and people, and the codes already taken
          * @returns {{line: number, code: string, name: string, clientName: string, projectType: string,
-         *   startDate: string, endDate: string, pmName: string, modules: string[], payload: object,
+         *   startDate: string, endDate: string, pmName: string, modules: string[], body: object,
          *   errors: {field: string, key: string, value: string}[]}[]} per filled row; errors use i18n keys
          */
         read: function (aSheet, oKnown) {
-            var aHeaders = (aSheet[0] || []).map(headerKey),
-                mColumn = {},
-                mCodes = {};
+            var mCodes = sheetImport.taken(oKnown.codes);
 
-            COLUMNS.forEach(function (aColumn) {
-                mColumn[aColumn[0]] = aHeaders.indexOf(headerKey(aColumn[1]));
-            });
-            (oKnown.codes || []).forEach(function (sCode) {
-                mCodes[same(sCode)] = "taken";
-            });
-
-            return aSheet.slice(1).map(function (aRow, i) {
-                return { line: i + 2, cells: aRow || [] };
-            }).filter(function (oRow) {
-                return oRow.cells.some(function (vCell) {
-                    return text(vCell) !== "";
-                });
-            }).map(function (oRow) {
-                var cell = function (sKey) {
-                        return mColumn[sKey] === -1 ? "" : oRow.cells[mColumn[sKey]];
-                    },
+            return sheetImport.rows(aSheet, COLUMNS).map(function (oRow) {
+                var cell = oRow.cell,
                     aErrors = [],
                     sClient = text(cell("client")),
                     oClient = (oKnown.clients || []).filter(function (c) {
@@ -223,7 +163,7 @@ sap.ui.define([
                     client: sClient, clientFound: !!oClient, pm: sPm, pmFound: !!oPm, type: sType, modules: aModules,
                     startDate: sStart === null ? text(cell("startDate")) : null,
                     endDate: sEnd === null ? text(cell("endDate")) : null
-                }), codeErrors(oValues.code, mCodes));
+                }), sheetImport.uniqueErrors(oValues.code, mCodes, "code", "impErrorCodeTaken", "impErrorCodeRepeated"));
 
                 return {
                     line: oRow.line,
@@ -235,7 +175,7 @@ sap.ui.define([
                     endDate: oValues.endDate,
                     pmName: oPm ? oPm.name : sPm,
                     modules: aModules,
-                    payload: aErrors.length ? null : projectForm.payload(oValues),
+                    body: aErrors.length ? null : projectForm.payload(oValues),
                     errors: aErrors
                 };
             });

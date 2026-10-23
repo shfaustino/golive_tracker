@@ -23,7 +23,7 @@
                         icon="sap-icon://delete"
                         type="Reject"
                         visible="{= !!${user>/isAdmin} &amp;&amp; ${list>/selectedCount} > 0 }"
-                        press=".onDeleteSelectedProjects"/>
+                        press=".onDeleteSelected"/>
                     <!-- Importar projetos from an Excel file (controller/projectImportDialog.js) -->
                     <Button
                         id="importProjectsButton"
@@ -88,7 +88,7 @@
                     class="gtTable"
                     fixedLayout="false"
                     mode="{= ${user>/isAdmin} ? 'MultiSelect' : 'None' }"
-                    selectionChange=".onProjectSelectionChange"
+                    selectionChange=".onBulkSelectionChange"
                     busy="{list>/busy}"
                     busyIndicatorDelay="0"
                     noDataText="{i18n>projectsNoData}"

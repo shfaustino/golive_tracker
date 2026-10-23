@@ -90,7 +90,9 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
 - [x] 08 Auditorias — paged list with search, project and result filters;
   new, edit, follow-up and delete; also as the project's Auditorias tab
 - [x] 09 Administração — Pessoas and Clientes tabs; Administrators manage
-  them through /admin (new, edit, deactivate, delete), others see the active
+  them through /admin (new, edit, deactivate, delete; many at a time: Importar
+  from Excel, Eliminar selecionados, and those with project history
+  deactivated instead), others see the active
   ones read-only through /project, from the side menu's Pessoas and Clientes
   (shown to those who have no Administração)
 - [x] Anexos — every project's documents (SharePoint/OneDrive links) with

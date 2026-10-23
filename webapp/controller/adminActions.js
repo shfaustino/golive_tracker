@@ -2,8 +2,9 @@ sap.ui.define([
     "sap/m/ActionSheet",
     "sap/m/Button",
     "sap/m/MessageBox",
-    "../model/adminRules"
-], function (ActionSheet, Button, MessageBox, adminRules) {
+    "../model/adminRules",
+    "./adminBulk"
+], function (ActionSheet, Button, MessageBox, adminRules, adminBulk) {
     "use strict";
 
     /** The batch group /admin changes are sent in. */
@@ -14,10 +15,12 @@ sap.ui.define([
      * /admin (golive-tracker-api, srv/admin-service.js): new, edit,
      * deactivate or activate, and delete. Who has project history is
      * deactivated, never deleted: the API answers 409 and the ErrorHandler
-     * shows why. Mixed into Admin.controller.js, so `this` is that
-     * controller; it implements _onRecordsChanged(sToastKey).
+     * shows why. Many at a time (Importar, Eliminar selecionados) is
+     * ./adminBulk, brought in with this. Mixed into Admin.controller.js, so
+     * `this` is that controller; it implements _onRecordsChanged(sToastKey)
+     * and _load(iPage).
      */
-    return {
+    return Object.assign({}, adminBulk, {
 
         /**
          * Nova pessoa / Novo cliente, for the tab on show.
@@ -267,5 +270,5 @@ sap.ui.define([
             }
             return this._pRecordDialog;
         }
-    };
+    });
 });
