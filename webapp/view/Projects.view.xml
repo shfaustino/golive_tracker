@@ -15,6 +15,15 @@
             <HBox justifyContent="SpaceBetween" alignItems="Center" class="gtPageHeader" renderType="Bare">
                 <Title text="{i18n>navProjects}" level="H1" class="gtPageTitle"/>
                 <HBox alignItems="Center" renderType="Bare" class="gtHeaderButtons">
+                    <!-- Eliminar selecionados: Administrators, once projects are
+                         selected in the table (controller/projectBulkDelete.js) -->
+                    <Button
+                        id="deleteSelectedButton"
+                        text="{parts: ['i18n>bulkOpen', 'list>/selectedCount'], formatter: '.formatMessage'}"
+                        icon="sap-icon://delete"
+                        type="Reject"
+                        visible="{= !!${user>/isAdmin} &amp;&amp; ${list>/selectedCount} > 0 }"
+                        press=".onDeleteSelectedProjects"/>
                     <!-- Importar projetos from an Excel file (controller/projectImportDialog.js) -->
                     <Button
                         id="importProjectsButton"
@@ -73,10 +82,13 @@
             </HBox>
 
             <VBox class="gtCard gtTableCard" renderType="Bare">
+                <!-- MultiSelect for Administrators, to delete several projects at once -->
                 <Table
                     id="projectsTable"
                     class="gtTable"
                     fixedLayout="false"
+                    mode="{= ${user>/isAdmin} ? 'MultiSelect' : 'None' }"
+                    selectionChange=".onProjectSelectionChange"
                     busy="{list>/busy}"
                     busyIndicatorDelay="0"
                     noDataText="{i18n>projectsNoData}"

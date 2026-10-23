@@ -6,15 +6,15 @@ sap.ui.define([
     "sap/ui/model/Sorter",
     "../model/paging",
     "../formatter/formatter",
-    "./projectImportDialog"
-], function (BaseController, JSONModel, Filter, FilterOperator, Sorter, paging, formatter, projectImportDialog) {
+    "./projectListActions"
+], function (BaseController, JSONModel, Filter, FilterOperator, Sorter, paging, formatter, projectListActions) {
     "use strict";
 
     /** Rows per page, as in the mockup ("A mostrar 1-10 de 24 projetos"). */
     var PAGE_SIZE = 10;
 
-    // Importar projetos lives in ./projectImportDialog, mixed in here.
-    return BaseController.extend("com.amt.golivetracker.controller.Projects", Object.assign({}, projectImportDialog, {
+    // Importar and Eliminar selecionados live in ./projectListActions, mixed in here.
+    return BaseController.extend("com.amt.golivetracker.controller.Projects", Object.assign({}, projectListActions, {
 
         formatter: formatter,
 
@@ -27,7 +27,8 @@ sap.ui.define([
                 pages: [],
                 rangeText: "",
                 sort: { path: "code", desc: false },
-                search: ""
+                search: "",
+                selectedCount: 0
             }), "list");
             this.setModel(new JSONModel({ clients: [], people: [] }), "options");
             this.getRouter().getRoute("projects").attachPatternMatched(this._onRouteMatched, this);
@@ -156,6 +157,9 @@ sap.ui.define([
                     return;
                 }
                 oPage = paging.describe(iPage, PAGE_SIZE, oBinding.getCount() || 0);
+                // a selection is of the rows on show: a new page starts with none
+                this.byId("projectsTable").removeSelections(true);
+                oListModel.setProperty("/selectedCount", 0);
                 oListModel.setProperty("/rows", aContexts.map(function (oContext) {
                     return oContext.getObject();
                 }));

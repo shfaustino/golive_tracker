@@ -1,0 +1,58 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <!-- Eliminar projetos selecionados (controller/projectBulkDelete.js), in
+         the "bulk" model: the selected projects, the number of them typed to
+         confirm, then how each deletion went. -->
+    <Dialog
+        id="projectBulkDeleteDialog"
+        title="{i18n>bulkTitle}"
+        contentWidth="40rem"
+        busy="{bulk>/busy}"
+        busyIndicatorDelay="0"
+        class="gtApp gtDialog sapUiContentPadding">
+        <VBox renderType="Bare" class="gtImport">
+            <MessageStrip
+                text="{parts: ['i18n>bulkIntro', 'bulk>/count'], formatter: '.formatMessage'}"
+                type="Error"
+                showIcon="true"
+                visible="{= !${bulk>/done} }"/>
+            <Table class="gtTable gtTableInset" items="{bulk>/rows}">
+                <columns>
+                    <Column width="9rem"><Text text="{i18n>colCode}"/></Column>
+                    <Column><Text text="{i18n>colName}"/></Column>
+                    <Column width="12rem" visible="{bulk>/done}"><Text text="{i18n>colStatus}"/></Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{bulk>code}" wrapping="false"/>
+                            <Text text="{bulk>name}"/>
+                            <VBox alignItems="Start" renderType="Bare">
+                                <ObjectStatus text="{bulk>stateText}" state="{bulk>state}" inverted="true"/>
+                                <Text text="{bulk>message}" visible="{= !!${bulk>message} }" class="gtSubtle"/>
+                            </VBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+            <VBox renderType="Bare" visible="{= !${bulk>/done} }">
+                <Label text="{parts: ['i18n>bulkType', 'bulk>/count'], formatter: '.formatMessage'}" labelFor="bulkConfirm" required="true"/>
+                <Input id="bulkConfirm" value="{bulk>/typed}" valueLiveUpdate="true" placeholder="{bulk>/count}" width="8rem"/>
+            </VBox>
+        </VBox>
+        <beginButton>
+            <Button
+                text="{parts: ['i18n>bulkDelete', 'bulk>/count'], formatter: '.formatMessage'}"
+                type="Reject"
+                visible="{= !${bulk>/done} }"
+                enabled="{= !${bulk>/busy} &amp;&amp; ${bulk>/typed} === ${bulk>/count} }"
+                press=".onConfirmBulkDelete"/>
+        </beginButton>
+        <endButton>
+            <Button text="{= ${bulk>/done} ? ${i18n>close} : ${i18n>cancel} }" press=".onCloseBulkDelete"/>
+        </endButton>
+    </Dialog>
+
+</core:FragmentDefinition>
