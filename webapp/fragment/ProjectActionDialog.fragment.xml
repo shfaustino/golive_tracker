@@ -11,7 +11,9 @@
                     others, and to Closing while milestones or audit
                     follow-ups are open, listing them.
          "baseline" ProjectService.setBaseline: saves today's forecast dates
-                    as every milestone's baseline (BR-06). -->
+                    as every milestone's baseline (BR-06).
+         "delete"   DELETE /Projects(<id>), Administrators only, once the
+                    project's code is typed. -->
     <Dialog
         id="projectActionDialog"
         title="{action>/title}"
@@ -29,9 +31,18 @@
                 <core:Item key="{action>key}" text="{action>text}"/>
             </gt:SearchSelect>
 
-            <Label text="{i18n>actReason}" labelFor="actionReason" required="{= ${action>/mode} === 'baseline' }"/>
+            <Label text="{i18n>actDeleteCode}" labelFor="actionCode" required="true" visible="{= ${action>/mode} === 'delete' }"/>
+            <Input
+                id="actionCode"
+                visible="{= ${action>/mode} === 'delete' }"
+                value="{action>/values/code}"
+                valueLiveUpdate="true"
+                placeholder="{action>/expectedCode}"/>
+
+            <Label text="{i18n>actReason}" labelFor="actionReason" required="{= ${action>/mode} === 'baseline' }" visible="{= ${action>/mode} !== 'delete' }"/>
             <TextArea
                 id="actionReason"
+                visible="{= ${action>/mode} !== 'delete' }"
                 value="{action>/values/reason}"
                 valueLiveUpdate="true"
                 rows="3"
@@ -41,7 +52,11 @@
                 valueStateText="{action>/errors/reason}"/>
         </f:SimpleForm>
         <beginButton>
-            <Button text="{action>/confirmText}" type="Emphasized" press=".onConfirmProjectAction" enabled="{= !${action>/busy} }"/>
+            <Button
+                text="{action>/confirmText}"
+                type="{= ${action>/mode} === 'delete' ? 'Reject' : 'Emphasized' }"
+                press=".onConfirmProjectAction"
+                enabled="{= !${action>/busy} &amp;&amp; (${action>/mode} !== 'delete' || ${action>/values/code} === ${action>/expectedCode}) }"/>
         </beginButton>
         <endButton>
             <Button text="{i18n>cancel}" press=".onCancelProjectAction"/>

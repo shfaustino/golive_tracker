@@ -5,7 +5,7 @@ export default [
         // deploy/approuter/webapp is what mbt build copies in (see mta.yaml),
         // not sources.
         ignores: [
-            'dist/**', 'node_modules/**', 'webapp/localService/**',
+            'dist/**', 'node_modules/**', 'webapp/localService/**', 'webapp/thirdparty/**',
             'deploy/approuter/webapp/**', 'deploy/approuter/node_modules/**',
             'mta_archives/**', '.*_mta_build_tmp/**'
         ]

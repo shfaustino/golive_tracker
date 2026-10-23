@@ -89,7 +89,35 @@ sap.ui.define([
         });
     }
 
+    /**
+     * Sends one request and says how it went, showing nothing.
+     * @param {sap.ui.model.odata.v4.ODataModel} oModel the model of the service
+     * @param {string} sMethod POST, PATCH or DELETE
+     * @param {string} sPath e.g. /Projects(<id>)/milestones(<id>)
+     * @param {object} [oBody] the body
+     * @returns {Promise<{ok: boolean, message: string}>} whether the API took it, and its message when not
+     */
+    function request(oModel, sMethod, sPath, oBody) {
+        var sServiceUrl = oModel.getServiceUrl(),
+            pToken = sToken === null ? fetchToken(sServiceUrl) : Promise.resolve(sToken);
+
+        return pToken.then(function () {
+            return send(sServiceUrl, sMethod, sPath, oBody);
+        }).then(function (oResponse) {
+            if (oResponse.ok) {
+                return { ok: true, message: "" };
+            }
+            return messageOf(oResponse).then(function (sMessage) {
+                return { ok: false, message: sMessage };
+            });
+        }).catch(function (oError) {
+            return { ok: false, message: oError.message || String(oError) };
+        });
+    }
+
     return {
+
+        request: request,
 
         /**
          * Sends a PATCH or a DELETE to a path under a parent, and shows the
@@ -101,22 +129,11 @@ sap.ui.define([
          * @returns {Promise<boolean>} whether the API took it
          */
         write: function (oModel, sMethod, sPath, oBody) {
-            var sServiceUrl = oModel.getServiceUrl(),
-                pToken = sToken === null ? fetchToken(sServiceUrl) : Promise.resolve(sToken);
-
-            return pToken.then(function () {
-                return send(sServiceUrl, sMethod, sPath, oBody);
-            }).then(function (oResponse) {
-                if (oResponse.ok) {
-                    return true;
+            return request(oModel, sMethod, sPath, oBody).then(function (oResult) {
+                if (!oResult.ok) {
+                    MessageBox.error(oResult.message);
                 }
-                return messageOf(oResponse).then(function (sMessage) {
-                    MessageBox.error(sMessage);
-                    return false;
-                });
-            }).catch(function (oError) {
-                MessageBox.error(oError.message || String(oError));
-                return false;
+                return oResult.ok;
             });
         }
     };

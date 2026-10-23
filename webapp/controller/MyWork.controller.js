@@ -22,7 +22,7 @@ sap.ui.define([
                 busy: false, tab: "tarefas", term: "", state: "", pageNo: 1,
                 items: [], page: [], pages: [], pageCount: 0, rangeText: "", tableTitle: "",
                 kpi: { total: 0, inProgress: 0, late: 0, done: 0 }, late: [], upcoming: [],
-                milestones: [], projects: []
+                milestones: [], audits: [], projects: []
             }), "work");
             this.getRouter().getRoute("myWork").attachPatternMatched(this._load, this);
         },
@@ -86,6 +86,20 @@ sap.ui.define([
             }
         },
 
+        /**
+         * An audit: the Auditorias of its milestone's module (or of Geral).
+         * @param {sap.ui.base.Event} oEvent press of a row or a link
+         * @public
+         */
+        onOpenAudit: function (oEvent) {
+            var oContext = oEvent.getSource().getBindingContext("work"),
+                sProjectId = oContext.getProperty("project_ID");
+
+            if (sProjectId) {
+                this.navToModule(sProjectId, oContext.getProperty("module"), "auditorias");
+            }
+        },
+
         onOpenProject: function (oEvent) {
             this._openProject(oEvent.getSource().getBindingContext("work").getProperty("ID"), "visao-geral");
         },
@@ -102,7 +116,7 @@ sap.ui.define([
         },
 
         /**
-         * Reads the three lists again on every visit. The projects are those
+         * Reads the four lists again on every visit. The projects are those
          * where the person has a running membership: a lambda filter on
          * members, so it is the same for every profile (an Administrator
          * would otherwise see all of them).
@@ -137,7 +151,10 @@ sap.ui.define([
                     operator: FilterOperator.Any,
                     variable: "m",
                     condition: new Filter("m/person_ID", FilterOperator.EQ, sMe)
-                })]) : Promise.resolve([])
+                })]) : Promise.resolve([]),
+                // the audits the person is the auditor of, in any visible project
+                sMe ? this._readAll("/Audits", myWork.AUDIT_QUERY, [new Filter("auditor_ID", FilterOperator.EQ, sMe)])
+                    : Promise.resolve([])
             ];
 
             Promise.all(aReads).then(function (aResults) {
@@ -148,6 +165,7 @@ sap.ui.define([
                 oWork.setProperty("/late", oDescribed.late);
                 oWork.setProperty("/upcoming", oDescribed.upcoming);
                 oWork.setProperty("/milestones", aResults[1]);
+                oWork.setProperty("/audits", myWork.audits(aResults[3]));
                 oWork.setProperty("/projects", aResults[2].map(function (oProject) {
                     var aMine = (oProject.members || []).filter(function (oMember) {
                         return oMember.person_ID === sMe && memberRules.isActive(oMember.endDate);

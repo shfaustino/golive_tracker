@@ -97,7 +97,8 @@ sap.ui.define([], function () {
 
         /**
          * The body of a new attachment. The owner is in the path; the author
-         * is the API's to fill in.
+         * is the API's to fill in. One on the project may be for one of its
+         * modules (a module's page).
          * @param {object} oValues the form
          * @returns {object} the body
          */
@@ -106,6 +107,9 @@ sap.ui.define([], function () {
 
             if (oValues.documentType) {
                 oBody.documentType = oValues.documentType;
+            }
+            if (oValues.module && oValues.owner === "project") {
+                oBody.module = oValues.module;
             }
             return oBody;
         },

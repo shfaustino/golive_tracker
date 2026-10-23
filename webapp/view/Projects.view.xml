@@ -14,14 +14,23 @@
         <VBox class="gtPageContent" renderType="Bare">
             <HBox justifyContent="SpaceBetween" alignItems="Center" class="gtPageHeader" renderType="Bare">
                 <Title text="{i18n>navProjects}" level="H1" class="gtPageTitle"/>
-                <Button
-                    id="newProjectButton"
-                    text="{i18n>newProject}"
-                    icon="sap-icon://add"
-                    type="Emphasized"
-                    visible="{user>/canCreateProject}"
-                    press=".onNewProject"
-                    class="gtPrimaryButton"/>
+                <HBox alignItems="Center" renderType="Bare" class="gtHeaderButtons">
+                    <!-- Importar projetos from an Excel file (controller/projectImportDialog.js) -->
+                    <Button
+                        id="importProjectsButton"
+                        text="{i18n>impOpen}"
+                        icon="sap-icon://excel-attachment"
+                        visible="{user>/canCreateProject}"
+                        press=".onImportProjects"/>
+                    <Button
+                        id="newProjectButton"
+                        text="{i18n>newProject}"
+                        icon="sap-icon://add"
+                        type="Emphasized"
+                        visible="{user>/canCreateProject}"
+                        press=".onNewProject"
+                        class="gtPrimaryButton"/>
+                </HBox>
             </HBox>
 
             <HBox class="gtCard gtFilterBar" alignItems="End" renderType="Bare">

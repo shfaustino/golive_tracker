@@ -36,3 +36,11 @@ builder:
     excludes:
       - /test/**
       - /localService/**
+  # SheetJS (Excel import of projects) is loaded only when it is used, as it is: kept out
+  # of Component-preload.js and not minified again
+  componentPreload:
+    excludes:
+      - com/amt/golivetracker/thirdparty/**
+  minification:
+    excludes:
+      - com/amt/golivetracker/thirdparty/**

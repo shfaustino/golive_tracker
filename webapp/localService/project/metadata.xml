@@ -327,6 +327,7 @@
         <Property Name="project_ID" Type="Edm.Guid"/>
         <Property Name="milestone_ID" Type="Edm.Guid"/>
         <Property Name="milestoneItem_ID" Type="Edm.Guid"/>
+        <Property Name="module" Type="Edm.String" MaxLength="20"/>
         <NavigationProperty Name="author" Type="ProjectService.People">
           <ReferentialConstraint Property="author_ID" ReferencedProperty="ID"/>
         </NavigationProperty>

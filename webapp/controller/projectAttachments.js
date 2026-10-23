@@ -26,14 +26,9 @@ sap.ui.define([
         },
 
         onNewProjectAttachment: function () {
-            var fnKeepMilestone = this._moduleMilestoneFilter();
-
-            // on a module's page, on one of the module's milestones; on Geral,
-            // on one of the whole project's or on the project itself
-            this.openNewAttachment(this._sProjectId, fnKeepMilestone ? {
-                keepMilestone: fnKeepMilestone,
-                milestoneRequired: !!this._moduleOnShow()
-            } : undefined);
+            // on the project, for the module on show ("" on Geral: the whole project)
+            this.openNewAttachment(this._sProjectId,
+                this.getModel("detail").getProperty("/module") ? this._moduleOnShow() : undefined);
         },
 
         /** Called by attachmentDialogs after every change. @private */

@@ -70,8 +70,11 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
 
 - [x] Shell (side navigation, top bar, signed-in person)
 - [x] 02 Dashboard — KPIs, projects by status, overdue milestones, to review, stale projects
-- [x] 03 Projetos — paged list, sorting, search, filters
-- [x] 04 Projeto — header with Mudar estado and Gravar baseline; Visão geral
+- [x] 03 Projetos — paged list, sorting, search, filters; Importar: an Excel
+  template, then the filled file read in the browser (SheetJS, in
+  `webapp/thirdparty`), every row checked before the valid ones are created
+- [x] 04 Projeto — header with Mudar estado, Gravar baseline and (Administrators)
+  Eliminar projeto, once its code is typed; Visão geral
   (progress, timeline, details, next milestone, team, latest updates);
   Módulos, each card opening the module's page (Projetos/<id>/Modulos/<module>)
   with its Marcos (KPIs, table, new and edit dialog), Equipa, Auditorias and
@@ -82,15 +85,18 @@ from the API guide, so the real `/project/$metadata` wins where they differ.
 - [x] 06 Novo projeto — general data, modules, initial team, preview of the
   milestones the type generates; one deep insert
 - [x] 07 O meu trabalho — my items (KPIs, search, state filter, pages, late,
-  upcoming), my milestones, projects where I am a member
+  upcoming), my milestones, the audits I am the auditor of, projects where I
+  am a member
 - [x] 08 Auditorias — paged list with search, project and result filters;
   new, edit, follow-up and delete; also as the project's Auditorias tab
 - [x] 09 Administração — Pessoas and Clientes tabs; Administrators manage
   them through /admin (new, edit, deactivate, delete), others see the active
-  ones read-only through /project; also the side menu's Pessoas and Clientes
-- [x] Anexos — every project's documents (links) with search, project and
-  type filters; new (on the project, a milestone or an item), open, delete;
-  also as the project's Anexos tab
+  ones read-only through /project, from the side menu's Pessoas and Clientes
+  (shown to those who have no Administração)
+- [x] Anexos — every project's documents (SharePoint/OneDrive links) with
+  search, project and type filters; new (on the project, a milestone or an
+  item), open, delete; on a module's page, only type, name and link: the
+  attachment goes on the project for that module
 
 The login screen (01) is the XSUAA login page the approuter redirects to; the
 app has no login form of its own.
