@@ -62,9 +62,10 @@ sap.ui.define([
      * type, a module, or a date that could not be read.
      * @param {{client: string, clientFound: boolean, pm: string, pmFound: boolean, type: string, modules: string[],
      *   startDate: (string|null), endDate: (string|null)}} oRow what the row says; a date, the text not understood
+     * @param {string[]} aKnownModules the modules that can be chosen
      * @returns {{field: string, key: string, value: string}[]} the errors
      */
-    function lookupErrors(oRow) {
+    function lookupErrors(oRow, aKnownModules) {
         var aErrors = [];
 
         if (oRow.client && !oRow.clientFound) {
@@ -82,7 +83,7 @@ sap.ui.define([
             aErrors.push({ field: "pm", key: "impErrorPerson", value: oRow.pm });
         }
         oRow.modules.filter(function (sModule) {
-            return projectForm.MODULES.indexOf(sModule) === -1;
+            return aKnownModules.indexOf(sModule) === -1;
         }).forEach(function (sModule) {
             aErrors.push({ field: "modules", key: "impErrorModule", value: sModule });
         });
@@ -113,7 +114,8 @@ sap.ui.define([
          * project codes there are.
          * @param {Array[]} aSheet the sheet, a row per array, the headers first
          * @param {{clients: {ID: string, name: string, taxId: string}[], people: {ID: string, name: string, email: string}[],
-         *   codes: string[]}} oKnown active clients and people, and the codes already taken
+         *   codes: string[], modules: string[]}} oKnown active clients and people, the codes already taken,
+         *   and the modules that can be chosen (the active ones of the managed list)
          * @returns {{line: number, code: string, name: string, clientName: string, projectType: string,
          *   startDate: string, endDate: string, pmName: string, modules: string[], body: object,
          *   errors: {field: string, key: string, value: string}[]}[]} per filled row; errors use i18n keys
@@ -163,7 +165,7 @@ sap.ui.define([
                     client: sClient, clientFound: !!oClient, pm: sPm, pmFound: !!oPm, type: sType, modules: aModules,
                     startDate: sStart === null ? text(cell("startDate")) : null,
                     endDate: sEnd === null ? text(cell("endDate")) : null
-                }), sheetImport.uniqueErrors(oValues.code, mCodes, "code", "impErrorCodeTaken", "impErrorCodeRepeated"));
+                }, oKnown.modules || []), sheetImport.uniqueErrors(oValues.code, mCodes, "code", "impErrorCodeTaken", "impErrorCodeRepeated"));
 
                 return {
                     line: oRow.line,

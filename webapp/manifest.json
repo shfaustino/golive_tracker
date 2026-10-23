@@ -115,7 +115,9 @@
         { "pattern": "Anexos", "name": "attachments", "target": ["attachments"] },
         { "pattern": "Pessoas", "name": "people", "target": ["people"] },
         { "pattern": "Clientes", "name": "clients", "target": ["clients"] },
-        { "pattern": "Administracao", "name": "admin", "target": ["admin"] }
+        { "pattern": "Administracao", "name": "admin", "target": ["admin"] },
+        { "pattern": "Administracao/Modulos", "name": "adminModules", "target": ["admin"] },
+        { "pattern": "Administracao/TiposDeMarco", "name": "adminMilestoneTypes", "target": ["admin"] }
       ],
       "targets": {
         "dashboard": { "viewName": "Dashboard", "viewId": "dashboard", "viewLevel": 1, "title": "{i18n>navDashboard}" },

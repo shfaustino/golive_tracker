@@ -5,8 +5,9 @@ sap.ui.define([
     "sap/m/MessageToast",
     "../model/projectForm",
     "../model/memberRules",
+    "../model/lists",
     "../formatter/formatter"
-], function (BaseController, JSONModel, Sorter, MessageToast, projectForm, memberRules, formatter) {
+], function (BaseController, JSONModel, Sorter, MessageToast, projectForm, memberRules, lists, formatter) {
     "use strict";
 
     /** The batch group the new project is sent in. */
@@ -173,8 +174,9 @@ sap.ui.define([
                 types: projectForm.PROJECT_TYPES.map(function (sType) {
                     return { key: sType, text: sType };
                 }),
-                modules: projectForm.MODULES.map(function (sModule) {
-                    return { key: sModule, text: sModule, name: formatter.moduleName(sModule) };
+                // the active modules of the managed list
+                modules: lists.activeModules().map(function (oModule) {
+                    return { key: oModule.code, text: oModule.code, name: oModule.name };
                 }),
                 roles: memberRules.ROLES.map(function (sRole) {
                     return { key: sRole, text: formatter.roleText.call(this, sRole) };

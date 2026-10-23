@@ -1,7 +1,8 @@
 sap.ui.define([
     "sap/ui/core/library",
-    "../model/memberRules"
-], function (coreLibrary, memberRules) {
+    "../model/memberRules",
+    "../model/lists"
+], function (coreLibrary, memberRules, lists) {
     "use strict";
 
     var ValueState = coreLibrary.ValueState;
@@ -33,7 +34,8 @@ sap.ui.define([
     };
 
     /**
-     * The i18n key of each milestone type's label. The API's values carry
+     * The i18n key of the original milestone types' labels, for while the
+     * managed list (model/lists.js) is not read. The API's values carry
      * spaces and dashes ("Go-live", "Report delivery"), so they cannot be
      * i18n keys themselves.
      */
@@ -46,25 +48,6 @@ sap.ui.define([
         "Go-live": "msTypeGoLive",
         "Report delivery": "msTypeReportDelivery",
         "Closure": "msTypeClosure"
-    };
-
-    /**
-     * What each module code stands for. Product names, the same in every
-     * language, so not in i18n.
-     */
-    var MODULE_NAMES = {
-        "EC": "Employee Central",
-        "ECP": "Employee Central Payroll",
-        "TT": "Time Tracking",
-        "P&G": "Performance & Goals",
-        "REC": "Recruiting",
-        "ONB": "Onboarding",
-        "LMS": "Learning",
-        "Compensation": "Compensation",
-        "Workzone": "SAP Build Work Zone",
-        "FI": "Financial Accounting",
-        "SD": "Sales and Distribution",
-        "EWM": "Extended Warehouse Management"
     };
 
     /**
@@ -144,11 +127,15 @@ sap.ui.define([
         },
 
         /**
-         * The label of a milestone type ("KO" -> "Kick-off").
+         * The label of a milestone type ("KO" -> "Kick-off"): its name in the
+         * managed list (model/lists.js).
          * @param {string} sType the API's milestoneType
          * @returns {string} the label, or the raw value when unknown
          */
         milestoneTypeText: function (sType) {
+            if (lists.typeName(sType)) {
+                return lists.typeName(sType);
+            }
             return MILESTONE_TYPE[sType] ? this.getResourceBundle().getText(MILESTONE_TYPE[sType]) : (sType || "");
         },
 
@@ -256,12 +243,13 @@ sap.ui.define([
         },
 
         /**
-         * The full name of an SAP module code ("EC" -> "Employee Central").
+         * The full name of an SAP module code ("EC" -> "Employee Central"),
+         * from the managed list (model/lists.js).
          * @param {string} sModule the API's module
-         * @returns {string} the name, or "" when it is already a name
+         * @returns {string} the name, or "" for a code not in the list
          */
         moduleName: function (sModule) {
-            return MODULE_NAMES[sModule] || "";
+            return lists.moduleName(sModule);
         },
 
         /**

@@ -7,7 +7,8 @@ const projectImport = require("./loadUi5Module")("model/projectImport.js");
 const KNOWN = {
     clients: [{ ID: "c1", name: "Cliente A", taxId: "500100200" }],
     people: [{ ID: "p1", name: "Ana Silva", email: "ana.silva@amt.pt" }],
-    codes: ["CO-N-0001"]
+    codes: ["CO-N-0001"],
+    modules: ["EC", "ECP"]
 };
 const HEADERS = projectImport.templateRows()[0];
 const row = (o) => projectImport.COLUMNS.map(([sKey]) => o[sKey] ?? "");

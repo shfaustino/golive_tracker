@@ -1,0 +1,62 @@
+[
+  {
+    "code": "EC",
+    "name": "Employee Central",
+    "active": true
+  },
+  {
+    "code": "ECP",
+    "name": "Employee Central Payroll",
+    "active": true
+  },
+  {
+    "code": "TT",
+    "name": "Time Tracking",
+    "active": true
+  },
+  {
+    "code": "P&G",
+    "name": "Performance & Goals",
+    "active": true
+  },
+  {
+    "code": "REC",
+    "name": "Recruiting",
+    "active": true
+  },
+  {
+    "code": "ONB",
+    "name": "Onboarding",
+    "active": true
+  },
+  {
+    "code": "LMS",
+    "name": "Learning",
+    "active": true
+  },
+  {
+    "code": "Compensation",
+    "name": "Compensation",
+    "active": true
+  },
+  {
+    "code": "Workzone",
+    "name": "SAP Build Work Zone",
+    "active": true
+  },
+  {
+    "code": "FI",
+    "name": "Financial Accounting",
+    "active": true
+  },
+  {
+    "code": "SD",
+    "name": "Sales and Distribution",
+    "active": true
+  },
+  {
+    "code": "EWM",
+    "name": "Extended Warehouse Management",
+    "active": true
+  }
+]

@@ -2,41 +2,66 @@ sap.ui.define([
     "sap/m/ActionSheet",
     "sap/m/Button",
     "sap/m/MessageBox",
+    "sap/m/MessageToast",
     "../model/adminRules",
+    "../model/adminTabs",
     "./adminBulk"
-], function (ActionSheet, Button, MessageBox, adminRules, adminBulk) {
+], function (ActionSheet, Button, MessageBox, MessageToast, adminRules, adminTabs, adminBulk) {
     "use strict";
 
     /** The batch group /admin changes are sent in. */
     var ADMIN_GROUP = "adminEdit";
 
     /**
-     * The changes an Administrator makes on Pessoas and Clientes, through
-     * /admin (golive-tracker-api, srv/admin-service.js): new, edit,
-     * deactivate or activate, and delete. Who has project history is
-     * deactivated, never deleted: the API answers 409 and the ErrorHandler
-     * shows why. Many at a time (Importar, Eliminar selecionados) is
-     * ./adminBulk, brought in with this. Mixed into Admin.controller.js, so
-     * `this` is that controller; it implements _onRecordsChanged(sToastKey)
-     * and _load(iPage).
+     * The changes an Administrator makes on the tab on show (Pessoas,
+     * Clientes, Módulos, Tipos de marco; model/adminTabs.js), through /admin
+     * (golive-tracker-api, srv/admin-service.js): new, edit, deactivate or
+     * activate, and delete. What is in use (a person or client with project
+     * history, a module or milestone type projects have) is deactivated,
+     * never deleted: the API answers 409 and the ErrorHandler shows why.
+     * Many at a time (Importar, Eliminar selecionados) is ./adminBulk,
+     * brought in with this. Mixed into Admin.controller.js, so `this` is that
+     * controller; it implements _tab() and _load(iPage).
      */
     return Object.assign({}, adminBulk, {
 
         /**
-         * Nova pessoa / Novo cliente, for the tab on show.
+         * After every change: the page is read again, and the modules and
+         * milestone types the whole app offers, when they are what changed.
+         * @param {string} sToastKey i18n key of the toast
+         * @private
+         */
+        _onRecordsChanged: function (sToastKey) {
+            MessageToast.show(this.getResourceBundle().getText(sToastKey));
+            this._load(this.getModel("dir").getProperty("/page"));
+            this._reloadListsIfManaged();
+        },
+
+        /**
+         * After a change to Módulos or Tipos de marco, the app's lists (model/lists.js).
+         * @private
+         */
+        _reloadListsIfManaged: function () {
+            var sKind = this._tab().kind;
+
+            if (sKind === "module" || sKind === "milestoneType") {
+                this.getOwnerComponent().loadLists();
+            }
+        },
+
+        /**
+         * Nova pessoa / Novo cliente / Novo módulo / Novo tipo de marco.
          * @public
          */
         onNew: function () {
-            var bPeople = this.getModel("dir").getProperty("/tab") === "pessoas";
+            var oTab = this._tab();
 
             this._oRecordRow = null;
             this._openRecord({
-                kind: bPeople ? "person" : "client",
+                kind: oTab.kind,
                 mode: "create",
-                title: this.getResourceBundle().getText(bPeople ? "admNewPerson" : "admNewClient"),
-                values: bPeople
-                    ? { name: "", email: "", profile: "User", active: true }
-                    : { name: "", taxId: "", erpCode: "", active: true }
+                title: this.getResourceBundle().getText(oTab.texts.newText),
+                values: Object.assign({}, oTab.empty)
             });
         },
 
@@ -72,12 +97,12 @@ sap.ui.define([
 
         onSaveRecord: function () {
             var oRecord = this.getModel("record"),
-                bPerson = oRecord.getProperty("/kind") === "person",
+                oTab = this._tab(),
                 oValues = oRecord.getProperty("/values"),
                 oBundle = this.getResourceBundle(),
-                oKeys = bPerson ? adminRules.validatePerson(oValues) : adminRules.validateClient(oValues),
+                oKeys = oTab.validate.call(adminRules, oValues),
                 oErrors = {},
-                oBody = bPerson ? adminRules.personBody(oValues) : adminRules.clientBody(oValues);
+                oBody;
 
             Object.keys(oKeys).forEach(function (sField) {
                 oErrors[sField] = oBundle.getText(oKeys[sField]);
@@ -86,11 +111,11 @@ sap.ui.define([
             if (Object.keys(oErrors).length) {
                 return;
             }
+            oBody = oTab.body(oValues);
             oRecord.setProperty("/busy", true);
             (oRecord.getProperty("/mode") === "create"
-                ? this._createRecord(bPerson, oBody)
-                : this._patchRecord(bPerson, this._oRecordRow,
-                    adminRules.changes(this._oRecordRow, oBody, bPerson ? adminRules.PERSON_FIELDS : adminRules.CLIENT_FIELDS))
+                ? this._createRecord(oBody)
+                : this._patchRecord(this._oRecordRow, adminRules.changes(this._oRecordRow, oBody, oTab.fields))
             ).then(function (bDone) {
                 oRecord.setProperty("/busy", false);
                 if (bDone) {
@@ -120,16 +145,19 @@ sap.ui.define([
          * @private
          */
         _editRecord: function (oRow) {
-            var bPerson = this.getModel("dir").getProperty("/tab") === "pessoas";
+            var oTab = this._tab(),
+                oValues = {};
 
+            Object.keys(oTab.empty).forEach(function (sField) {
+                oValues[sField] = oRow[sField] === null || oRow[sField] === undefined ? oTab.empty[sField] : oRow[sField];
+            });
+            oValues.active = oRow.active !== false;
             this._oRecordRow = oRow;
             this._openRecord({
-                kind: bPerson ? "person" : "client",
+                kind: oTab.kind,
                 mode: "edit",
-                title: this.getResourceBundle().getText(bPerson ? "admEditPerson" : "admEditClient", [oRow.name]),
-                values: bPerson
-                    ? { name: oRow.name, email: oRow.email, profile: oRow.profile, active: oRow.active !== false }
-                    : { name: oRow.name, taxId: oRow.taxId || "", erpCode: oRow.erpCode || "", active: oRow.active !== false }
+                title: this.getResourceBundle().getText(oTab.texts.editTitle, [oRow.name]),
+                values: oValues
             });
         },
 
@@ -140,9 +168,7 @@ sap.ui.define([
          * @private
          */
         _setActive: function (oRow, bActive) {
-            var bPerson = this.getModel("dir").getProperty("/tab") === "pessoas";
-
-            this._patchRecord(bPerson, oRow, { active: bActive }).then(function (bDone) {
+            this._patchRecord(oRow, { active: bActive }).then(function (bDone) {
                 if (bDone) {
                     this._onRecordsChanged(bActive ? "admActivated" : "admDeactivated");
                 }
@@ -150,14 +176,14 @@ sap.ui.define([
         },
 
         /**
-         * Asks first, then DELETE. Who has history is refused (409) and
+         * Asks first, then DELETE. What is in use is refused (409) and
          * stays; the message says to deactivate instead.
          * @param {object} oRow the row
          * @private
          */
         _deleteRecord: function (oRow) {
-            var bPerson = this.getModel("dir").getProperty("/tab") === "pessoas",
-                oModel = this.getOwnerComponent().getModel("admin");
+            var oModel = this.getOwnerComponent().getModel("admin"),
+                sPath = adminTabs.path(this.getModel("dir").getProperty("/tab"), oRow);
 
             MessageBox.confirm(this.getResourceBundle().getText("admDeleteConfirm", [oRow.name]), {
                 emphasizedAction: MessageBox.Action.OK,
@@ -167,8 +193,7 @@ sap.ui.define([
                     if (sAction !== MessageBox.Action.OK) {
                         return;
                     }
-                    oBinding = oModel.bindContext((bPerson ? "/People(" : "/Clients(") + oRow.ID + ")", undefined,
-                        { $$updateGroupId: ADMIN_GROUP });
+                    oBinding = oModel.bindContext(sPath, undefined, { $$updateGroupId: ADMIN_GROUP });
                     oContext = oBinding.getBoundContext();
                     oContext.requestObject().then(function () {
                         oContext.delete(ADMIN_GROUP).catch(function () {
@@ -188,15 +213,14 @@ sap.ui.define([
         },
 
         /**
-         * POST /admin/People or /admin/Clients.
-         * @param {boolean} bPerson which
+         * POST to the tab's entity set under /admin.
          * @param {object} oBody the record
          * @returns {Promise<boolean>} whether the API took it
          * @private
          */
-        _createRecord: function (bPerson, oBody) {
+        _createRecord: function (oBody) {
             var oModel = this.getOwnerComponent().getModel("admin"),
-                oBinding = oModel.bindList(bPerson ? "/People" : "/Clients", undefined, [], [], { $$updateGroupId: ADMIN_GROUP }),
+                oBinding = oModel.bindList("/" + this._tab().set, undefined, [], [], { $$updateGroupId: ADMIN_GROUP }),
                 oContext = oBinding.create(oBody);
 
             oContext.created().catch(function () {
@@ -214,16 +238,15 @@ sap.ui.define([
         },
 
         /**
-         * PATCH /admin/People(<id>) or /admin/Clients(<id>) with the changes.
-         * @param {boolean} bPerson which
+         * PATCH a record of the tab under /admin with the changes.
          * @param {object} oRow the record as read
          * @param {object} oChanges the fields to change
          * @returns {Promise<boolean>} whether the API took it
          * @private
          */
-        _patchRecord: function (bPerson, oRow, oChanges) {
+        _patchRecord: function (oRow, oChanges) {
             var oModel = this.getOwnerComponent().getModel("admin"),
-                oBinding = oModel.bindContext((bPerson ? "/People(" : "/Clients(") + oRow.ID + ")", undefined,
+                oBinding = oModel.bindContext(adminTabs.path(this.getModel("dir").getProperty("/tab"), oRow), undefined,
                     { $$updateGroupId: ADMIN_GROUP }),
                 oContext = oBinding.getBoundContext();
 

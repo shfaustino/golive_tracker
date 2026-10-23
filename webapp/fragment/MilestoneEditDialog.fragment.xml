@@ -18,15 +18,13 @@
         class="gtApp gtDialog sapUiContentPadding">
         <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
             <Label text="{i18n>colMilestone}" labelFor="msType" visible="{= ${msEdit>/mode} === 'create' }"/>
-            <gt:SearchSelect id="msType" selectedKey="{msEdit>/values/milestoneType}" visible="{= ${msEdit>/mode} === 'create' }">
-                <core:Item key="KO" text="{i18n>msTypeKO}"/>
-                <core:Item key="PTO" text="{i18n>msTypePTO}"/>
-                <core:Item key="GOP" text="{i18n>msTypeGOP}"/>
-                <core:Item key="Training" text="{i18n>msTypeTraining}"/>
-                <core:Item key="Testing" text="{i18n>msTypeTesting}"/>
-                <core:Item key="Go-live" text="{i18n>msTypeGoLive}"/>
-                <core:Item key="Report delivery" text="{i18n>msTypeReportDelivery}"/>
-                <core:Item key="Closure" text="{i18n>msTypeClosure}"/>
+            <!-- the active milestone types of the managed list (Administração › Tipos de marco) -->
+            <gt:SearchSelect
+                id="msType"
+                selectedKey="{msEdit>/values/milestoneType}"
+                visible="{= ${msEdit>/mode} === 'create' }"
+                items="{path: 'lists>/milestoneTypes', templateShareable: false}">
+                <core:Item key="{lists>code}" text="{lists>name}"/>
             </gt:SearchSelect>
 
             <!-- empty: the milestone is the whole project's -->

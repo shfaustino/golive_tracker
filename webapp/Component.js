@@ -3,8 +3,10 @@ sap.ui.define([
     "sap/ui/Device",
     "./model/models",
     "./model/profiles",
-    "./service/ErrorHandler"
-], function (UIComponent, Device, models, profiles, ErrorHandler) {
+    "./model/lists",
+    "./service/ErrorHandler",
+    "sap/ui/model/json/JSONModel"
+], function (UIComponent, Device, models, profiles, lists, ErrorHandler, JSONModel) {
     "use strict";
 
     return UIComponent.extend("com.amt.golivetracker.Component", {
@@ -21,9 +23,45 @@ sap.ui.define([
             this.setModel(models.createUserModel(), "user");
             this.setModel(models.createAppModel(), "app");
 
+            this.setModel(new JSONModel({ modules: [], milestoneTypes: [] }), "lists");
+
             // Pages that need the person's ID (O meu trabalho) wait on this.
             this.pSignedInUser = this._loadSignedInUser();
-            this.getRouter().initialize();
+            // The first page opens once the modules and milestone types are
+            // known, so their names show from the start (model/lists.js).
+            this.loadLists().then(function () {
+                this.getRouter().initialize();
+            }.bind(this));
+        },
+
+        /**
+         * Reads the modules and milestone types (managed lists) into
+         * model/lists.js and the "lists" model (the active ones, for choices).
+         * Called at the start and after an Administrator changes them. A
+         * failed read leaves them empty: codes then show as they are.
+         * @returns {Promise} settles once they are read, or known to stay as they were
+         * @public
+         */
+        loadLists: function () {
+            var oModel = this.getModel(),
+                read = function (sPath) {
+                    var oBinding = oModel.bindList(sPath, undefined, [], [], { $orderby: "code" });
+
+                    return oBinding.requestContexts(0, 1000).then(function (aContexts) {
+                        return aContexts.map(function (oContext) {
+                            return oContext.getObject();
+                        });
+                    }).finally(function () {
+                        oBinding.destroy();
+                    });
+                };
+
+            return Promise.all([read("/Modules"), read("/MilestoneTypes")]).then(function (aResults) {
+                lists.set(aResults[0], aResults[1]);
+                this.getModel("lists").setData({ modules: lists.activeModules(), milestoneTypes: lists.activeTypes() });
+            }.bind(this)).catch(function () {
+                // the codes show as they are
+            });
         },
 
         destroy: function () {

@@ -22,7 +22,9 @@ sap.ui.define([
         attachments: "attachments",
         people: "people",
         clients: "clients",
-        admin: "admin"
+        admin: "admin",
+        adminModules: "admin",
+        adminMilestoneTypes: "admin"
     };
 
     return BaseController.extend("com.amt.golivetracker.controller.App", {

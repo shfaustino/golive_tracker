@@ -18,13 +18,9 @@ sap.ui.define([], function () {
         "T&M/Outsourcing": []
     };
 
-    var MODULES = ["EC", "ECP", "TT", "P&G", "REC", "ONB", "LMS", "Compensation", "Workzone", "FI", "SD", "EWM"];
-
     return {
 
         PROJECT_TYPES: Object.keys(TEMPLATES),
-
-        MODULES: MODULES,
 
         /**
          * The milestones a project type brings.

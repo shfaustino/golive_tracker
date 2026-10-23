@@ -34,6 +34,74 @@ sap.ui.define([], function () {
 
         CLIENT_FIELDS: ["name", "taxId", "erpCode", "active"],
 
+        // the code is the key: it is set when the record is created, and never changes
+        MODULE_FIELDS: ["name", "active"],
+
+        TYPE_FIELDS: ["name", "requiresAudit", "sortOrder", "active"],
+
+        /**
+         * Checks a module before it is sent: a code (the key, up to 20
+         * characters, unique: 409 from the API) and a name.
+         * @param {{code: string, name: string}} oValues the form
+         * @returns {Object<string, string>} per field, the i18n key of what is wrong
+         */
+        validateModule: function (oValues) {
+            var oErrors = {},
+                sCode = (oValues.code || "").trim();
+
+            if (!sCode) {
+                oErrors.code = "pfErrorRequired";
+            } else if (sCode.length > 20) {
+                oErrors.code = "admErrorCodeLength";
+            }
+            if (!(oValues.name || "").trim()) {
+                oErrors.name = "pfErrorRequired";
+            }
+            return oErrors;
+        },
+
+        /**
+         * Checks a milestone type: as a module, and an order that is a whole
+         * number, when given.
+         * @param {{code: string, name: string, sortOrder: (string|number)}} oValues the form
+         * @returns {Object<string, string>} per field, the i18n key of what is wrong
+         */
+        validateType: function (oValues) {
+            var oErrors = this.validateModule(oValues),
+                sOrder = String(oValues.sortOrder === null || oValues.sortOrder === undefined ? "" : oValues.sortOrder).trim();
+
+            if (sOrder && !/^\d+$/.test(sOrder)) {
+                oErrors.sortOrder = "admErrorOrder";
+            }
+            return oErrors;
+        },
+
+        /**
+         * A module as the API takes it.
+         * @param {object} oValues the form
+         * @returns {object} the body
+         */
+        moduleBody: function (oValues) {
+            return { code: oValues.code.trim(), name: oValues.name.trim(), active: oValues.active !== false };
+        },
+
+        /**
+         * A milestone type as the API takes it; with no order, it goes at the end (100).
+         * @param {object} oValues the form
+         * @returns {object} the body
+         */
+        typeBody: function (oValues) {
+            var sOrder = String(oValues.sortOrder === null || oValues.sortOrder === undefined ? "" : oValues.sortOrder).trim();
+
+            return {
+                code: oValues.code.trim(),
+                name: oValues.name.trim(),
+                requiresAudit: !!oValues.requiresAudit,
+                sortOrder: sOrder ? parseInt(sOrder, 10) : 100,
+                active: oValues.active !== false
+            };
+        },
+
         changes: changes,
 
         /**
