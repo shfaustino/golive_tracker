@@ -2079,3 +2079,27 @@
         flex-direction: column;
     }
 }
+
+/* Projetos: Importar next to Novo projeto */
+.gtHeaderButtons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+/* Importar projetos */
+.gtImport {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.gtImportActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+/* one line per error of a row */
+.gtApp .gtPreLine {
+    white-space: pre-line;
+}

@@ -5,14 +5,16 @@ sap.ui.define([
     "sap/ui/model/FilterOperator",
     "sap/ui/model/Sorter",
     "../model/paging",
-    "../formatter/formatter"
-], function (BaseController, JSONModel, Filter, FilterOperator, Sorter, paging, formatter) {
+    "../formatter/formatter",
+    "./projectImportDialog"
+], function (BaseController, JSONModel, Filter, FilterOperator, Sorter, paging, formatter, projectImportDialog) {
     "use strict";
 
     /** Rows per page, as in the mockup ("A mostrar 1-10 de 24 projetos"). */
     var PAGE_SIZE = 10;
 
-    return BaseController.extend("com.amt.golivetracker.controller.Projects", {
+    // Importar projetos lives in ./projectImportDialog, mixed in here.
+    return BaseController.extend("com.amt.golivetracker.controller.Projects", Object.assign({}, projectImportDialog, {
 
         formatter: formatter,
 
@@ -221,5 +223,5 @@ sap.ui.define([
                 });
             });
         }
-    });
+    }));
 });

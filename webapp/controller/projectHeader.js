@@ -42,7 +42,15 @@ sap.ui.define([
                     placement: "Bottom",
                     buttons: [
                         new Button({ text: oBundle.getText("actChangeStatus"), icon: "sap-icon://process", press: this._openStatusDialog.bind(this) }),
-                        new Button({ text: oBundle.getText("actSetBaseline"), icon: "sap-icon://gantt-bars", press: this._openBaselineDialog.bind(this) })
+                        new Button({ text: oBundle.getText("actSetBaseline"), icon: "sap-icon://gantt-bars", press: this._openBaselineDialog.bind(this) }),
+                        // only Administrators delete a project (the API refuses anyone else)
+                        new Button({
+                            text: oBundle.getText("actDelete"),
+                            icon: "sap-icon://delete",
+                            type: "Reject",
+                            visible: "{user>/isAdmin}",
+                            press: this._openDeleteDialog.bind(this)
+                        })
                     ]
                 });
                 this.getView().addDependent(this._oProjectMenu);
@@ -70,6 +78,10 @@ sap.ui.define([
                 oBundle = this.getResourceBundle(),
                 oAction;
 
+            if (sMode === "delete") {
+                this._deleteProject();
+                return;
+            }
             // A baseline replaces the previous one for good: say why.
             if (sMode === "baseline" && !sReason) {
                 oActionModel.setProperty("/errors", { reason: oBundle.getText("actErrorReason") });
@@ -248,6 +260,51 @@ sap.ui.define([
                 statuses: [],
                 values: { reason: "" }
             });
+        },
+
+        /**
+         * Eliminar projeto: asks for the project's code, typed, before the
+         * DELETE, which takes everything in the project with it.
+         * @private
+         */
+        _openDeleteDialog: function () {
+            var oBundle = this.getResourceBundle(),
+                sCode = this.getView().getBindingContext().getProperty("code");
+
+            this._openActionDialog({
+                mode: "delete",
+                title: oBundle.getText("actDelete"),
+                intro: oBundle.getText("actDeleteIntro", [sCode]),
+                confirmText: oBundle.getText("actDelete"),
+                expectedCode: sCode,
+                statuses: [],
+                values: { code: "" }
+            });
+        },
+
+        /**
+         * DELETE /Projects(<id>), then back to Projetos.
+         * @private
+         */
+        _deleteProject: function () {
+            var oActionModel = this.getModel("action"),
+                oBundle = this.getResourceBundle(),
+                sCode = oActionModel.getProperty("/expectedCode");
+
+            oActionModel.setProperty("/busy", true);
+            this.writeUnderParent("DELETE", "/Projects(" + this._sProjectId + ")").then(function (bDone) {
+                oActionModel.setProperty("/busy", false);
+                if (!bDone) {
+                    return;
+                }
+                this.onCancelProjectAction();
+                MessageToast.show(oBundle.getText("actDeleted", [sCode]));
+                this._sProjectId = null;
+                this.getView().unbindElement();
+                // the lists that showed it read again
+                this.getOwnerComponent().getModel().refresh();
+                this.getRouter().navTo("projects", {}, undefined, true);
+            }.bind(this));
         },
 
         /**

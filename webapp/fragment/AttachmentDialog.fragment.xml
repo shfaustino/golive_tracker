@@ -7,18 +7,19 @@
     <!-- Novo anexo (US-29, BR-11), in the "attach" model
          (controller/attachmentDialogs.js): a link on the project, on one of
          its milestones, or on one of a milestone's items. On a module's page
-         (attach>/inModule) there is no "Ligado a": only the milestone, among
-         the module's (on Geral it may stay empty: the project's). -->
+         (attach>/inModule) it goes on the project, for the module: only the
+         type, the name and the link are asked. -->
     <Dialog
         id="attachmentDialog"
         title="{i18n>attNew}"
         contentWidth="32rem"
         class="gtApp gtDialog sapUiContentPadding">
         <f:SimpleForm editable="true" layout="ColumnLayout" columnsM="1" columnsL="1" columnsXL="1">
-            <Label text="{i18n>mwColProject}" labelFor="attProject" required="true"/>
+            <Label text="{i18n>mwColProject}" labelFor="attProject" required="true" visible="{= !${attach>/inModule} }"/>
             <gt:SearchSelect
                 id="attProject"
                 width="100%"
+                visible="{= !${attach>/inModule} }"
                 enabled="{= !${attach>/projectFixed} }"
                 selectedKey="{attach>/values/project_ID}"
                 selectionChange=".onAttachmentProjectChange"
@@ -37,15 +38,11 @@
                 </items>
             </SegmentedButton>
 
-            <Label
-                text="{i18n>colMilestone}"
-                labelFor="attMilestone"
-                required="{= ${attach>/inModule} ? ${attach>/milestoneRequired} : true }"
-                visible="{= ${attach>/inModule} || ${attach>/values/owner} !== 'project' }"/>
+            <Label text="{i18n>colMilestone}" labelFor="attMilestone" required="true" visible="{= ${attach>/values/owner} !== 'project' }"/>
             <gt:SearchSelect
                 id="attMilestone"
                 width="100%"
-                visible="{= ${attach>/inModule} || ${attach>/values/owner} !== 'project' }"
+                visible="{= ${attach>/values/owner} !== 'project' }"
                 selectedKey="{attach>/values/milestone_ID}"
                 change=".onAttachmentMilestoneChange"
                 items="{path: 'attach>/milestones', templateShareable: false}"
@@ -53,12 +50,6 @@
                 valueStateText="{attach>/errors/milestone_ID}">
                 <core:Item key="{attach>ID}" text="{attach>label}"/>
             </gt:SearchSelect>
-            <Text
-                text="{i18n>attWholeProjectHint}"
-                visible="{= ${attach>/inModule} &amp;&amp; !${attach>/milestoneRequired} }"
-                class="gtHint">
-                <layoutData><f:ColumnElementData cellsSmall="12" cellsLarge="12"/></layoutData>
-            </Text>
 
             <Label text="{i18n>attOwnerItem}" labelFor="attItem" required="true" visible="{= ${attach>/values/owner} === 'item' }"/>
             <gt:SearchSelect

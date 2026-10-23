@@ -1,0 +1,89 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified">
+
+    <!-- Importar projetos (controller/projectImportDialog.js), in the
+         "import" model: the template, the chosen file, and every row of it
+         checked before the valid ones are created. -->
+    <Dialog
+        id="projectImportDialog"
+        title="{i18n>impTitle}"
+        contentWidth="76rem"
+        resizable="true"
+        busy="{import>/busy}"
+        busyIndicatorDelay="0"
+        class="gtApp gtDialog sapUiContentPadding">
+        <VBox renderType="Bare" class="gtImport">
+            <Text text="{i18n>impIntro}" class="gtSubtle"/>
+            <HBox alignItems="Center" renderType="Bare" class="gtImportActions">
+                <Button text="{i18n>impTemplate}" icon="sap-icon://download" press=".onDownloadImportTemplate"/>
+                <!-- picks the file only: it is read in the browser, never uploaded as it is -->
+                <u:FileUploader
+                    buttonOnly="true"
+                    buttonText="{i18n>impChoose}"
+                    icon="sap-icon://upload"
+                    fileType="xlsx,xls,csv"
+                    sameFilenameAllowed="true"
+                    enabled="{= !${import>/done} }"
+                    change=".onChooseImportFile"/>
+                <Text text="{import>/fileName}" class="gtSubtle"/>
+            </HBox>
+            <MessageStrip
+                text="{parts: ['i18n>impSummary', 'import>/ready', 'import>/wrong'], formatter: '.formatMessage'}"
+                type="{= ${import>/wrong} > 0 ? 'Warning' : 'Information' }"
+                showIcon="true"
+                visible="{= ${import>/rows}.length > 0 &amp;&amp; !${import>/done} }"/>
+            <!-- The status, with the row's errors, keeps its room; the PM goes
+                 under the client and both dates in one cell -->
+            <Table
+                class="gtTable gtTableInset"
+                visible="{= ${import>/rows}.length > 0 }"
+                items="{import>/rows}">
+                <columns>
+                    <!-- name and client share what the others leave -->
+                    <Column width="3.5rem"><Text text="{i18n>impLine}"/></Column>
+                    <Column width="8rem"><Text text="{i18n>colCode}"/></Column>
+                    <Column><Text text="{i18n>colName}"/></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colClient}"/></Column>
+                    <Column width="8rem" minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>projectType}"/></Column>
+                    <Column width="7rem" minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>impDates}"/></Column>
+                    <Column width="22rem"><Text text="{i18n>colStatus}"/></Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{import>line}"/>
+                            <Text text="{import>code}" wrapping="false"/>
+                            <Text text="{import>name}"/>
+                            <VBox renderType="Bare">
+                                <Text text="{import>clientName}"/>
+                                <Text text="{import>pmName}" class="gtSubtle"/>
+                            </VBox>
+                            <Text text="{import>projectType}"/>
+                            <VBox renderType="Bare">
+                                <Text text="{path: 'import>startDate', formatter: '.formatter.dateOrDash'}" wrapping="false"/>
+                                <Text text="{path: 'import>endDate', formatter: '.formatter.dateOrDash'}" wrapping="false" class="gtSubtle"/>
+                            </VBox>
+                            <VBox alignItems="Start" renderType="Bare">
+                                <ObjectStatus text="{import>stateText}" state="{import>state}" inverted="true"/>
+                                <Text text="{import>message}" visible="{= !!${import>message} }" class="gtSubtle gtPreLine"/>
+                            </VBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+        <beginButton>
+            <Button
+                text="{parts: ['i18n>impCreate', 'import>/ready'], formatter: '.formatMessage'}"
+                type="Emphasized"
+                enabled="{= ${import>/ready} > 0 &amp;&amp; !${import>/busy} &amp;&amp; !${import>/done} }"
+                press=".onConfirmImport"/>
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>close}" press=".onCloseImport"/>
+        </endButton>
+    </Dialog>
+
+</core:FragmentDefinition>

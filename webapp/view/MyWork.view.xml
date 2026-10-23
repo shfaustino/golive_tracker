@@ -209,6 +209,50 @@
                         </VBox>
                     </IconTabFilter>
 
+                    <!-- As minhas auditorias: those the person is the auditor of -->
+                    <IconTabFilter key="auditorias" text="{i18n>mwTabAudits}" count="{= ${work>/audits}.length }">
+                        <VBox class="gtCard gtTableCard" renderType="Bare">
+                            <HBox class="gtCardHeader" renderType="Bare">
+                                <Title text="{i18n>mwAuditsTitle}" level="H2" class="gtSectionTitle"/>
+                            </HBox>
+                            <Table class="gtTable gtTableInset" fixedLayout="false" noDataText="{i18n>mwNoAudits}" items="{work>/audits}">
+                                <columns>
+                                    <Column><Text text="{i18n>mwColProject}"/></Column>
+                                    <Column><Text text="{i18n>colMilestone}"/></Column>
+                                    <Column><Text text="{i18n>auditCode}"/></Column>
+                                    <Column><Text text="{i18n>auditResult}"/></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>auditDate}"/></Column>
+                                    <Column minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>auditFollowUps}"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem type="Active" press=".onOpenAudit">
+                                        <cells>
+                                            <VBox renderType="Bare">
+                                                <Link text="{work>projectCode}" press=".onOpenAudit" class="gtCodeLink"/>
+                                                <Text text="{work>projectName}" class="gtSubtle"/>
+                                            </VBox>
+                                            <VBox alignItems="Start" renderType="Bare" class="gtStackedChip">
+                                                <Text text="{path: 'work>milestoneType', formatter: '.formatter.milestoneTypeText'}"/>
+                                                <ObjectStatus text="{work>module}" visible="{= !!${work>module} }" state="Information" inverted="true" class="gtMiniChip"/>
+                                            </VBox>
+                                            <Text text="{work>code}" wrapping="false"/>
+                                            <ObjectStatus
+                                                text="{path: 'work>result', formatter: '.formatter.auditResultText'}"
+                                                state="{path: 'work>result', formatter: '.formatter.auditResultState'}"
+                                                inverted="true"/>
+                                            <Text text="{path: 'work>date', formatter: '.formatter.dateOrDash'}" wrapping="false"/>
+                                            <ObjectStatus
+                                                text="{parts: ['work>fuOpen', 'work>fuTotal'], formatter: '.formatter.followUpsText'}"
+                                                state="{= ${work>fuOpen} > 0 ? 'Warning' : 'None' }"
+                                                inverted="true"
+                                                visible="{= ${work>fuTotal} > 0 }"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
+                    </IconTabFilter>
+
                     <!-- Projetos onde sou membro -->
                     <IconTabFilter key="projetos" text="{i18n>mwTabProjects}" count="{= ${work>/projects}.length }">
                         <VBox class="gtCard gtTableCard" renderType="Bare">

@@ -35,6 +35,13 @@ test("body trims, and leaves the document type out when none is picked", () => {
         { name: "P", url: "https://x", documentType: "Test plan" });
 });
 
+test("body takes the module only on an attachment of the project", () => {
+    assert.deepEqual(attachmentRules.body({ name: "P", url: "https://x", documentType: "Audit", owner: "project", module: "EC" }),
+        { name: "P", url: "https://x", documentType: "Audit", module: "EC" });
+    assert.deepEqual(attachmentRules.body({ name: "P", url: "https://x", documentType: "Audit", owner: "milestone", module: "EC" }),
+        { name: "P", url: "https://x", documentType: "Audit" });
+});
+
 test("flatten names the owner and pulls up the item's milestone", () => {
     const oRow = attachmentRules.flatten({ ID: "a1", milestoneItem_ID: "i1", milestoneItem: { milestone_ID: "m1" }, author: { name: "Ana" } });
 

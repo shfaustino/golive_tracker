@@ -1,4 +1,6 @@
-sap.ui.define([], function () {
+sap.ui.define([
+    "./auditRows"
+], function (auditRows) {
     "use strict";
 
     var OPEN = ["ToDo", "InProgress"],
@@ -31,6 +33,18 @@ sap.ui.define([], function () {
     return {
 
         isLate: isLate,
+
+        /** What As minhas auditorias reads from /Audits: as the Auditorias page, newest first */
+        AUDIT_QUERY: Object.assign({ $orderby: "date desc" }, auditRows.QUERY),
+
+        /**
+         * The audits the person is the auditor of, as rows of As minhas auditorias.
+         * @param {object[]} aAudits audits read with AUDIT_QUERY
+         * @returns {object[]} the rows (auditRows.flatten)
+         */
+        audits: function (aAudits) {
+            return (aAudits || []).map(auditRows.flatten);
+        },
 
         /**
          * Everything O meu trabalho shows about the signed-in person's items
