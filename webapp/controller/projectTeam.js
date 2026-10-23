@@ -54,26 +54,27 @@ sap.ui.define([
                 oContext = oButton.getBindingContext(),
                 oMember = oContext.getObject(),
                 oBundle = this.getResourceBundle(),
-                bActive = memberRules.isActive(oMember.endDate),
-                bActivePm = bActive && oMember.role === "PM",
+                // the current PM is the one with no end date, as the API counts it (BR-03): the
+                // one a hand-over replaced today has today as end date and can be removed already
+                bCurrentPm = oMember.role === "PM" && !oMember.endDate,
+                bEnds = memberRules.isActive(oMember.endDate) && oMember.endDate !== memberRules.today(),
                 aButtons = [
                     new Button({ text: oBundle.getText("teamEdit"), icon: "sap-icon://edit", press: this._editMember.bind(this, oContext) })
                 ];
 
-            if (bActivePm) {
+            if (bCurrentPm) {
                 aButtons.push(new Button({
                     text: oBundle.getText("teamHandOver"), icon: "sap-icon://journey-change", press: this._handOverPm.bind(this, oContext)
                 }));
-            } else {
-                if (bActive) {
-                    aButtons.push(new Button({
-                        text: oBundle.getText("teamEndToday"), icon: "sap-icon://past", press: this._endMemberToday.bind(this, oContext)
-                    }));
-                }
+            } else if (bEnds) {
                 aButtons.push(new Button({
-                    text: oBundle.getText("teamRemove"), icon: "sap-icon://delete", type: "Reject", press: this._removeMember.bind(this, oContext)
+                    text: oBundle.getText("teamEndToday"), icon: "sap-icon://past", press: this._endMemberToday.bind(this, oContext)
                 }));
             }
+            // the current PM too: the API takes it off only while the project is Not started, and says why otherwise
+            aButtons.push(new Button({
+                text: oBundle.getText("teamRemove"), icon: "sap-icon://delete", type: "Reject", press: this._removeMember.bind(this, oContext)
+            }));
 
             if (this._oMemberMenu) {
                 this._oMemberMenu.destroy();
