@@ -2,7 +2,9 @@
 
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const projectForm = require("./loadUi5Module")("model/projectForm.js");
+const loadUi5Module = require("./loadUi5Module");
+const projectForm = loadUi5Module("model/projectForm.js");
+const lists = loadUi5Module("model/lists.js");
 
 const VALID = {
     code: " CO-N-04000 ", name: "New project", client_ID: "c1", projectType: "Implementation",
@@ -11,7 +13,8 @@ const VALID = {
     members: [{ person_ID: "p1", role: "PM", startDate: "" }, { person_ID: "p2", role: "PMO", startDate: "2026-11-01" }]
 };
 
-test("milestonesFor gives the type's template, audits marked", () => {
+test("milestonesFor gives the type's template, audits as the milestone types have them", () => {
+    lists.set([], [{ code: "Testing", requiresAudit: true }, { code: "Go-live", requiresAudit: true }, { code: "GOP", requiresAudit: false }]);
     assert.deepEqual(projectForm.milestonesFor("Rollout").map((m) => m.milestoneType + (m.audit ? "*" : "")),
         ["KO", "GOP", "Testing*", "Go-live*", "Closure"]);
     assert.deepEqual(projectForm.milestonesFor("Hours bank"), []);

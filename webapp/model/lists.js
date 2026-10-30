@@ -66,6 +66,14 @@ sap.ui.define([], function () {
         },
 
         /**
+         * @param {string} sCode a milestone type's code
+         * @returns {boolean} whether its milestones require an audit (BR-10)
+         */
+        requiresAudit: function (sCode) {
+            return !!(mTypes[sCode] && mTypes[sCode].requiresAudit);
+        },
+
+        /**
          * The active modules, to choose from (by code).
          * @returns {{code: string, name: string}[]} them
          */

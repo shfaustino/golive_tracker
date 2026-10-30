@@ -16,7 +16,7 @@
   {
     "code": "GOP",
     "name": "GOP",
-    "requiresAudit": false,
+    "requiresAudit": true,
     "sortOrder": 30,
     "active": true
   },
@@ -30,14 +30,14 @@
   {
     "code": "Testing",
     "name": "Testes",
-    "requiresAudit": false,
+    "requiresAudit": true,
     "sortOrder": 50,
     "active": true
   },
   {
     "code": "Go-live",
     "name": "Go-live",
-    "requiresAudit": false,
+    "requiresAudit": true,
     "sortOrder": 60,
     "active": true
   },
