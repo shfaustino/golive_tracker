@@ -1,18 +1,21 @@
-sap.ui.define([], function () {
+sap.ui.define([
+    "./lists"
+], function (lists) {
     "use strict";
 
     /**
      * The project types and the milestones the API generates for each
-     * (docs/backend-api-guide.md, "Criar e editar"); audit: the milestone
-     * needs an audit (★ in the guide, BR-10).
+     * (docs/backend-api-guide.md, "Criar e editar"). Whether one needs an
+     * audit (BR-10) is its milestone type's, in Administração › Tipos de
+     * marco (model/lists.js).
      */
     var TEMPLATES = {
-        "Implementation": [["KO"], ["PTO"], ["GOP", true], ["Training"], ["Testing", true], ["Go-live", true], ["Closure"]],
-        "Rollout": [["KO"], ["GOP"], ["Testing", true], ["Go-live", true], ["Closure"]],
-        "Integration": [["KO"], ["PTO"], ["Testing"], ["Go-live"], ["Closure"]],
-        "Enhancements/CR": [["KO"], ["Testing"], ["Go-live"], ["Closure"]],
-        "Assessment": [["KO"], ["Report delivery"], ["Closure"]],
-        "Change management": [["KO"], ["Training"], ["Closure"]],
+        "Implementation": ["KO", "PTO", "GOP", "Training", "Testing", "Go-live", "Closure"],
+        "Rollout": ["KO", "GOP", "Testing", "Go-live", "Closure"],
+        "Integration": ["KO", "PTO", "Testing", "Go-live", "Closure"],
+        "Enhancements/CR": ["KO", "Testing", "Go-live", "Closure"],
+        "Assessment": ["KO", "Report delivery", "Closure"],
+        "Change management": ["KO", "Training", "Closure"],
         "Hours bank": [],
         "Ticket > 40h": [],
         "T&M/Outsourcing": []
@@ -28,8 +31,8 @@ sap.ui.define([], function () {
          * @returns {{milestoneType: string, audit: boolean}[]} in order; none for unknown types
          */
         milestonesFor: function (sType) {
-            return (TEMPLATES[sType] || []).map(function (aEntry) {
-                return { milestoneType: aEntry[0], audit: aEntry[1] === true };
+            return (TEMPLATES[sType] || []).map(function (sMilestoneType) {
+                return { milestoneType: sMilestoneType, audit: lists.requiresAudit(sMilestoneType) };
             });
         },
 

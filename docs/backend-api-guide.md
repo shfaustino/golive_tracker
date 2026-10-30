@@ -140,12 +140,12 @@ POST /project/Projects
 - Num PATCH do projeto, `members` e `milestones` são recusados: gerem-se pelos
   seus próprios caminhos.
 
-| Tipo de projeto | Marcos gerados (★ = exige auditoria) |
+| Tipo de projeto | Marcos gerados (★ = exige auditoria, à partida) |
 |---|---|
 | Implementation | KO, PTO, GOP★, Training, Testing★, Go-live★, Closure |
-| Rollout | KO, GOP, Testing★, Go-live★, Closure |
-| Integration | KO, PTO, Testing, Go-live, Closure |
-| Enhancements/CR | KO, Testing, Go-live, Closure |
+| Rollout | KO, GOP★, Testing★, Go-live★, Closure |
+| Integration | KO, PTO, Testing★, Go-live★, Closure |
+| Enhancements/CR | KO, Testing★, Go-live★, Closure |
 | Assessment | KO, Report delivery, Closure |
 | Change management | KO, Training, Closure |
 | Hours bank, Ticket > 40h, T&M/Outsourcing | nenhum |
@@ -209,10 +209,14 @@ PATCH /project/Projects(<id>)/milestones(<id>)
 
 ### Itens, auditorias e follow-ups (US-21 a US-26)
 
+- Se um marco exige auditoria é do seu tipo de marco (`requiresAudit` em
+  `/admin/MilestoneTypes`, Administração › Tipos de marco), em todos os tipos
+  de projeto; os ★ acima são o que os tipos têm à partida. Mudar o tipo muda
+  todos os marcos desse tipo, os que já existem incluídos.
 - Itens: `.../milestones(<id>)/items`, do tipo `Meeting`, `Document`, `Task` ou
   `FollowUp`. O responsável tem de ser membro ativo.
 - Auditorias: `.../milestones(<id>)/audits` ou `/project/Audits`. Só nos marcos
-  que exigem auditoria (★ na tabela de Projetos, BR-10). Com `code` vazio, a API
+  que exigem auditoria (o tipo de marco o diz, BR-10). Com `code` vazio, a API
   sugere `<n.º projeto>_<marco>_<ddmmaaaa>` (ex.: `3251_GOP_15062026`); o código
   é único.
 - Follow-up: `POST /project/Audits(<id>)/ProjectService.addFollowUp { "name": "...", "owner_ID": "<uuid>", "date": "2026-10-15" }`
